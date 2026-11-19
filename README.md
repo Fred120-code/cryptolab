@@ -1,2 +1,3 @@
-# cryptolab
-CryptoLab — plateforme web éducative et interactive de cryptographie classique (React, TypeScript, FR/EN)
+# CryptoLab
+
+Plateforme web éducative de cryptographie classique avec visualisations animées (César, substitution, permutation, Vigenère). Bilingue FR/EN.
