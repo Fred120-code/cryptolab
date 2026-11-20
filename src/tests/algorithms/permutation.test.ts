@@ -1,13 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import {
+  decrypt,
+  encrypt,
   getPaddingLength,
   invertPermutation,
   parsePermutation,
+  permutationAlgorithm,
   validate,
   validateCiphertext,
 } from '@/algorithms/permutation';
+import { normalizeLetters } from '@/utils/text';
 
-describe('Permutation cipher - parsing, validation, inversion and padding', () => {
+describe('Permutation cipher - encrypt and decrypt with explicit padding', () => {
   describe('parsePermutation', () => {
     it('découpe les virgules, espaces et points-virgules', () => {
       expect(parsePermutation('2,4,1,3')).toEqual([2, 4, 1, 3]);
@@ -148,6 +152,91 @@ describe('Permutation cipher - parsing, validation, inversion and padding', () =
         expect(res.errors[0]?.params?.['length']).toBe(7);
         expect(res.errors[0]?.params?.['blockSize']).toBe(4);
       }
+    });
+  });
+
+  describe('encrypt et decrypt', () => {
+    it('chiffre INFORMATIQUE avec [2, 4, 1, 3] en NOIFMTRAQEIU sans remplissage', () => {
+      const plain = 'INFORMATIQUE';
+      const p = [2, 4, 1, 3];
+      const encrypted = encrypt(plain, { permutation: p });
+      expect(encrypted).toBe('NOIFMTRAQEIU');
+      expect(decrypt(encrypted, { permutation: p })).toBe(plain);
+    });
+
+    it('chiffre SECURITE avec [3, 5, 1, 4, 2] en CRSUEEXIXT avec 2 X de remplissage', () => {
+      const plain = 'SECURITE';
+      const p = [3, 5, 1, 4, 2];
+      const encrypted = encrypt(plain, { permutation: p });
+      expect(encrypted).toBe('CRSUEEXIXT');
+      // Sans paddingLength, les X de remplissage restent à la fin
+      expect(decrypt(encrypted, { permutation: p })).toBe('SECURITEXX');
+      // Avec paddingLength: 2, les 2 X sont retirés
+      expect(decrypt(encrypted, { permutation: p, paddingLength: 2 })).toBe(plain);
+    });
+
+    /**
+     * Test de l'ambiguïté du X :
+     * "MAX" (3 lettres) avec padding de bloc 4 devient "MAXX" après remplissage.
+     * "MAXX" (4 lettres) sans remplissage a les mêmes lettres.
+     * Les deux produisent exactement le même texte chiffré "AXMX".
+     * Au déchiffrement, sans indication de paddingLength, le moteur produit "MAXX".
+     * Fournir paddingLength: 1 permet de restituer fidèlement "MAX".
+     */
+    it('illustre l’ambiguïté du caractère de remplissage X', () => {
+      const p = [2, 4, 1, 3];
+      expect(encrypt('MAX', { permutation: p })).toBe('AXMX');
+      expect(encrypt('MAXX', { permutation: p })).toBe('AXMX');
+
+      // Sans paddingLength -> "MAXX"
+      expect(decrypt('AXMX', { permutation: p })).toBe('MAXX');
+      // Avec paddingLength: 1 -> "MAX"
+      expect(decrypt('AXMX', { permutation: p, paddingLength: 1 })).toBe('MAX');
+      // Avec paddingLength: 0 -> "MAXX"
+      expect(decrypt('AXMX', { permutation: p, paddingLength: 0 })).toBe('MAXX');
+    });
+
+    it('vérifie la propriété de réversibilité pour différentes permutations et textes', () => {
+      const permutations = [
+        [2, 1],
+        [1, 3, 2],
+        [3, 1, 2],
+        [2, 4, 1, 3],
+        [4, 3, 2, 1],
+      ];
+
+      const texts = ['A', 'HELLO', 'INFORMATIQUE', 'Élève, bien reçu ! 2026.', ''];
+
+      for (const p of permutations) {
+        for (const text of texts) {
+          const norm = normalizeLetters(text);
+          const padLen = getPaddingLength(norm.length, p.length);
+          const enc = encrypt(text, { permutation: p });
+          const dec = decrypt(enc, { permutation: p, paddingLength: padLen });
+          expect(dec).toBe(norm);
+        }
+      }
+    });
+
+    it('gère une chaîne vide ou sans lettre alphabétique', () => {
+      const p = [2, 4, 1, 3];
+      expect(encrypt('', { permutation: p })).toBe('');
+      expect(encrypt('   12345 !? ', { permutation: p })).toBe('');
+      expect(decrypt('', { permutation: p })).toBe('');
+    });
+
+    it('lève une exception si la longueur du texte à déchiffrer n’est pas un multiple', () => {
+      expect(() => decrypt('ABCDEFG', { permutation: [2, 4, 1, 3] })).toThrowError();
+    });
+
+    it('lève une exception si les paramètres sont invalides', () => {
+      expect(() => encrypt('TEST', { permutation: [1] })).toThrowError();
+      expect(() => decrypt('TEST', { permutation: [1] })).toThrowError();
+    });
+
+    it('expose l’instance permutationAlgorithm avec id permutation', () => {
+      expect(permutationAlgorithm.id).toBe('permutation');
+      expect(permutationAlgorithm.encrypt('ABCD', { permutation: [2, 4, 1, 3] })).toBe('BDAC');
     });
   });
 });

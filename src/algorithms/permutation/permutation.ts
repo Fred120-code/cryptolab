@@ -1,5 +1,12 @@
-import type { TranslatableText, ValidationResult } from '@/types';
-import type { PermutationParams } from './types';
+import type {
+  AlgorithmResult,
+  CipherAlgorithm,
+  OperationMode,
+  TranslatableText,
+  ValidationResult,
+} from '@/types';
+import { normalizeLetters } from '@/utils/text';
+import type { PermutationParams, PermutationStepData } from './types';
 
 /** Taille minimale d'un bloc de permutation. */
 export const MIN_BLOCK_SIZE = 2;
@@ -166,6 +173,19 @@ export function validate(params: PermutationParams): ValidationResult {
 }
 
 /**
+ * Valide les paramètres de permutation et lève une exception en cas d'erreur.
+ *
+ * @param params Paramètres de permutation à contrôler.
+ * @throws {Error} Si les paramètres sont invalides.
+ */
+function assertValid(params: PermutationParams): void {
+  const validation = validate(params);
+  if (!validation.valid) {
+    throw new Error('Paramètres de permutation invalides.');
+  }
+}
+
+/**
  * Valide qu'un texte chiffré possède une longueur compatible (multiple de la taille de bloc).
  *
  * @param text Texte à valider (souvent après normalisation).
@@ -224,3 +244,127 @@ export function getPaddingLength(textLength: number, blockSize: number): number 
   if (blockSize <= 0) return 0;
   return (blockSize - (textLength % blockSize)) % blockSize;
 }
+
+/**
+ * Applique une permutation en base 1 à chaque bloc d'un texte dont la longueur
+ * est garantie d'être un multiple de la taille de bloc.
+ *
+ * Sortie du bloc : sortie[i] = entrée[p[i] - 1] pour i de 0 à n-1.
+ *
+ * @param text Texte à permuter (longueur multiple de p.length).
+ * @param permutation Permutation en base 1.
+ * @returns Le texte résultant.
+ */
+function applyToBlocks(text: string, permutation: number[]): string {
+  const blockSize = permutation.length;
+  let result = '';
+
+  for (let b = 0; b < text.length; b += blockSize) {
+    const block = text.slice(b, b + blockSize);
+    for (let i = 0; i < blockSize; i++) {
+      const sourceIndex = permutation[i]! - 1;
+      result += block[sourceIndex]!;
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Chiffre un texte par permutation de blocs.
+ *
+ * Processus :
+ * 1. Normalisation du texte (seules les lettres ASCII majuscules sont gardées).
+ * 2. Remplissage éventuel avec des 'X' jusqu'à obtenir un multiple de la taille de bloc.
+ * 3. Application de la permutation à chaque bloc : sortie[i] = entrée[p[i] - 1].
+ * Un texte vide ou dépourvu de lettre donne une chaîne vide (sans remplissage).
+ *
+ * @param text Texte à chiffrer.
+ * @param params Paramètres contenant le tableau de permutation.
+ * @returns Le texte chiffré en majuscules.
+ * @throws {Error} Si les paramètres sont invalides.
+ */
+export function encrypt(text: string, params: PermutationParams): string {
+  assertValid(params);
+
+  const normalized = normalizeLetters(text);
+  if (normalized.length === 0) {
+    return '';
+  }
+
+  const blockSize = params.permutation.length;
+  const paddingCount = getPaddingLength(normalized.length, blockSize);
+  const padded = normalized + 'X'.repeat(paddingCount);
+
+  return applyToBlocks(padded, params.permutation);
+}
+
+/**
+ * Déchiffre un texte chiffré par permutation de blocs.
+ *
+ * Ambiguïté du remplissage ('X') :
+ * Lors du chiffrement, des lettres 'X' peuvent être ajoutées en fin de texte pour compléter le bloc.
+ * Au déchiffrement, le moteur cryptographique pur ne peut pas distinguer un 'X' appartenant au texte d'origine
+ * (ex: "MAX") d'un 'X' ajouté comme remplissage.
+ * - Si `params.paddingLength` est fourni, exactement ce nombre de caractères est retiré à la fin.
+ * - Si `params.paddingLength` n'est pas fourni, aucun caractère n'est retiré (les 'X' finaux sont conservés).
+ *
+ * @param text Texte chiffré à déchiffrer.
+ * @param params Paramètres contenant la permutation et optionnellement paddingLength.
+ * @returns Le texte clair déchiffré.
+ * @throws {Error} Si les paramètres sont invalides ou si la longueur après normalisation n'est pas un multiple de la taille de bloc.
+ */
+export function decrypt(text: string, params: PermutationParams): string {
+  assertValid(params);
+
+  const normalized = normalizeLetters(text);
+  if (normalized.length === 0) {
+    return '';
+  }
+
+  const ciphertextValidation = validateCiphertext(normalized, params);
+  if (!ciphertextValidation.valid) {
+    throw new Error(
+      'Longueur du texte chiffré invalide : doit être un multiple de la taille de bloc.',
+    );
+  }
+
+  const inverse = invertPermutation(params.permutation);
+  const decryptedFull = applyToBlocks(normalized, inverse);
+
+  if (params.paddingLength !== undefined && params.paddingLength > 0) {
+    return decryptedFull.slice(0, decryptedFull.length - params.paddingLength);
+  }
+
+  return decryptedFull;
+}
+
+/**
+ * Calcule l'ensemble des étapes d'exécution détaillées par bloc.
+ *
+ * (Sera implémenté au commit 4).
+ *
+ * @param _text Texte source à traiter.
+ * @param _params Paramètres de permutation.
+ * @param _mode Mode d'opération ('encrypt' ou 'decrypt').
+ * @returns Un objet AlgorithmResult.
+ * @throws {Error} Actuellement non implémenté.
+ */
+export function getSteps(
+  _text: string,
+  _params: PermutationParams,
+  _mode: OperationMode,
+): AlgorithmResult<PermutationStepData> {
+  throw new Error('not implemented');
+}
+
+/**
+ * Instance CipherAlgorithm pour le chiffrement par permutation de blocs.
+ */
+export const permutationAlgorithm: CipherAlgorithm<PermutationParams, PermutationStepData> = {
+  id: 'permutation',
+  validate,
+  encrypt,
+  decrypt,
+  getSteps,
+};
