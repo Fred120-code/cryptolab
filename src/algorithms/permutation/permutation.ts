@@ -1,12 +1,13 @@
 import type {
   AlgorithmResult,
   CipherAlgorithm,
+  ExecutionStep,
   OperationMode,
   TranslatableText,
   ValidationResult,
 } from '@/types';
 import { normalizeLetters } from '@/utils/text';
-import type { PermutationParams, PermutationStepData } from './types';
+import type { PermutationMove, PermutationParams, PermutationStepData } from './types';
 
 /** Taille minimale d'un bloc de permutation. */
 export const MIN_BLOCK_SIZE = 2;
@@ -340,22 +341,134 @@ export function decrypt(text: string, params: PermutationParams): string {
 }
 
 /**
- * Calcule l'ensemble des étapes d'exécution détaillées par bloc.
+ * Calcule l'ensemble des étapes d'exécution détaillées par bloc pour la permutation.
  *
- * (Sera implémenté au commit 4).
+ * Une étape est produite pour CHAQUE bloc complet du texte.
+ * En chiffrement, le texte est normalisé puis complété par des 'X' si nécessaire.
+ * En déchiffrement, le texte doit avoir une longueur multiple de la taille de bloc ;
+ * si `paddingLength` est fourni, le résultat final `output` aura ses caractères de remplissage
+ * retirés, tandis que l'output de la dernière étape contiendra le bloc complet.
  *
- * @param _text Texte source à traiter.
- * @param _params Paramètres de permutation.
- * @param _mode Mode d'opération ('encrypt' ou 'decrypt').
- * @returns Un objet AlgorithmResult.
- * @throws {Error} Actuellement non implémenté.
+ * @param text Texte source à traiter.
+ * @param params Paramètres de permutation.
+ * @param mode Mode d'opération ('encrypt' ou 'decrypt').
+ * @returns Un objet AlgorithmResult avec input, output et la liste des étapes par bloc.
+ * @throws {Error} Si les paramètres sont invalides ou si la longueur en déchiffrement n'est pas un multiple.
  */
 export function getSteps(
-  _text: string,
-  _params: PermutationParams,
-  _mode: OperationMode,
+  text: string,
+  params: PermutationParams,
+  mode: OperationMode,
 ): AlgorithmResult<PermutationStepData> {
-  throw new Error('not implemented');
+  assertValid(params);
+
+  const normalized = normalizeLetters(text);
+  if (normalized.length === 0) {
+    return {
+      input: text,
+      output: '',
+      steps: [],
+    };
+  }
+
+  const blockSize = params.permutation.length;
+  let activeText: string;
+  let activePermutation: number[];
+  const finalOutput = mode === 'encrypt' ? encrypt(text, params) : decrypt(text, params);
+
+  if (mode === 'encrypt') {
+    const padCount = getPaddingLength(normalized.length, blockSize);
+    activeText = normalized + 'X'.repeat(padCount);
+    activePermutation = params.permutation;
+  } else {
+    const cipherValidation = validateCiphertext(normalized, params);
+    if (!cipherValidation.valid) {
+      throw new Error(
+        'Longueur du texte chiffré invalide : doit être un multiple de la taille de bloc.',
+      );
+    }
+    activeText = normalized;
+    activePermutation = invertPermutation(params.permutation);
+  }
+
+  const steps: ExecutionStep<PermutationStepData>[] = [];
+  const numBlocks = activeText.length / blockSize;
+  const permString = activePermutation.join(',');
+  const originalNormLen = normalized.length;
+
+  for (let b = 0; b < numBlocks; b++) {
+    const startPosition = b * blockSize;
+    const inBlock = activeText.slice(startPosition, startPosition + blockSize);
+
+    // Construction du bloc de sortie et des mouvements
+    const moves: PermutationMove[] = [];
+    let outBlock = '';
+    let paddingCountInBlock = 0;
+
+    for (let i = 0; i < blockSize; i++) {
+      const from = activePermutation[i]! - 1;
+      const char = inBlock[from]!;
+      outBlock += char;
+
+      let isPadding = false;
+      if (mode === 'encrypt') {
+        const globalSourceIndex = startPosition + from;
+        isPadding = globalSourceIndex >= originalNormLen;
+      } else {
+        if (params.paddingLength !== undefined && params.paddingLength > 0) {
+          const finalTotalLength = activeText.length;
+          const globalDestIndex = startPosition + i;
+          isPadding = globalDestIndex >= finalTotalLength - params.paddingLength;
+        }
+      }
+
+      if (isPadding) {
+        paddingCountInBlock++;
+      }
+
+      moves.push({
+        char,
+        from,
+        to: i,
+        isPadding,
+      });
+    }
+
+    const explanationKey =
+      mode === 'encrypt' ? 'permutation.steps.encrypt' : 'permutation.steps.decrypt';
+
+    steps.push({
+      index: b,
+      input: inBlock,
+      key: permString,
+      calculation: `${inBlock} → ${outBlock}`,
+      output: outBlock,
+      explanation: {
+        key: explanationKey,
+        params: {
+          blockNumber: b + 1,
+          block: inBlock,
+          outputBlock: outBlock,
+          permutation: permString,
+        },
+      },
+      data: {
+        blockIndex: b,
+        startPosition,
+        blockSize,
+        permutation: activePermutation,
+        moves,
+        paddingCount: paddingCountInBlock,
+        hasPadding: paddingCountInBlock > 0,
+      },
+    });
+  }
+
+  return {
+    input: text,
+    output: finalOutput,
+    steps,
+  };
 }
 
 /**

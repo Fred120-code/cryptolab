@@ -3,6 +3,7 @@ import {
   decrypt,
   encrypt,
   getPaddingLength,
+  getSteps,
   invertPermutation,
   parsePermutation,
   permutationAlgorithm,
@@ -11,7 +12,7 @@ import {
 } from '@/algorithms/permutation';
 import { normalizeLetters } from '@/utils/text';
 
-describe('Permutation cipher - encrypt and decrypt with explicit padding', () => {
+describe('Permutation cipher - encrypt, decrypt and execution steps', () => {
   describe('parsePermutation', () => {
     it('découpe les virgules, espaces et points-virgules', () => {
       expect(parsePermutation('2,4,1,3')).toEqual([2, 4, 1, 3]);
@@ -237,6 +238,85 @@ describe('Permutation cipher - encrypt and decrypt with explicit padding', () =>
     it('expose l’instance permutationAlgorithm avec id permutation', () => {
       expect(permutationAlgorithm.id).toBe('permutation');
       expect(permutationAlgorithm.encrypt('ABCD', { permutation: [2, 4, 1, 3] })).toBe('BDAC');
+    });
+  });
+
+  describe('getSteps', () => {
+    it('produit un output identique à encrypt en mode encrypt et decrypt en mode decrypt', () => {
+      const text = 'SECURITE';
+      const params = { permutation: [3, 5, 1, 4, 2] };
+
+      const encSteps = getSteps(text, params, 'encrypt');
+      expect(encSteps.output).toBe(encrypt(text, params));
+      expect(encSteps.input).toBe(text);
+
+      const decSteps = getSteps(encSteps.output, { ...params, paddingLength: 2 }, 'decrypt');
+      expect(decSteps.output).toBe(decrypt(encSteps.output, { ...params, paddingLength: 2 }));
+      expect(decSteps.output).toBe('SECURITE');
+    });
+
+    it('génère un nombre d’étapes égal au nombre de blocs avec index consécutifs depuis 0', () => {
+      const p = [3, 5, 1, 4, 2];
+      const result = getSteps('SECURITE', { permutation: p }, 'encrypt');
+
+      // 8 lettres normalisées + 2 'X' de padding = 10 lettres => 2 blocs de 5
+      expect(result.steps).toHaveLength(2);
+      expect(result.steps[0]?.index).toBe(0);
+      expect(result.steps[1]?.index).toBe(1);
+
+      // Première étape : SECUR -> CRSUE (pas de remplissage)
+      expect(result.steps[0]?.input).toBe('SECUR');
+      expect(result.steps[0]?.output).toBe('CRSUE');
+      expect(result.steps[0]?.calculation).toBe('SECUR → CRSUE');
+      expect(result.steps[0]?.data.paddingCount).toBe(0);
+      expect(result.steps[0]?.data.hasPadding).toBe(false);
+
+      // Seconde étape : ITEXX -> EXIXT (2 X de remplissage)
+      expect(result.steps[1]?.input).toBe('ITEXX');
+      expect(result.steps[1]?.output).toBe('EXIXT');
+      expect(result.steps[1]?.calculation).toBe('ITEXX → EXIXT');
+      expect(result.steps[1]?.data.paddingCount).toBe(2);
+      expect(result.steps[1]?.data.hasPadding).toBe(true);
+
+      // Vérifie les moves de la 2e étape : 'X' provient des indices 3 et 4 de ITEXX (donc isPadding vrai)
+      const moves = result.steps[1]!.data.moves;
+      expect(moves).toHaveLength(5);
+      const paddingMoves = moves.filter((m) => m.isPadding);
+      expect(paddingMoves).toHaveLength(2);
+      expect(paddingMoves[0]?.char).toBe('X');
+      expect(paddingMoves[1]?.char).toBe('X');
+
+      // Reconstitution du bloc de sortie depuis les moves
+      const reconstructed = moves.map((m) => m.char).join('');
+      expect(reconstructed).toBe(result.steps[1]?.output);
+    });
+
+    it('marque correctement isPadding au déchiffrement avec paddingLength', () => {
+      const p = [3, 5, 1, 4, 2];
+      const ciphertext = 'CRSUEEXIXT'; // 10 lettres, paddingLength = 2
+      const result = getSteps(ciphertext, { permutation: p, paddingLength: 2 }, 'decrypt');
+
+      expect(result.steps).toHaveLength(2);
+      expect(result.output).toBe('SECURITE'); // Output final sans les 2 X de padding
+      expect(result.steps[1]?.output).toBe('ITEXX'); // Output d'étape reste le bloc complet
+
+      const movesBlock2 = result.steps[1]!.data.moves;
+      // Dans le bloc 2 déchiffré (ITEXX), les caractères aux positions to = 3 et to = 4 sont du padding
+      const paddingMoves = movesBlock2.filter((m) => m.isPadding);
+      expect(paddingMoves).toHaveLength(2);
+      expect(paddingMoves[0]?.to).toBe(3);
+      expect(paddingMoves[1]?.to).toBe(4);
+    });
+
+    it('gère une chaîne vide (zéro étape)', () => {
+      const result = getSteps('', { permutation: [2, 1] }, 'encrypt');
+      expect(result.steps).toEqual([]);
+      expect(result.output).toBe('');
+    });
+
+    it('lève une exception pour des paramètres invalides ou longueur non multiple en déchiffrement', () => {
+      expect(() => getSteps('TEST', { permutation: [1] }, 'encrypt')).toThrowError();
+      expect(() => getSteps('ABCDEFG', { permutation: [2, 4, 1, 3] }, 'decrypt')).toThrowError();
     });
   });
 });
