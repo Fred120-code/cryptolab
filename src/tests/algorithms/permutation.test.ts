@@ -9,7 +9,7 @@ import {
   permutationAlgorithm,
   validate,
   validateCiphertext,
-} from '@/algorithms/permutation';
+} from '@/algorithms/permutation/permutation';
 import { normalizeLetters } from '@/utils/text';
 
 describe('Permutation cipher - encrypt, decrypt and execution steps', () => {
@@ -30,6 +30,17 @@ describe('Permutation cipher - encrypt, decrypt and execution steps', () => {
       expect(parsed[0]).toBe(2);
       expect(Number.isNaN(parsed[1])).toBe(true);
       expect(parsed[2]).toBe(1);
+    });
+
+    it('rejette les formats non décimaux (hexadécimal, notation scientifique, texte)', () => {
+      expect(parsePermutation('0x10')).toEqual([NaN]);
+      expect(parsePermutation('1e1')).toEqual([NaN]);
+      expect(parsePermutation('abc')).toEqual([NaN]);
+    });
+
+    it('autorise les entiers négatifs et décimaux pour rejet ultérieur par validate', () => {
+      expect(parsePermutation('-2')).toEqual([-2]);
+      expect(parsePermutation('1.5')).toEqual([1.5]);
     });
   });
 

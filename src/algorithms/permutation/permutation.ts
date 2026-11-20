@@ -28,6 +28,9 @@ export function parsePermutation(input: string): number[] {
 
   const parts = trimmed.split(/[\s,;]+/).filter((p) => p.length > 0);
   return parts.map((part) => {
+    if (!/^[+-]?\d+(\.\d+)?$/.test(part)) {
+      return NaN;
+    }
     const num = Number(part);
     return Number.isFinite(num) ? num : NaN;
   });
