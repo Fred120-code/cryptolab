@@ -34,10 +34,13 @@ export function buildAlphabetFromKeyword(keyword: string): string {
   const seen = new Set<string>();
   let result = '';
 
-  for (const char of keyword.toUpperCase()) {
-    if (isUpperLetter(char) && !seen.has(char)) {
-      seen.add(char);
-      result += char;
+  for (const char of keyword) {
+    if (isLetter(char)) {
+      const upperChar = char.toUpperCase();
+      if (!seen.has(upperChar)) {
+        seen.add(upperChar);
+        result += upperChar;
+      }
     }
   }
 

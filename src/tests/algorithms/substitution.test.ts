@@ -29,6 +29,14 @@ describe('Substitution cipher - alphabet generation, encrypt, decrypt, validatio
       const full = 'ZYXWVUTSRQPONMLKJIHGFEDCBA';
       expect(buildAlphabetFromKeyword(full)).toBe(full);
     });
+
+    it('ignore les caractères non ASCII comme ß ou les ligatures (ex: ﬁ)', () => {
+      // 'ß' n'est pas une lettre ASCII et ne doit pas être transformée en 'SS'
+      expect(buildAlphabetFromKeyword('ß')).toBe('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+      // 'ﬁ' ne doit pas être décomposée en 'FI'
+      expect(buildAlphabetFromKeyword('ﬁ')).toBe('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+      expect(buildAlphabetFromKeyword('ßA')).toBe('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    });
   });
 
   describe('validate', () => {
