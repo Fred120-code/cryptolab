@@ -1,12 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import {
-  caesarAlgorithm,
-  decrypt,
-  encrypt,
-  getSteps,
-  normalizeShift,
-  validate,
-} from '@/algorithms/caesar';
+import { caesarAlgorithm, normalizeShift } from '@/algorithms/caesar';
+import { decrypt, encrypt, getSteps, validate } from '@/algorithms/caesar/caesar';
 
 describe('Caesar cipher - encrypt, decrypt and validation', () => {
   describe('normalizeShift', () => {
@@ -23,14 +17,16 @@ describe('Caesar cipher - encrypt, decrypt and validation', () => {
   });
 
   describe('validate', () => {
-    it('accepte les entiers (positifs, nuls, négatifs, grands)', () => {
+    it('accepte les entiers sûrs (positifs, nuls, négatifs, grands)', () => {
       expect(validate({ shift: 0 })).toEqual({ valid: true });
       expect(validate({ shift: 3 })).toEqual({ valid: true });
       expect(validate({ shift: -5 })).toEqual({ valid: true });
       expect(validate({ shift: 100 })).toEqual({ valid: true });
+      expect(validate({ shift: Number.MAX_SAFE_INTEGER })).toEqual({ valid: true });
+      expect(validate({ shift: Number.MIN_SAFE_INTEGER })).toEqual({ valid: true });
     });
 
-    it('rejette les non-entiers et valeurs non finies', () => {
+    it('rejette les non-entiers, valeurs non finies et entiers non sûrs', () => {
       const floatCheck = validate({ shift: 1.5 });
       expect(floatCheck.valid).toBe(false);
       if (!floatCheck.valid) {
@@ -41,6 +37,8 @@ describe('Caesar cipher - encrypt, decrypt and validation', () => {
       expect(validate({ shift: NaN }).valid).toBe(false);
       expect(validate({ shift: Infinity }).valid).toBe(false);
       expect(validate({ shift: -Infinity }).valid).toBe(false);
+      expect(validate({ shift: 1e20 }).valid).toBe(false);
+      expect(validate({ shift: Number.MAX_SAFE_INTEGER + 1 }).valid).toBe(false);
     });
   });
 

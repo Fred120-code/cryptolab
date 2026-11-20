@@ -1,5 +1,2 @@
-import { caesarAlgorithm } from './caesar';
-
-export * from './types';
-export * from './caesar';
-export default caesarAlgorithm;
+export { caesarAlgorithm, normalizeShift } from './caesar';
+export type { CaesarParams, CaesarStepData } from './types';

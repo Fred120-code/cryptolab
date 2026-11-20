@@ -16,6 +16,19 @@ import {
 import type { CaesarParams, CaesarStepData } from './types';
 
 /**
+ * Vérifie que les paramètres de César sont valides et lève une exception dans le cas contraire.
+ *
+ * @param params Paramètres de César à contrôler.
+ * @throws {Error} Si le décalage n'est pas un entier sûr.
+ */
+function assertValid(params: CaesarParams): void {
+  const validation = validate(params);
+  if (!validation.valid) {
+    throw new Error('Paramètres de César invalides : le décalage doit être un entier fini.');
+  }
+}
+
+/**
  * Normalise un décalage quelconque pour le ramener dans l'intervalle [0, 25].
  *
  * @param k Clé de décalage entière.
@@ -31,8 +44,9 @@ export function normalizeShift(k: number): number {
 /**
  * Valide les paramètres fournis pour le chiffrement de César.
  *
- * La clé doit obligatoirement être un entier fini (les flottants non entiers,
- * NaN, Infinity et -Infinity sont rejetés).
+ * La clé doit obligatoirement être un entier sûr (Number.isSafeInteger).
+ * Les valeurs non numériques, flottants non entiers, NaN, Infinity, -Infinity
+ * ainsi que les entiers hors de l'intervalle sûr ([-2^53 + 1, 2^53 - 1]) sont rejetés.
  *
  * @param params Paramètres de César à contrôler.
  * @returns Un objet ValidationResult conforme.
@@ -40,7 +54,7 @@ export function normalizeShift(k: number): number {
 export function validate(params: CaesarParams): ValidationResult {
   const { shift } = params;
 
-  if (typeof shift !== 'number' || !Number.isFinite(shift) || !Number.isInteger(shift)) {
+  if (typeof shift !== 'number' || !Number.isSafeInteger(shift)) {
     return {
       valid: false,
       errors: [
@@ -67,10 +81,7 @@ export function validate(params: CaesarParams): ValidationResult {
  * @throws {Error} Si les paramètres sont invalides.
  */
 export function encrypt(text: string, params: CaesarParams): string {
-  const validation = validate(params);
-  if (!validation.valid) {
-    throw new Error('Paramètres de César invalides : le décalage doit être un entier fini.');
-  }
+  assertValid(params);
 
   const k = normalizeShift(params.shift);
   let result = '';
@@ -101,10 +112,7 @@ export function encrypt(text: string, params: CaesarParams): string {
  * @throws {Error} Si les paramètres sont invalides.
  */
 export function decrypt(text: string, params: CaesarParams): string {
-  const validation = validate(params);
-  if (!validation.valid) {
-    throw new Error('Paramètres de César invalides : le décalage doit être un entier fini.');
-  }
+  assertValid(params);
 
   const k = normalizeShift(params.shift);
   let result = '';
@@ -127,8 +135,8 @@ export function decrypt(text: string, params: CaesarParams): string {
  * Calcule l'ensemble des étapes d'exécution détaillées pour chaque lettre du texte.
  *
  * Seules les lettres ASCII produisent une étape d'exécution (ExecutionStep).
- * Les caractères non alphabétiques sont préservés dans le résultat `output`
- * mais ne génèrent pas d'étape dédiée.
+ * Les caractères non alphabétiques et les lettres accentuées (É, ç...) ne sont
+ * pas transformés et ne produisent pas d'étape, mais restent intacts dans `output`.
  *
  * @param text Texte source à traiter.
  * @param params Paramètres contenant la clé de décalage.
@@ -141,10 +149,7 @@ export function getSteps(
   params: CaesarParams,
   mode: OperationMode,
 ): AlgorithmResult<CaesarStepData> {
-  const validation = validate(params);
-  if (!validation.valid) {
-    throw new Error('Paramètres de César invalides : le décalage doit être un entier fini.');
-  }
+  assertValid(params);
 
   const normalized = normalizeShift(params.shift);
   const steps: ExecutionStep<CaesarStepData>[] = [];
