@@ -122,7 +122,7 @@ export function alignKey(text: string, key: string): string {
 /**
  * Chiffre un texte avec le chiffre de Vigenère.
  *
- * Formule : $C_i = (P_i + K_i) \pmod{26}$.
+ * Formule : Ci = (Pi + Ki) mod 26.
  * Seules les lettres ASCII sont chiffrées ; la casse est préservée.
  * Les caractères non alphabétiques restent inchangés et ne consomment pas de lettre de la clé.
  *
@@ -158,7 +158,7 @@ export function encrypt(text: string, params: VigenereParams): string {
 /**
  * Déchiffre un texte chiffré avec le chiffre de Vigenère.
  *
- * Formule : $P_i = (C_i - K_i) \pmod{26}$.
+ * Formule : Pi = (Ci - Ki) mod 26.
  * Seules les lettres ASCII sont déchiffrées ; la casse est préservée.
  * Les caractères non alphabétiques restent inchangés et ne consomment pas de lettre de la clé.
  *
