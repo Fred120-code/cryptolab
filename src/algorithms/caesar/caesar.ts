@@ -1,4 +1,10 @@
-import type { AlgorithmResult, CipherAlgorithm, OperationMode, ValidationResult } from '@/types';
+import type {
+  AlgorithmResult,
+  CipherAlgorithm,
+  ExecutionStep,
+  OperationMode,
+  ValidationResult,
+} from '@/types';
 import {
   ALPHABET_SIZE,
   indexToLetter,
@@ -120,17 +126,94 @@ export function decrypt(text: string, params: CaesarParams): string {
 /**
  * Calcule l'ensemble des étapes d'exécution détaillées pour chaque lettre du texte.
  *
+ * Seules les lettres ASCII produisent une étape d'exécution (ExecutionStep).
+ * Les caractères non alphabétiques sont préservés dans le résultat `output`
+ * mais ne génèrent pas d'étape dédiée.
+ *
  * @param text Texte source à traiter.
- * @param params Paramètres avec clé de décalage.
+ * @param params Paramètres contenant la clé de décalage.
  * @param mode Mode d'opération ('encrypt' ou 'decrypt').
- * @returns Un objet AlgorithmResult contenant la sortie complète et chaque étape unitaire.
+ * @returns Un objet AlgorithmResult contenant l'entrée, la sortie complète et chaque étape unitaire.
+ * @throws {Error} Si les paramètres sont invalides.
  */
 export function getSteps(
-  _text: string,
-  _params: CaesarParams,
-  _mode: OperationMode,
+  text: string,
+  params: CaesarParams,
+  mode: OperationMode,
 ): AlgorithmResult<CaesarStepData> {
-  throw new Error('Not implemented yet');
+  const validation = validate(params);
+  if (!validation.valid) {
+    throw new Error('Paramètres de César invalides : le décalage doit être un entier fini.');
+  }
+
+  const normalized = normalizeShift(params.shift);
+  const steps: ExecutionStep<CaesarStepData>[] = [];
+  let output = '';
+  let stepIndex = 0;
+
+  for (let position = 0; position < text.length; position++) {
+    const char = text[position]!;
+
+    if (!isLetter(char)) {
+      output += char;
+      continue;
+    }
+
+    const upper = isUpperLetter(char);
+    const inputIndex = letterToIndex(char);
+
+    let outputIndex: number;
+    let calculation: string;
+    let wrapped: boolean;
+
+    if (mode === 'encrypt') {
+      outputIndex = mod(inputIndex + normalized, ALPHABET_SIZE);
+      calculation = `(${inputIndex} + ${normalized}) mod ${ALPHABET_SIZE} = ${outputIndex}`;
+      wrapped = inputIndex + normalized >= ALPHABET_SIZE;
+    } else {
+      outputIndex = mod(inputIndex - normalized, ALPHABET_SIZE);
+      calculation = `(${inputIndex} - ${normalized}) mod ${ALPHABET_SIZE} = ${outputIndex}`;
+      wrapped = inputIndex - normalized < 0;
+    }
+
+    const outChar = indexToLetter(outputIndex, upper);
+    output += outChar;
+
+    const explanationKey = mode === 'encrypt' ? 'caesar.steps.encrypt' : 'caesar.steps.decrypt';
+
+    steps.push({
+      index: stepIndex++,
+      input: char,
+      key: normalized,
+      calculation,
+      output: outChar,
+      explanation: {
+        key: explanationKey,
+        params: {
+          letter: char,
+          inputIndex,
+          shift: normalized,
+          outputIndex,
+          outputLetter: outChar,
+        },
+      },
+      data: {
+        position,
+        inputIndex,
+        outputIndex,
+        shift: normalized,
+        rawShift: params.shift,
+        wrapped,
+        isUpper: upper,
+      },
+    });
+  }
+
+  return {
+    input: text,
+    output,
+    steps,
+  };
 }
 
 /**
