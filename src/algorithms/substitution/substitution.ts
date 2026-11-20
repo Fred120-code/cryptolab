@@ -1,6 +1,7 @@
 import type {
   AlgorithmResult,
   CipherAlgorithm,
+  ExecutionStep,
   OperationMode,
   TranslatableText,
   ValidationResult,
@@ -264,26 +265,106 @@ export function decrypt(text: string, params: SubstitutionParams): string {
 }
 
 /**
- * Calcule l'ensemble des étapes d'exécution détaillées pour le chiffrement/déchiffrement par substitution.
+ * Calcule l'ensemble des étapes d'exécution détaillées pour le chiffrement ou déchiffrement par substitution.
  *
- * (Sera implémenté au commit 3).
+ * Seules les lettres ASCII produisent une étape d'exécution (ExecutionStep).
+ * Les caractères non alphabétiques et les lettres accentuées ne sont pas transformés
+ * et ne produisent pas d'étape, mais demeurent intacts dans la sortie `output`.
  *
- * @param _text Texte source à traiter.
- * @param _params Paramètres avec l'alphabet de substitution.
- * @param _mode Mode d'opération ('encrypt' ou 'decrypt').
- * @returns Un objet AlgorithmResult.
- * @throws {Error} Actuellement non implémenté.
+ * @param text Texte source à traiter.
+ * @param params Paramètres contenant l'alphabet de substitution.
+ * @param mode Mode d'opération ('encrypt' ou 'decrypt').
+ * @returns Un objet AlgorithmResult contenant l'entrée, la sortie et le détail des étapes.
+ * @throws {Error} Si les paramètres sont invalides.
  */
 export function getSteps(
-  _text: string,
-  _params: SubstitutionParams,
-  _mode: OperationMode,
+  text: string,
+  params: SubstitutionParams,
+  mode: OperationMode,
 ): AlgorithmResult<SubstitutionStepData> {
-  throw new Error('not implemented');
+  assertValid(params);
+
+  const upperAlphabet = params.alphabet.toUpperCase();
+  const inverseAlphabet = invertAlphabet(params.alphabet);
+
+  const steps: ExecutionStep<SubstitutionStepData>[] = [];
+  let output = '';
+  let stepIndex = 0;
+
+  for (let position = 0; position < text.length; position++) {
+    const char = text[position]!;
+
+    if (!isLetter(char)) {
+      output += char;
+      continue;
+    }
+
+    const upper = isUpperLetter(char);
+    let outputChar: string;
+    let plainIndex: number;
+    let cipherIndex: number;
+    let plainLetter: string;
+    let cipherLetter: string;
+    let calculation: string;
+
+    if (mode === 'encrypt') {
+      plainLetter = char.toUpperCase();
+      plainIndex = letterToIndex(char);
+      cipherLetter = upperAlphabet[plainIndex]!;
+      cipherIndex = letterToIndex(cipherLetter);
+      outputChar = upper ? cipherLetter : cipherLetter.toLowerCase();
+      calculation = `${plainLetter} → ${cipherLetter}`;
+    } else {
+      cipherLetter = char.toUpperCase();
+      cipherIndex = letterToIndex(char);
+      plainLetter = inverseAlphabet[cipherIndex]!;
+      plainIndex = letterToIndex(plainLetter);
+      outputChar = upper ? plainLetter : plainLetter.toLowerCase();
+      calculation = `${cipherLetter} → ${plainLetter}`;
+    }
+
+    output += outputChar;
+
+    const isFixedPoint = plainLetter === cipherLetter;
+    const explanationKey =
+      mode === 'encrypt' ? 'substitution.steps.encrypt' : 'substitution.steps.decrypt';
+
+    steps.push({
+      index: stepIndex++,
+      input: char,
+      key: upperAlphabet,
+      calculation,
+      output: outputChar,
+      explanation: {
+        key: explanationKey,
+        params: {
+          letter: char,
+          outputLetter: outputChar,
+          plainIndex,
+        },
+      },
+      data: {
+        position,
+        plainIndex,
+        cipherIndex,
+        plainLetter,
+        cipherLetter,
+        alphabet: upperAlphabet,
+        isUpper: upper,
+        isFixedPoint,
+      },
+    });
+  }
+
+  return {
+    input: text,
+    output,
+    steps,
+  };
 }
 
 /**
- * Instance CipherAlgorithm pour le chiffrement par substitution.
+ * Instance CipherAlgorithm pour le chiffrement par substitution monoalphabétique.
  */
 export const substitutionAlgorithm: CipherAlgorithm<SubstitutionParams, SubstitutionStepData> = {
   id: 'substitution',
