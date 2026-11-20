@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { caesarAlgorithm, permutationAlgorithm, substitutionAlgorithm } from '@/algorithms';
+import {
+  caesarAlgorithm,
+  permutationAlgorithm,
+  substitutionAlgorithm,
+  vigenereAlgorithm,
+} from '@/algorithms';
 
 describe('src/algorithms/index.ts', () => {
   it('ré-exporte tous les algorithmes sans conflit de nommage avec leurs bons identifiants', () => {
@@ -11,5 +16,8 @@ describe('src/algorithms/index.ts', () => {
 
     expect(permutationAlgorithm).toBeDefined();
     expect(permutationAlgorithm.id).toBe('permutation');
+
+    expect(vigenereAlgorithm).toBeDefined();
+    expect(vigenereAlgorithm.id).toBe('vigenere');
   });
 });
