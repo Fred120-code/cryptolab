@@ -3,6 +3,7 @@ import {
   alignKey,
   decrypt,
   encrypt,
+  getSteps,
   normalizeKey,
   validate,
   vigenereAlgorithm,
@@ -140,15 +141,121 @@ describe('Vigenère cipher - encrypt, decrypt and validation', () => {
     });
   });
 
+  describe('getSteps', () => {
+    it('calcule les étapes en chiffrement pour "BONJOUR" avec clé "CLE"', () => {
+      const res = getSteps('BONJOUR', { key: 'CLE' }, 'encrypt');
+      expect(res.input).toBe('BONJOUR');
+      expect(res.output).toBe('DZRLZYT');
+      expect(res.steps).toHaveLength(7);
+
+      // Première étape : B + C => D
+      const step0 = res.steps[0]!;
+      expect(step0).toEqual({
+        index: 0,
+        input: 'B',
+        key: 'C',
+        calculation: '(1 + 2) mod 26 = 3',
+        output: 'D',
+        explanation: {
+          key: 'vigenere.steps.encrypt',
+          params: {
+            letter: 'B',
+            letterValue: 1,
+            keyLetter: 'C',
+            keyValue: 2,
+            rawResult: 3,
+            outputValue: 3,
+            outputLetter: 'D',
+          },
+        },
+        data: {
+          position: 0,
+          letterIndex: 0,
+          keyIndex: 0,
+          keyLetter: 'C',
+          inputValue: 1,
+          keyValue: 2,
+          rawResult: 3,
+          outputValue: 3,
+          wrapped: false,
+          isUpper: true,
+        },
+      });
+
+      // Étape 5 (U + E = 20 + 4 = 24 => Y, sans wrap)
+      const step5 = res.steps[5]!;
+      expect(step5.data.wrapped).toBe(false);
+      expect(step5.output).toBe('Y');
+    });
+
+    it('détecte le wrap en chiffrement quand rawResult >= 26', () => {
+      const res = getSteps('Z', { key: 'B' }, 'encrypt'); // 25 + 1 = 26 => 0 ('A')
+      expect(res.steps).toHaveLength(1);
+      const step = res.steps[0]!;
+      expect(step.data.rawResult).toBe(26);
+      expect(step.data.outputValue).toBe(0);
+      expect(step.data.wrapped).toBe(true);
+      expect(step.output).toBe('A');
+    });
+
+    it('calcule les étapes en déchiffrement et détecte le wrap quand rawResult < 0', () => {
+      const res = getSteps('A', { key: 'B' }, 'decrypt'); // 0 - 1 = -1 => 25 ('Z')
+      expect(res.steps).toHaveLength(1);
+      const step = res.steps[0]!;
+      expect(step.data.rawResult).toBe(-1);
+      expect(step.data.outputValue).toBe(25);
+      expect(step.data.wrapped).toBe(true);
+      expect(step.output).toBe('Z');
+      expect(step.calculation).toBe('(0 - 1) mod 26 = 25');
+      expect(step.explanation.key).toBe('vigenere.steps.decrypt');
+    });
+
+    it('traite correctement un texte avec ponctuation et espaces', () => {
+      const res = getSteps('Hello, World!', { key: 'KEY' }, 'encrypt');
+      // 10 lettres dans "Hello, World!"
+      expect(res.steps).toHaveLength(10);
+      expect(res.output).toBe('Rijvs, Uyvjn!');
+
+      // Vérifie la lettre 'W' à la position 7
+      const wStep = res.steps[5]!;
+      expect(wStep.input).toBe('W');
+      expect(wStep.data.position).toBe(7);
+      expect(wStep.data.letterIndex).toBe(5);
+      expect(wStep.data.keyIndex).toBe(2); // 5 % 3 = 2 ('Y')
+      expect(wStep.data.keyLetter).toBe('Y');
+    });
+
+    it('gère une chaîne vide ou sans lettres', () => {
+      const empty = getSteps('', { key: 'CLE' }, 'encrypt');
+      expect(empty.steps).toHaveLength(0);
+      expect(empty.output).toBe('');
+
+      const nonLetters = getSteps('123 !?,.-', { key: 'CLE' }, 'encrypt');
+      expect(nonLetters.steps).toHaveLength(0);
+      expect(nonLetters.output).toBe('123 !?,.-');
+    });
+
+    it('est parfaitement cohérent avec encrypt et decrypt sur n’importe quel texte', () => {
+      const sample = 'Le chiffre de Vigenère est polyalphabétique ! 123';
+      const encSteps = getSteps(sample, { key: 'CRYPTO' }, 'encrypt');
+      expect(encSteps.output).toBe(encrypt(sample, { key: 'CRYPTO' }));
+
+      const decSteps = getSteps(encSteps.output, { key: 'CRYPTO' }, 'decrypt');
+      expect(decSteps.output).toBe(decrypt(encSteps.output, { key: 'CRYPTO' }));
+      expect(decSteps.output).toBe(sample);
+    });
+  });
+
   describe('vigenereAlgorithm instance', () => {
     it('implémente CipherAlgorithm avec id "vigenere"', () => {
       expect(vigenereAlgorithm.id).toBe('vigenere');
       expect(vigenereAlgorithm.validate({ key: 'CLE' }).valid).toBe(true);
       expect(vigenereAlgorithm.encrypt('BONJOUR', { key: 'CLE' })).toBe('DZRLZYT');
       expect(vigenereAlgorithm.decrypt('DZRLZYT', { key: 'CLE' })).toBe('BONJOUR');
-      expect(() => vigenereAlgorithm.getSteps('A', { key: 'B' }, 'encrypt')).toThrow(
-        'not implemented',
-      );
+
+      const stepsResult = vigenereAlgorithm.getSteps('BONJOUR', { key: 'CLE' }, 'encrypt');
+      expect(stepsResult.output).toBe('DZRLZYT');
+      expect(stepsResult.steps).toHaveLength(7);
     });
   });
 });

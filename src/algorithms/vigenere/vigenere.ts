@@ -1,4 +1,10 @@
-import type { AlgorithmResult, CipherAlgorithm, OperationMode, ValidationResult } from '@/types';
+import type {
+  AlgorithmResult,
+  CipherAlgorithm,
+  ExecutionStep,
+  OperationMode,
+  ValidationResult,
+} from '@/types';
 import {
   ALPHABET_SIZE,
   indexToLetter,
@@ -186,20 +192,106 @@ export function decrypt(text: string, params: VigenereParams): string {
 }
 
 /**
- * Calcule les étapes d'exécution détaillées pour le chiffrement ou déchiffrement de Vigenère.
+ * Calcule l'ensemble des étapes d'exécution détaillées pour chaque lettre du texte.
  *
- * @param _text Texte source.
- * @param _params Paramètres de Vigenère.
- * @param _mode Mode d'opération ('encrypt' ou 'decrypt').
- * @returns Résultat de l'algorithme avec les étapes pas à pas.
- * @throws {Error} Si non implémenté ou paramètres invalides.
+ * Seules les lettres ASCII produisent une étape d'exécution (ExecutionStep).
+ * Les caractères non alphabétiques ne sont pas transformés et ne produisent pas d'étape,
+ * mais restent intacts dans `output` et ne font pas avancer le pointeur dans la clé.
+ *
+ * @param text Texte source à traiter.
+ * @param params Paramètres contenant la clé.
+ * @param mode Mode d'opération ('encrypt' ou 'decrypt').
+ * @returns Un objet AlgorithmResult contenant l'entrée, la sortie complète et chaque étape unitaire.
+ * @throws {Error} Si les paramètres sont invalides.
  */
 export function getSteps(
-  _text: string,
-  _params: VigenereParams,
-  _mode: OperationMode,
+  text: string,
+  params: VigenereParams,
+  mode: OperationMode,
 ): AlgorithmResult<VigenereStepData> {
-  throw new Error('not implemented');
+  assertValid(params);
+
+  const normalizedKey = normalizeKey(params.key);
+  const steps: ExecutionStep<VigenereStepData>[] = [];
+  let output = '';
+  let letterIndex = 0;
+
+  for (let position = 0; position < text.length; position++) {
+    const char = text[position]!;
+
+    if (!isLetter(char)) {
+      output += char;
+      continue;
+    }
+
+    const isUpper = isUpperLetter(char);
+    const inputValue = letterToIndex(char);
+    const keyIndex = letterIndex % normalizedKey.length;
+    const keyLetter = normalizedKey[keyIndex]!;
+    const keyValue = letterToIndex(keyLetter);
+
+    let rawResult: number;
+    let outputValue: number;
+    let calculation: string;
+    let wrapped: boolean;
+
+    if (mode === 'encrypt') {
+      rawResult = inputValue + keyValue;
+      outputValue = mod(rawResult, ALPHABET_SIZE);
+      calculation = `(${inputValue} + ${keyValue}) mod 26 = ${outputValue}`;
+      wrapped = rawResult >= ALPHABET_SIZE;
+    } else {
+      rawResult = inputValue - keyValue;
+      outputValue = mod(rawResult, ALPHABET_SIZE);
+      calculation = `(${inputValue} - ${keyValue}) mod 26 = ${outputValue}`;
+      wrapped = rawResult < 0;
+    }
+
+    const outputLetter = indexToLetter(outputValue, isUpper);
+    output += outputLetter;
+
+    const explanationKey = mode === 'encrypt' ? 'vigenere.steps.encrypt' : 'vigenere.steps.decrypt';
+
+    steps.push({
+      index: letterIndex,
+      input: char,
+      key: keyLetter,
+      calculation,
+      output: outputLetter,
+      explanation: {
+        key: explanationKey,
+        params: {
+          letter: char,
+          letterValue: inputValue,
+          keyLetter,
+          keyValue,
+          rawResult,
+          outputValue,
+          outputLetter,
+        },
+      },
+      data: {
+        position,
+        letterIndex,
+        keyIndex,
+        keyLetter,
+        inputValue,
+        keyValue,
+        rawResult,
+        outputValue,
+        wrapped,
+        isUpper,
+      },
+    });
+
+    letterIndex++;
+  }
+
+  return {
+    input: text,
+    output,
+    steps,
+  };
 }
 
 /**
