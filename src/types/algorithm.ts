@@ -29,7 +29,7 @@ export type ValidationResult =
  * @template TData Informations additionnelles propres à l'algorithme (ex: indices, sous-matrices, positions).
  */
 export interface ExecutionStep<TData = undefined> {
-  /** Numéro d'ordre séquentiel de l'étape (commençant à 0 ou 1) */
+  /** Index basé sur 0 (première étape = 0), correspondant à la position dans le tableau steps */
   index: number;
   /** Caractère ou fragment d'entrée traité à cette étape */
   input: string;
