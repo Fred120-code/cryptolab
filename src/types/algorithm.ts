@@ -17,9 +17,7 @@ export type OperationMode = 'encrypt' | 'decrypt';
  * - Si `valid` vaut `true`, aucun champ d'erreur n'est présent.
  * - Si `valid` vaut `false`, la liste `errors` contient les clés de messages explicatifs à traduire.
  */
-export type ValidationResult =
-  | { valid: true }
-  | { valid: false; errors: TranslatableText[] };
+export type ValidationResult = { valid: true } | { valid: false; errors: TranslatableText[] };
 
 /**
  * Détail d'une étape de calcul unitaire dans l'exécution de l'algorithme.

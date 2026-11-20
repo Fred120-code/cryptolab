@@ -1,11 +1,11 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest';
 
 describe('sanity check', () => {
   it('additionne correctement', () => {
-    expect(1 + 1).toBe(2)
-  })
+    expect(1 + 1).toBe(2);
+  });
 
   it('les chaînes sont égales', () => {
-    expect('CryptoLab').toBe('CryptoLab')
-  })
-})
+    expect('CryptoLab').toBe('CryptoLab');
+  });
+});
