@@ -14,7 +14,7 @@ export interface CaesarParams {
  * Permet aux visualiseurs animés de représenter précisément les transformations de chaque lettre.
  */
 export interface CaesarStepData {
-  /** Index du caractère dans le texte complet source (0-based) */
+  /** Index d'unité UTF-16 du caractère dans le texte complet source (indice dans la chaîne JavaScript, 0-based) */
   position: number;
   /** Index numérique de la lettre d'entrée dans l'alphabet (0 à 25) */
   inputIndex: number;
