@@ -9,8 +9,8 @@
       "notIntegers": "Permutation contains non-integer values: {{values}}. Integers are expected.",
       "outOfRange": "Values out of range ({{values}}). Positions must be between 1 and {{blockSize}}.",
       "duplicateValues": "Permutation contains duplicate values: {{values}}.",
-      "missingValues": "Permutation is missing positions: {{values}}.",
-      "invalidPadding": "Invalid padding length '{{paddingLength}}'. It must be between 0 and {{blockSize}}.",
+      "missingValues": "Missing positions in permutation: {{values}}.",
+      "invalidPadding": "Invalid padding length '{{paddingLength}}'. It must be a non-negative integer strictly less than the block size ({{blockSize}}).",
       "ciphertextLengthNotMultiple": "Ciphertext length ({{length}}) must be a multiple of the block size ({{blockSize}})."
     }
   }

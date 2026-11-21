@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import i18n from '@/i18n';
 import { usePlayerLabels } from '@/hooks/usePlayerLabels';
@@ -181,7 +181,11 @@ describe('usePlayerLabels', () => {
     await i18n.changeLanguage('fr');
   });
 
-  it('retourne des libellés traduits distincts en FR et en EN et formate stepOf', async () => {
+  afterEach(async () => {
+    await i18n.changeLanguage('fr');
+  });
+
+  it('retourne des libellés traduits distincts en FR et en EN, recalcule via t et formate speedOption selon la locale', async () => {
     const { result } = renderHook(() => usePlayerLabels());
 
     expect(result.current.restart).toBe('Recommencer');
@@ -192,7 +196,8 @@ describe('usePlayerLabels', () => {
     expect(result.current.speed).toBe('Vitesse de lecture');
     expect(result.current.progress).toBe('Accéder à une étape');
     expect(result.current.stepOf(3, 12)).toBe('Étape 3 / 12');
-    expect(result.current.speedOption(1.5)).toBe('1.5×');
+    expect(result.current.speedOption(0.5)).toBe('0,5×');
+    expect(result.current.speedOption(1)).toBe('1×');
 
     await act(async () => {
       await i18n.changeLanguage('en');
@@ -206,6 +211,14 @@ describe('usePlayerLabels', () => {
     expect(result.current.speed).toBe('Playback speed');
     expect(result.current.progress).toBe('Go to step');
     expect(result.current.stepOf(3, 12)).toBe('Step 3 / 12');
-    expect(result.current.speedOption(1.5)).toBe('1.5×');
+    expect(result.current.speedOption(0.5)).toBe('0.5×');
+    expect(result.current.speedOption(1)).toBe('1×');
+
+    await act(async () => {
+      await i18n.changeLanguage('fr');
+    });
+
+    expect(result.current.restart).toBe('Recommencer');
+    expect(result.current.speedOption(0.5)).toBe('0,5×');
   });
 });

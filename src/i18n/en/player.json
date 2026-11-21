@@ -8,6 +8,6 @@
     "speed": "Playback speed",
     "progress": "Go to step",
     "stepOf": "Step {{current}} / {{total}}",
-    "speedOption": "{{speed}}×"
+    "speedOption": "{{speed, number}}×"
   }
 }

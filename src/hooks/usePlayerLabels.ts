@@ -5,17 +5,16 @@ import type { PlayerControlsLabels } from '@/components/visualizer/PlayerControl
 /**
  * Hook fournissant les libellés traduits pour les contrôles du lecteur pas à pas.
  *
- * Tous les libellés sont mémoïsés et automatiquement recalculés lors d'un changement de langue.
+ * Tous les libellés sont mémoïsés et automatiquement recalculés lors d'un changement de langue
+ * grâce au changement de référence de la fonction `t`.
  *
  * @returns L'objet {@link PlayerControlsLabels} contenant les textes et fonctions de formatage traduits.
  */
 export function usePlayerLabels(): PlayerControlsLabels {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  return useMemo((): PlayerControlsLabels => {
-    // Utiliser explicitement i18n.language dans le calcul pour forcer la réévaluation
-    void i18n.language;
-    return {
+  return useMemo(
+    (): PlayerControlsLabels => ({
       restart: t('player.restart'),
       previous: t('player.previous'),
       play: t('player.play'),
@@ -25,6 +24,7 @@ export function usePlayerLabels(): PlayerControlsLabels {
       progress: t('player.progress'),
       stepOf: (current: number, total: number): string => t('player.stepOf', { current, total }),
       speedOption: (speed: number): string => t('player.speedOption', { speed }),
-    };
-  }, [t, i18n.language]);
+    }),
+    [t],
+  );
 }
