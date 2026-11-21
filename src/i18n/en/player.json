@@ -1,3 +1,13 @@
 {
-  "player": {}
+  "player": {
+    "restart": "Restart",
+    "previous": "Previous step",
+    "play": "Play",
+    "pause": "Pause",
+    "next": "Next step",
+    "speed": "Playback speed",
+    "progress": "Go to step",
+    "stepOf": "Step {{current}} / {{total}}",
+    "speedOption": "{{speed}}×"
+  }
 }

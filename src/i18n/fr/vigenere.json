@@ -1,3 +1,12 @@
 {
-  "vigenere": {}
+  "vigenere": {
+    "steps": {
+      "encrypt": "La lettre {{letter}} possède la valeur {{letterValue}}. La lettre de clé {{keyLetter}} possède la valeur {{keyValue}}. L'addition donne {{rawResult}}, soit {{outputValue}} modulo 26, ce qui correspond à la lettre {{outputLetter}}.",
+      "decrypt": "La lettre {{letter}} possède la valeur {{letterValue}}. La lettre de clé {{keyLetter}} possède la valeur {{keyValue}}. La soustraction donne {{rawResult}}, soit {{outputValue}} modulo 26, ce qui correspond à la lettre {{outputLetter}}."
+    },
+    "errors": {
+      "emptyKey": "La clé ne peut pas être vide. Veuillez saisir au moins une lettre.",
+      "invalidKeyCharacters": "La clé contient des caractères non autorisés : {{characters}}. Seules les lettres A-Z sont acceptées."
+    }
+  }
 }

@@ -1,3 +1,12 @@
 {
-  "vigenere": {}
+  "vigenere": {
+    "steps": {
+      "encrypt": "Letter {{letter}} has value {{letterValue}}. Key letter {{keyLetter}} has value {{keyValue}}. Addition gives {{rawResult}}, which is {{outputValue}} modulo 26, corresponding to letter {{outputLetter}}.",
+      "decrypt": "Letter {{letter}} has value {{letterValue}}. Key letter {{keyLetter}} has value {{keyValue}}. Subtraction gives {{rawResult}}, which is {{outputValue}} modulo 26, corresponding to letter {{outputLetter}}."
+    },
+    "errors": {
+      "emptyKey": "The key cannot be empty. Please enter at least one letter.",
+      "invalidKeyCharacters": "The key contains invalid characters: {{characters}}. Only letters A-Z are allowed."
+    }
+  }
 }

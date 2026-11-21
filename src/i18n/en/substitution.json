@@ -1,3 +1,13 @@
 {
-  "substitution": {}
+  "substitution": {
+    "steps": {
+      "encrypt": "Letter {{letter}} is replaced by {{outputLetter}} according to the substitution alphabet (position {{plainIndex}} in the standard alphabet).",
+      "decrypt": "Letter {{letter}} corresponds to letter {{outputLetter}} in the standard alphabet (position {{plainIndex}}): replaced by {{outputLetter}}."
+    },
+    "errors": {
+      "invalidLength": "The substitution alphabet must contain exactly 26 letters (current length: {{length}}).",
+      "invalidCharacters": "The alphabet contains invalid characters: {{characters}}. Only letters A-Z are allowed.",
+      "duplicateLetters": "The alphabet contains duplicate letters: {{letters}}. Each letter must appear exactly once."
+    }
+  }
 }
