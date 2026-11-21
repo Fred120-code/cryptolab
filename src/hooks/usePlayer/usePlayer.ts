@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import type { ExecutionStep } from '@/types';
 import { DEFAULT_BASE_INTERVAL_MS, DEFAULT_SPEED, SPEEDS, type Speed } from './constants';
 import { playerReducer, type PlayerState } from './playerReducer';
@@ -86,14 +86,12 @@ export function usePlayer<TData>(
     totalSteps: steps.length,
   } satisfies PlayerState);
 
-  // Détection du changement de référence du tableau `steps`
-  const prevStepsRef = useRef(steps);
-  useEffect(() => {
-    if (prevStepsRef.current !== steps) {
-      prevStepsRef.current = steps;
-      dispatch({ type: 'reset', totalSteps: steps.length });
-    }
-  }, [steps]);
+  // Ajustement synchrone de l'état pendant le rendu lors d'un changement de référence de `steps`
+  const [prevSteps, setPrevSteps] = useState(steps);
+  if (prevSteps !== steps) {
+    setPrevSteps(steps);
+    dispatch({ type: 'reset', totalSteps: steps.length });
+  }
 
   // Minuteur de lecture automatique via setTimeout
   useEffect(() => {

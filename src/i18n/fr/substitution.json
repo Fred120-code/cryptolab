@@ -1,0 +1,13 @@
+{
+  "substitution": {
+    "steps": {
+      "encrypt": "La lettre {{letter}} est remplacée par {{outputLetter}} d'après l'alphabet de substitution (position {{plainIndex}} dans l'alphabet normal).",
+      "decrypt": "La lettre {{letter}} correspond à la lettre {{outputLetter}} de l'alphabet normal (position {{plainIndex}}) : on la remplace par {{outputLetter}}."
+    },
+    "errors": {
+      "invalidLength": "L'alphabet de substitution doit comporter exactement 26 lettres (longueur actuelle : {{length}}).",
+      "invalidCharacters": "L'alphabet contient des caractères non autorisés : {{characters}}. Seules les lettres A-Z sont acceptées.",
+      "duplicateLetters": "L'alphabet contient des lettres en double : {{letters}}. Chaque lettre doit apparaître exactement une fois."
+    }
+  }
+}

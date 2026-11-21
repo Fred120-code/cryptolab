@@ -1,0 +1,11 @@
+{
+  "caesar": {
+    "steps": {
+      "encrypt": "La lettre {{letter}} est à la position {{inputIndex}}. On lui ajoute la clé {{shift}} : ({{inputIndex}} + {{shift}}) mod 26 = {{outputIndex}}, ce qui correspond à la lettre {{outputLetter}}.",
+      "decrypt": "La lettre {{letter}} est à la position {{inputIndex}}. On lui retire la clé {{shift}} : ({{inputIndex}} - {{shift}}) mod 26 = {{outputIndex}}, ce qui correspond à la lettre {{outputLetter}}."
+    },
+    "errors": {
+      "shiftNotInteger": "Le décalage « {{value}} » n'est pas un entier valide. Un entier relatif est attendu (par exemple 3 ou -5)."
+    }
+  }
+}

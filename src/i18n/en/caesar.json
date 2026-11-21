@@ -1,0 +1,11 @@
+{
+  "caesar": {
+    "steps": {
+      "encrypt": "Letter {{letter}} is at position {{inputIndex}}. Adding key {{shift}}: ({{inputIndex}} + {{shift}}) mod 26 = {{outputIndex}}, which corresponds to letter {{outputLetter}}.",
+      "decrypt": "Letter {{letter}} is at position {{inputIndex}}. Subtracting key {{shift}}: ({{inputIndex}} - {{shift}}) mod 26 = {{outputIndex}}, which corresponds to letter {{outputLetter}}."
+    },
+    "errors": {
+      "shiftNotInteger": "Shift '{{value}}' is not a valid integer. An integer is expected (e.g. 3 or -5)."
+    }
+  }
+}

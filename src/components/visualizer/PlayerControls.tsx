@@ -82,7 +82,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
           disabled={isZeroSteps}
           aria-label={labels.progress}
           aria-valuetext={stepText}
-          className="h-2 w-full cursor-pointer accent-[var(--color-accent,#8b5cf6)] disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent,#8b5cf6)] focus-visible:ring-offset-2"
+          className="h-2 w-full cursor-pointer accent-accent disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         />
         <span className="shrink-0 text-center text-sm font-medium tabular-nums text-neutral-600 sm:min-w-[5rem] sm:text-right dark:text-neutral-400">
           {stepText}
@@ -98,7 +98,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
             onClick={restart}
             disabled={isRestartDisabled}
             aria-label={labels.restart}
-            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent,#8b5cf6)] focus-visible:ring-offset-2"
+            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             <RotateCcw className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -108,7 +108,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
             onClick={previous}
             disabled={isPreviousDisabled}
             aria-label={labels.previous}
-            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent,#8b5cf6)] focus-visible:ring-offset-2"
+            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             <SkipBack className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -118,7 +118,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
             onClick={toggle}
             disabled={isPlayDisabled}
             aria-label={isPlaying ? labels.pause : labels.play}
-            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg bg-[var(--color-accent,#8b5cf6)] text-white shadow-sm transition-colors hover:bg-[var(--color-accent-dark,#7c3aed)] disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent,#8b5cf6)] focus-visible:ring-offset-2"
+            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg bg-accent text-white shadow-sm transition-colors hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             {isPlaying ? (
               <Pause className="h-5 w-5" aria-hidden="true" />
@@ -132,7 +132,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
             onClick={next}
             disabled={isNextDisabled}
             aria-label={labels.next}
-            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent,#8b5cf6)] focus-visible:ring-offset-2"
+            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             <SkipForward className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -145,7 +145,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
             onChange={(e) => setSpeed(Number(e.target.value))}
             disabled={isZeroSteps}
             aria-label={labels.speed}
-            className="h-11 min-h-[44px] rounded-lg border border-neutral-200 bg-neutral-50 px-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent,#8b5cf6)] focus-visible:ring-offset-2"
+            className="h-11 min-h-[44px] rounded-lg border border-neutral-200 bg-neutral-50 px-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             {SPEEDS.map((s) => (
               <option key={s} value={s}>

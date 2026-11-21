@@ -1,0 +1,13 @@
+{
+  "player": {
+    "restart": "Recommencer",
+    "previous": "Étape précédente",
+    "play": "Lecture",
+    "pause": "Pause",
+    "next": "Étape suivante",
+    "speed": "Vitesse de lecture",
+    "progress": "Accéder à une étape",
+    "stepOf": "Étape {{current}} / {{total}}",
+    "speedOption": "{{speed}}×"
+  }
+}

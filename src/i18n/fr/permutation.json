@@ -1,0 +1,17 @@
+{
+  "permutation": {
+    "steps": {
+      "encrypt": "Bloc {{blockNumber}} : {{block}}. On applique la permutation ({{permutation}}) : le bloc devient {{outputBlock}}.",
+      "decrypt": "Bloc {{blockNumber}} : {{block}}. On applique la permutation inverse ({{permutation}}) : le bloc devient {{outputBlock}}."
+    },
+    "errors": {
+      "invalidBlockSize": "La taille de bloc {{size}} est invalide. Elle doit être comprise entre {{min}} et {{max}}.",
+      "notIntegers": "La permutation contient des valeurs non entières : {{values}}. Des entiers sont attendus.",
+      "outOfRange": "Valeurs hors limites ({{values}}). Les positions doivent être comprises entre 1 et {{blockSize}}.",
+      "duplicateValues": "La permutation contient des valeurs en double : {{values}}.",
+      "missingValues": "La permutation ne contient pas toutes les positions : {{values}} sont manquantes.",
+      "invalidPadding": "Longueur de remplissage « {{paddingLength}} » invalide. Elle doit être comprise entre 0 et {{blockSize}}.",
+      "ciphertextLengthNotMultiple": "La longueur du texte chiffré ({{length}}) doit être un multiple de la taille de bloc ({{blockSize}})."
+    }
+  }
+}

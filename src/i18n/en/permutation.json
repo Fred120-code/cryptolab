@@ -1,0 +1,17 @@
+{
+  "permutation": {
+    "steps": {
+      "encrypt": "Block {{blockNumber}}: {{block}}. Applying permutation ({{permutation}}): block becomes {{outputBlock}}.",
+      "decrypt": "Block {{blockNumber}}: {{block}}. Applying inverse permutation ({{permutation}}): block becomes {{outputBlock}}."
+    },
+    "errors": {
+      "invalidBlockSize": "Block size {{size}} is invalid. It must be between {{min}} and {{max}}.",
+      "notIntegers": "Permutation contains non-integer values: {{values}}. Integers are expected.",
+      "outOfRange": "Values out of range ({{values}}). Positions must be between 1 and {{blockSize}}.",
+      "duplicateValues": "Permutation contains duplicate values: {{values}}.",
+      "missingValues": "Permutation is missing positions: {{values}}.",
+      "invalidPadding": "Invalid padding length '{{paddingLength}}'. It must be between 0 and {{blockSize}}.",
+      "ciphertextLengthNotMultiple": "Ciphertext length ({{length}}) must be a multiple of the block size ({{blockSize}})."
+    }
+  }
+}

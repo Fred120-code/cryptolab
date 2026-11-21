@@ -1,6 +1,7 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, render, renderHook } from '@testing-library/react';
+import { useLayoutEffect } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { usePlayer } from '@/hooks/usePlayer';
+import { usePlayer, type PlayerApi } from '@/hooks/usePlayer';
 import type { ExecutionStep } from '@/types';
 
 function createMockSteps(count: number): ExecutionStep<null>[] {
@@ -197,5 +198,53 @@ describe('usePlayer hook', () => {
 
     unmount();
     expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('réinitialise de façon synchrone lors d’un changement de tableau de steps sans rendu intermédiaire désynchronisé', () => {
+    interface RenderRecord {
+      totalSteps: number;
+      currentIndex: number;
+      stepsLength: number;
+    }
+
+    const recordedRenders: RenderRecord[] = [];
+    let playerApi!: PlayerApi<null>;
+
+    function TestComponent({ steps }: { steps: readonly ExecutionStep<null>[] }) {
+      const player = usePlayer(steps);
+      playerApi = player;
+
+      useLayoutEffect(() => {
+        recordedRenders.push({
+          totalSteps: player.totalSteps,
+          currentIndex: player.currentIndex,
+          stepsLength: steps.length,
+        });
+      });
+
+      return <div>{player.currentIndex}</div>;
+    }
+
+    const stepsA = createMockSteps(4);
+    const stepsB = createMockSteps(7);
+
+    const { rerender } = render(<TestComponent steps={stepsA} />);
+
+    act(() => {
+      playerApi.goTo(2);
+    });
+
+    // Réinitialise l'historique pour capturer uniquement les rendus déclenchés par le changement de steps
+    recordedRenders.length = 0;
+
+    rerender(<TestComponent steps={stepsB} />);
+
+    // Vérifie qu'aucun rendu validé n'a eu totalSteps !== steps.length et que currentIndex est revenu à 0
+    expect(recordedRenders.length).toBeGreaterThan(0);
+    for (const record of recordedRenders) {
+      expect(record.totalSteps).toBe(record.stepsLength);
+      expect(record.totalSteps).toBe(7);
+      expect(record.currentIndex).toBe(0);
+    }
   });
 });
