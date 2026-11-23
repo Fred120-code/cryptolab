@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
 
 /**
  * Sélecteur bilingue de langue (Français / Anglais).
@@ -19,36 +20,30 @@ export function LanguageSwitcher(): JSX.Element {
     <div
       role="group"
       aria-label={t('common.language')}
-      className="inline-flex rounded-lg p-1 bg-gray-100 dark:bg-gray-800"
+      className="inline-flex rounded-lg bg-muted p-1"
     >
-      <button
+      <Button
         type="button"
         lang="fr"
         aria-label="Français"
         aria-pressed={currentLang === 'fr'}
         onClick={() => handleLanguageChange('fr')}
-        className={`min-w-11 min-h-11 px-3 py-2 text-sm font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-          currentLang === 'fr'
-            ? 'bg-accent text-white shadow-sm'
-            : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
-        }`}
+        variant={currentLang === 'fr' ? 'default' : 'ghost'}
+        className="min-h-11 min-w-11"
       >
         FR
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
         lang="en"
         aria-label="English"
         aria-pressed={currentLang === 'en'}
         onClick={() => handleLanguageChange('en')}
-        className={`min-w-11 min-h-11 px-3 py-2 text-sm font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-          currentLang === 'en'
-            ? 'bg-accent text-white shadow-sm'
-            : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
-        }`}
+        variant={currentLang === 'en' ? 'default' : 'ghost'}
+        className="min-h-11 min-w-11"
       >
         EN
-      </button>
+      </Button>
     </div>
   );
 }

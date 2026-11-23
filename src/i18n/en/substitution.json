@@ -2,7 +2,7 @@
   "substitution": {
     "steps": {
       "encrypt": "Letter {{letter}} is replaced by {{outputLetter}} according to the substitution alphabet (position {{plainIndex}} in the standard alphabet).",
-      "decrypt": "Letter {{letter}} corresponds to letter {{outputLetter}} in the standard alphabet (position {{plainIndex}}): replaced by {{outputLetter}}."
+      "decrypt": "Letter {{letter}} corresponds to {{outputLetter}} in the standard alphabet (position {{plainIndex}}), so it is replaced by {{outputLetter}}."
     },
     "errors": {
       "invalidLength": "The substitution alphabet must contain exactly 26 letters (current length: {{length}}).",

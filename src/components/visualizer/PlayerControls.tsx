@@ -1,5 +1,7 @@
 import { Pause, Play, RotateCcw, SkipBack, SkipForward } from 'lucide-react';
 import { SPEEDS, type PlayerApi } from '@/hooks/usePlayer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 /**
  * Interface pour les libellés internationalisables des contrôles du lecteur.
@@ -70,91 +72,100 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
   const stepText = labels.stepOf(currentStepNumber, totalSteps);
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-      {/* Barre de progression / curseur direct */}
-      <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center">
-        <input
-          type="range"
-          min={0}
-          max={Math.max(0, totalSteps - 1)}
-          value={currentIndex}
-          onChange={(e) => goTo(Number(e.target.value))}
-          disabled={isZeroSteps}
-          aria-label={labels.progress}
-          aria-valuetext={stepText}
-          className="h-2 w-full cursor-pointer accent-accent disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-        />
-        <span className="shrink-0 text-center text-sm font-medium tabular-nums text-neutral-600 sm:min-w-[5rem] sm:text-right dark:text-neutral-400">
-          {stepText}
-        </span>
-      </div>
-
-      {/* Barre de boutons et sélecteur de vitesse */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-        {/* Contrôles de transport */}
-        <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={restart}
-            disabled={isRestartDisabled}
-            aria-label={labels.restart}
-            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-          >
-            <RotateCcw className="h-5 w-5" aria-hidden="true" />
-          </button>
-
-          <button
-            type="button"
-            onClick={previous}
-            disabled={isPreviousDisabled}
-            aria-label={labels.previous}
-            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-          >
-            <SkipBack className="h-5 w-5" aria-hidden="true" />
-          </button>
-
-          <button
-            type="button"
-            onClick={toggle}
-            disabled={isPlayDisabled}
-            aria-label={isPlaying ? labels.pause : labels.play}
-            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg bg-accent text-white shadow-sm transition-colors hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-          >
-            {isPlaying ? (
-              <Pause className="h-5 w-5" aria-hidden="true" />
-            ) : (
-              <Play className="h-5 w-5 fill-current" aria-hidden="true" />
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={next}
-            disabled={isNextDisabled}
-            aria-label={labels.next}
-            className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-          >
-            <SkipForward className="h-5 w-5" aria-hidden="true" />
-          </button>
-        </div>
-
-        {/* Sélecteur de vitesse */}
-        <div className="flex items-center gap-2">
-          <select
-            value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
+    <Card>
+      <CardContent className="flex flex-col gap-4">
+        {/* Barre de progression / curseur direct */}
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center">
+          <input
+            type="range"
+            min={0}
+            max={Math.max(0, totalSteps - 1)}
+            value={currentIndex}
+            onChange={(e) => goTo(Number(e.target.value))}
             disabled={isZeroSteps}
-            aria-label={labels.speed}
-            className="h-11 min-h-[44px] rounded-lg border border-neutral-200 bg-neutral-50 px-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-          >
-            {SPEEDS.map((s) => (
-              <option key={s} value={s}>
-                {labels.speedOption(s)}
-              </option>
-            ))}
-          </select>
+            aria-label={labels.progress}
+            aria-valuetext={stepText}
+            className="h-2 w-full cursor-pointer accent-primary disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          />
+          <span className="shrink-0 text-center text-sm font-medium tabular-nums text-muted-foreground sm:min-w-[5rem] sm:text-right">
+            {stepText}
+          </span>
         </div>
-      </div>
-    </div>
+
+        {/* Barre de boutons et sélecteur de vitesse */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+          {/* Contrôles de transport */}
+          <div className="flex items-center gap-1.5">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="size-11"
+              onClick={restart}
+              disabled={isRestartDisabled}
+              aria-label={labels.restart}
+            >
+              <RotateCcw className="h-5 w-5" aria-hidden="true" />
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="size-11"
+              onClick={previous}
+              disabled={isPreviousDisabled}
+              aria-label={labels.previous}
+            >
+              <SkipBack className="h-5 w-5" aria-hidden="true" />
+            </Button>
+
+            <Button
+              type="button"
+              size="icon"
+              className="size-11"
+              onClick={toggle}
+              disabled={isPlayDisabled}
+              aria-label={isPlaying ? labels.pause : labels.play}
+            >
+              {isPlaying ? (
+                <Pause className="h-5 w-5" aria-hidden="true" />
+              ) : (
+                <Play className="h-5 w-5 fill-current" aria-hidden="true" />
+              )}
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="size-11"
+              onClick={next}
+              disabled={isNextDisabled}
+              aria-label={labels.next}
+            >
+              <SkipForward className="h-5 w-5" aria-hidden="true" />
+            </Button>
+          </div>
+
+          {/* Sélecteur de vitesse */}
+          <div className="flex items-center gap-2">
+            <select
+              value={speed}
+              onChange={(e) => setSpeed(Number(e.target.value))}
+              disabled={isZeroSteps}
+              aria-label={labels.speed}
+              className="h-11 min-h-[44px] rounded-lg border border-input bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              {SPEEDS.map((s) => (
+                <option key={s} value={s}>
+                  {labels.speedOption(s)}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

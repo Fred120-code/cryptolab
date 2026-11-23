@@ -9,8 +9,8 @@
       "notIntegers": "La permutation contient des valeurs non entières : {{values}}. Des entiers sont attendus.",
       "outOfRange": "Valeurs hors limites ({{values}}). Les positions doivent être comprises entre 1 et {{blockSize}}.",
       "duplicateValues": "La permutation contient des valeurs en double : {{values}}.",
-      "missingValues": "La permutation ne contient pas toutes les positions : {{values}} sont manquantes.",
-      "invalidPadding": "Longueur de remplissage « {{paddingLength}} » invalide. Elle doit être comprise entre 0 et {{blockSize}}.",
+      "missingValues": "Positions manquantes dans la permutation : {{values}}.",
+      "invalidPadding": "Longueur de remplissage « {{paddingLength}} » invalide. Elle doit être un entier positif ou nul strictement inférieur à la taille de bloc ({{blockSize}}).",
       "ciphertextLengthNotMultiple": "La longueur du texte chiffré ({{length}}) doit être un multiple de la taille de bloc ({{blockSize}})."
     }
   }
