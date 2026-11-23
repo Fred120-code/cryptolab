@@ -1,0 +1,39 @@
+{
+  "visualizer": {
+    "explanation": {
+      "title": "Explanation",
+      "empty": "No step to display. Enter a text containing at least one letter.",
+      "calculation": "Calculation:",
+      "input": "Input:",
+      "output": "Output:"
+    },
+    "result": {
+      "title": "Result",
+      "original": "Original text",
+      "encrypted": "Encrypted text",
+      "decrypted": "Decrypted text",
+      "copy": "Copy result",
+      "copied": "Copied!",
+      "copyFailed": "Copy failed. Select the text manually."
+    },
+    "caesar": {
+      "title": "Circular alphabet",
+      "letter": "Letter",
+      "position": "Position",
+      "key": "Key",
+      "result": "Result",
+      "wrappedEncrypt": "The shift goes past Z: it wraps around to A.",
+      "wrappedDecrypt": "The shift goes below A: it wraps around to Z.",
+      "ariaLabel": "Circular alphabet: letter {{from}} becomes {{to}} with a shift of {{shift}}.",
+      "ariaLabelEmpty": "Circular alphabet from A to Z."
+    }
+  },
+  "playground": {
+    "notice": "Temporary preview of the Caesar visualizer. The full laboratory will come later.",
+    "text": "Message",
+    "shift": "Shift key",
+    "operation": "Operation",
+    "encrypt": "Encrypt",
+    "decrypt": "Decrypt"
+  }
+}

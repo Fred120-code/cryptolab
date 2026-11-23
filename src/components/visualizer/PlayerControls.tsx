@@ -85,7 +85,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
             disabled={isZeroSteps}
             aria-label={labels.progress}
             aria-valuetext={stepText}
-            className="h-2 w-full cursor-pointer accent-primary disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="h-2 w-full cursor-pointer accent-primary disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           />
           <span className="shrink-0 text-center text-sm font-medium tabular-nums text-muted-foreground sm:min-w-[5rem] sm:text-right">
             {stepText}
@@ -105,7 +105,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
               disabled={isRestartDisabled}
               aria-label={labels.restart}
             >
-              <RotateCcw className="h-5 w-5" aria-hidden="true" />
+              <RotateCcw className="size-5" aria-hidden="true" />
             </Button>
 
             <Button
@@ -117,7 +117,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
               disabled={isPreviousDisabled}
               aria-label={labels.previous}
             >
-              <SkipBack className="h-5 w-5" aria-hidden="true" />
+              <SkipBack className="size-5" aria-hidden="true" />
             </Button>
 
             <Button
@@ -129,9 +129,9 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
               aria-label={isPlaying ? labels.pause : labels.play}
             >
               {isPlaying ? (
-                <Pause className="h-5 w-5" aria-hidden="true" />
+                <Pause className="size-5" aria-hidden="true" />
               ) : (
-                <Play className="h-5 w-5 fill-current" aria-hidden="true" />
+                <Play className="size-5 fill-current" aria-hidden="true" />
               )}
             </Button>
 
@@ -144,7 +144,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
               disabled={isNextDisabled}
               aria-label={labels.next}
             >
-              <SkipForward className="h-5 w-5" aria-hidden="true" />
+              <SkipForward className="size-5" aria-hidden="true" />
             </Button>
           </div>
 
@@ -155,7 +155,7 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
               onChange={(e) => setSpeed(Number(e.target.value))}
               disabled={isZeroSteps}
               aria-label={labels.speed}
-              className="h-11 min-h-[44px] rounded-lg border border-input bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="h-11 min-h-[44px] rounded-lg border border-input bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {SPEEDS.map((s) => (
                 <option key={s} value={s}>

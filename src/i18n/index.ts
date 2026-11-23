@@ -8,6 +8,7 @@ import caesarFr from './fr/caesar.json';
 import substitutionFr from './fr/substitution.json';
 import permutationFr from './fr/permutation.json';
 import vigenereFr from './fr/vigenere.json';
+import visualizerFr from './fr/visualizer.json';
 
 import commonEn from './en/common.json';
 import playerEn from './en/player.json';
@@ -15,6 +16,7 @@ import caesarEn from './en/caesar.json';
 import substitutionEn from './en/substitution.json';
 import permutationEn from './en/permutation.json';
 import vigenereEn from './en/vigenere.json';
+import visualizerEn from './en/visualizer.json';
 
 const frResources = {
   ...commonFr,
@@ -23,6 +25,7 @@ const frResources = {
   ...substitutionFr,
   ...permutationFr,
   ...vigenereFr,
+  ...visualizerFr,
 };
 
 const enResources = {
@@ -32,6 +35,7 @@ const enResources = {
   ...substitutionEn,
   ...permutationEn,
   ...vigenereEn,
+  ...visualizerEn,
 };
 
 const initialLang = detectLanguage();

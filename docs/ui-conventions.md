@@ -29,6 +29,8 @@ Ce document synthétise les règles d'architecture et d'implémentation de l'int
 - Toutes les cibles tactiles interactives doivent respecter une taille minimale de **44 × 44 px** :
   - **Boutons icônes** (`size="icon"`) : la taille par défaut de shadcn étant de 36 px, ajouter impérativement `className="size-11"` pour atteindre 44 px (grâce à `tailwind-merge`, la classe surchargera les dimensions natives).
   - **Boutons textuels** : ajouter la classe `min-h-11` (ou `min-w-11 min-h-11`).
+- **Icônes dans un bouton** : utiliser `size-5` (pour ne pas être écrasé par la règle `[&_svg:not([class*='size-'])]:size-4`).
+- **Anneau de focus avec décalage** : toujours ajouter `ring-offset-background` avec `focus-visible:ring-offset-2`.
 
 ---
 
