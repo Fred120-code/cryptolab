@@ -6,6 +6,25 @@
       "calculation": "Calcul",
       "input": "Entrée",
       "output": "Sortie"
+    },
+    "caesar": {
+      "title": "Alphabet circulaire",
+      "letter": "Lettre",
+      "position": "Position",
+      "key": "Clé",
+      "result": "Résultat",
+      "wrappedEncrypt": "Le décalage dépasse Z : on repart de A.",
+      "wrappedDecrypt": "Le décalage passe sous A : on repart de Z.",
+      "ariaLabel": "Alphabet circulaire : la lettre {{from}} devient {{to}} avec un décalage de {{shift}}.",
+      "ariaLabelEmpty": "Alphabet circulaire de A à Z."
     }
+  },
+  "playground": {
+    "notice": "Aperçu temporaire du visualiseur de César. Le laboratoire complet viendra plus tard.",
+    "text": "Message",
+    "shift": "Clé de décalage",
+    "operation": "Opération",
+    "encrypt": "Chiffrer",
+    "decrypt": "Déchiffrer"
   }
 }
