@@ -1,7 +1,7 @@
-import { CaesarPlayground } from '@/pages/Laboratory/CaesarPlayground';
+import { Playground } from '@/pages/Laboratory/Playground';
 
 function App() {
-  return <CaesarPlayground />;
+  return <Playground />;
 }
 
 export default App;

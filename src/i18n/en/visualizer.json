@@ -26,12 +26,31 @@
       "wrappedDecrypt": "The shift goes below A: it wraps around to Z.",
       "ariaLabel": "Circular alphabet: letter {{from}} becomes {{to}} with a shift of {{shift}}.",
       "ariaLabelEmpty": "Circular alphabet from A to Z."
+    },
+    "substitution": {
+      "title": "Substitution alphabets",
+      "normalAlphabet": "Standard alphabet",
+      "substitutionAlphabet": "Substitution alphabet",
+      "letter": "Letter",
+      "position": "Position in the standard alphabet",
+      "result": "Result",
+      "fixedPoint": "This letter is a fixed point: it stays unchanged.",
+      "ariaLabel": "Substitution alphabets: letter {{from}} becomes {{to}}.",
+      "ariaLabelEmpty": "Standard alphabet and substitution alphabet."
     }
   },
   "playground": {
-    "notice": "Temporary preview of the Caesar visualizer. The full laboratory will come later.",
+    "notice": "Temporary preview of the visualizers. The full laboratory will come later.",
+    "algorithm": "Algorithm",
+    "caesar": "Caesar",
+    "substitution": "Substitution",
     "text": "Message",
     "shift": "Shift key",
+    "alphabetSource": "Alphabet source",
+    "sourceKeyword": "Keyword",
+    "sourceCustom": "Custom alphabet",
+    "keyword": "Keyword",
+    "customAlphabet": "Substitution alphabet (26 letters)",
     "operation": "Operation",
     "encrypt": "Encrypt",
     "decrypt": "Decrypt"
