@@ -37,6 +37,20 @@
       "fixedPoint": "Cette lettre est un point fixe : elle reste inchangée.",
       "ariaLabel": "Alphabets de substitution : la lettre {{from}} devient {{to}}.",
       "ariaLabelEmpty": "Alphabet normal et alphabet de substitution."
+    },
+    "permutation": {
+      "title": "Permutation de blocs",
+      "empty": "Aucun bloc à afficher. Saisissez un texte contenant au moins une lettre.",
+      "inputBlock": "Bloc d'entrée",
+      "outputBlock": "Bloc de sortie",
+      "block": "Bloc",
+      "blockSize": "Taille du bloc",
+      "padding": "Remplissage",
+      "appliedEncrypt": "Permutation appliquée\u00A0: ({{permutation}})",
+      "appliedDecrypt": "Permutation inverse appliquée\u00A0: ({{permutation}})",
+      "paddingLegendEncrypt": "Caractère de remplissage ajouté",
+      "paddingLegendDecrypt": "Caractère de remplissage, retiré du texte final",
+      "ariaLabel": "Permutation d'un bloc\u00A0: {{from}} devient {{to}} avec la permutation ({{permutation}})."
     }
   },
   "playground": {
