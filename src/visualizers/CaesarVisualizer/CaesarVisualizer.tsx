@@ -1,7 +1,7 @@
-import { useEffect, useRef, type JSX } from 'react';
+import { useLayoutEffect, useRef, type JSX } from 'react';
 import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { cn } from 'cn';
+import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { CaesarStepData } from '@/algorithms/caesar';
 import type { ExecutionStep, OperationMode } from '@/types';
@@ -53,7 +53,7 @@ export function CaesarVisualizer({
     arcPath(200, 200, 122, startAngleRef.current, currentAngle),
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!step) {
       outputOpacity.set(0);
       return;
@@ -98,7 +98,7 @@ export function CaesarVisualizer({
     : t('visualizer.caesar.ariaLabelEmpty');
 
   return (
-    <Card aria-labelledby="caesar-visualizer-title">
+    <Card role="region" aria-labelledby="caesar-visualizer-title">
       <CardHeader>
         <CardTitle id="caesar-visualizer-title">{t('visualizer.caesar.title')}</CardTitle>
       </CardHeader>

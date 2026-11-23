@@ -26,7 +26,7 @@ export function ExplanationPanel({ step, isPlaying }: ExplanationPanelProps): JS
   const tt = useTranslatableText();
 
   return (
-    <Card aria-labelledby="explanation-panel-title">
+    <Card role="region" aria-labelledby="explanation-panel-title">
       <CardHeader>
         <CardTitle id="explanation-panel-title">{t('visualizer.explanation.title')}</CardTitle>
       </CardHeader>
@@ -43,14 +43,14 @@ export function ExplanationPanel({ step, isPlaying }: ExplanationPanelProps): JS
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
               <span>
                 <span className="font-medium text-foreground">
-                  {t('visualizer.explanation.input')} :{' '}
+                  {t('visualizer.explanation.input')}{' '}
                 </span>
                 {step.input}
               </span>
               <span aria-hidden="true">•</span>
               <span>
                 <span className="font-medium text-foreground">
-                  {t('visualizer.explanation.calculation')} :{' '}
+                  {t('visualizer.explanation.calculation')}{' '}
                 </span>
                 <code className="rounded bg-muted px-1.5 py-0.5 font-mono tabular-nums text-foreground">
                   {step.calculation}
@@ -59,7 +59,7 @@ export function ExplanationPanel({ step, isPlaying }: ExplanationPanelProps): JS
               <span aria-hidden="true">•</span>
               <span>
                 <span className="font-medium text-foreground">
-                  {t('visualizer.explanation.output')} :{' '}
+                  {t('visualizer.explanation.output')}{' '}
                 </span>
                 {step.output}
               </span>

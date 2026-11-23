@@ -3,9 +3,9 @@
     "explanation": {
       "title": "Explanation",
       "empty": "No step to display. Enter a text containing at least one letter.",
-      "calculation": "Calculation",
-      "input": "Input",
-      "output": "Output"
+      "calculation": "Calculation:",
+      "input": "Input:",
+      "output": "Output:"
     },
     "caesar": {
       "title": "Circular alphabet",

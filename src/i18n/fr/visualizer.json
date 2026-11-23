@@ -3,9 +3,9 @@
     "explanation": {
       "title": "Explication",
       "empty": "Aucune étape à afficher. Saisissez un texte contenant au moins une lettre.",
-      "calculation": "Calcul",
-      "input": "Entrée",
-      "output": "Sortie"
+      "calculation": "Calcul\u00A0:",
+      "input": "Entrée\u00A0:",
+      "output": "Sortie\u00A0:"
     },
     "caesar": {
       "title": "Alphabet circulaire",
