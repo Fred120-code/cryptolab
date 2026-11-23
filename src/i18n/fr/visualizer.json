@@ -26,6 +26,17 @@
       "wrappedDecrypt": "Le décalage passe sous A : on repart de Z.",
       "ariaLabel": "Alphabet circulaire : la lettre {{from}} devient {{to}} avec un décalage de {{shift}}.",
       "ariaLabelEmpty": "Alphabet circulaire de A à Z."
+    },
+    "substitution": {
+      "title": "Alphabets de substitution",
+      "normalAlphabet": "Alphabet normal",
+      "substitutionAlphabet": "Alphabet de substitution",
+      "letter": "Lettre",
+      "position": "Position",
+      "result": "Résultat",
+      "fixedPoint": "Cette lettre est un point fixe : elle reste inchangée.",
+      "ariaLabel": "Alphabets de substitution : la lettre {{from}} devient {{to}}.",
+      "ariaLabelEmpty": "Alphabet normal et alphabet de substitution."
     }
   },
   "playground": {
