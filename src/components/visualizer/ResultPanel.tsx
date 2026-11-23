@@ -92,8 +92,10 @@ export function ResultPanel({
   outputRange,
 }: ResultPanelProps): JSX.Element {
   const { t } = useTranslation();
-  const [copied, setCopied] = useState(false);
-  const [copyError, setCopyError] = useState(false);
+  const [copiedOutput, setCopiedOutput] = useState<string | null>(null);
+  const [failedOutput, setFailedOutput] = useState<string | null>(null);
+  const copied = copiedOutput === output;
+  const copyError = failedOutput === output;
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -113,21 +115,21 @@ export function ResultPanel({
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-    setCopyError(false);
 
     try {
       if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) {
         throw new Error('Clipboard API non disponible');
       }
       await navigator.clipboard.writeText(output);
-      setCopied(true);
+      setCopiedOutput(output);
+      setFailedOutput(null);
       timerRef.current = setTimeout(() => {
-        setCopied(false);
+        setCopiedOutput(null);
         timerRef.current = null;
       }, 2000);
     } catch {
-      setCopied(false);
-      setCopyError(true);
+      setCopiedOutput(null);
+      setFailedOutput(output);
     }
   };
 
