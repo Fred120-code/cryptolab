@@ -1,23 +1,28 @@
 import { useMemo, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
-import { caesarAlgorithm } from '@/algorithms/caesar';
+import { caesarAlgorithm, type CaesarStepData } from '@/algorithms/caesar';
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ExplanationPanel } from '@/components/visualizer/ExplanationPanel';
 import { PlayerControls } from '@/components/visualizer/PlayerControls';
+import { ResultPanel, type TextRange } from '@/components/visualizer/ResultPanel';
 import { usePlayer } from '@/hooks/usePlayer';
 import { usePlayerLabels } from '@/hooks/usePlayerLabels';
 import { useTranslatableText } from '@/hooks/useTranslatableText';
-import type { OperationMode } from '@/types';
+import type { ExecutionStep, OperationMode } from '@/types';
 import { CaesarVisualizer } from '@/visualizers/CaesarVisualizer';
+
+/** Tableau vide constant pour éviter les réinitialisations intempestives du hook `usePlayer` */
+const EMPTY_STEPS: ExecutionStep<CaesarStepData>[] = [];
 
 /**
  * Page de démonstration interactive temporaire du visualiseur de l'algorithme de César.
  *
  * Permet de saisir un message et une clé de décalage, de choisir le mode opératoire,
- * et de piloter l'animation pas à pas avec les contrôles de lecture et le panneau explicatif.
+ * et de piloter l'animation pas à pas avec les contrôles de lecture, le panneau de résultat
+ * et le panneau explicatif.
  */
 export function CaesarPlayground(): JSX.Element {
   const { t } = useTranslation();
@@ -31,15 +36,21 @@ export function CaesarPlayground(): JSX.Element {
   const shiftNum = Number(shiftStr);
   const validation = caesarAlgorithm.validate({ shift: shiftNum });
 
-  const steps = useMemo(() => {
+  const result = useMemo(() => {
     if (!validation.valid) {
-      return [];
+      return null;
     }
-    return caesarAlgorithm.getSteps(text, { shift: shiftNum }, mode).steps;
+    return caesarAlgorithm.getSteps(text, { shift: shiftNum }, mode);
   }, [text, shiftNum, mode, validation.valid]);
 
+  const steps = result ? result.steps : EMPTY_STEPS;
   const player = usePlayer(steps);
   const stepDurationMs = 1200 / player.speed;
+
+  const currentStep = player.currentStep;
+  const currentRange: TextRange | undefined = currentStep
+    ? { start: currentStep.data.position, end: currentStep.data.position + 1 }
+    : undefined;
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-8">
@@ -120,6 +131,17 @@ export function CaesarPlayground(): JSX.Element {
           </div>
         )}
       </section>
+
+      {/* Panneau de résultat complet avec copie et surbrillance synchronisée */}
+      {validation.valid && result && (
+        <ResultPanel
+          input={text}
+          output={result.output}
+          mode={mode}
+          inputRange={currentRange}
+          outputRange={currentRange}
+        />
+      )}
 
       {/* Visualiseur circulaire animé */}
       <CaesarVisualizer step={player.currentStep} mode={mode} stepDurationMs={stepDurationMs} />

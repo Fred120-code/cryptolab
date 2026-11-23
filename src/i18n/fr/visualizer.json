@@ -7,6 +7,15 @@
       "input": "Entrée\u00A0:",
       "output": "Sortie\u00A0:"
     },
+    "result": {
+      "title": "Résultat",
+      "original": "Texte original",
+      "encrypted": "Texte chiffré",
+      "decrypted": "Texte déchiffré",
+      "copy": "Copier le résultat",
+      "copied": "Copié !",
+      "copyFailed": "Copie impossible. Sélectionnez le texte à la main."
+    },
     "caesar": {
       "title": "Alphabet circulaire",
       "letter": "Lettre",

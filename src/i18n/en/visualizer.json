@@ -7,6 +7,15 @@
       "input": "Input:",
       "output": "Output:"
     },
+    "result": {
+      "title": "Result",
+      "original": "Original text",
+      "encrypted": "Encrypted text",
+      "decrypted": "Decrypted text",
+      "copy": "Copy result",
+      "copied": "Copied!",
+      "copyFailed": "Copy failed. Select the text manually."
+    },
     "caesar": {
       "title": "Circular alphabet",
       "letter": "Letter",
