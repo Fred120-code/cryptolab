@@ -46,42 +46,38 @@ describe('Règle d interdiction des couleurs brutes et préfixes dark:', () => {
   // 3. Préfixe dark: (le thème sombre est géré automatiquement via @media prefers-color-scheme)
   const darkPrefixPattern = /\bdark:/;
 
-  // TODO: activer ce test dans le Commit 4 après migration des composants vers les jetons shadcn.
-  it.todo(
-    'ne contient aucune couleur brute ni préfixe dark: dans les composants applicatifs',
-    () => {
-      const violations: string[] = [];
+  it('ne contient aucune couleur brute ni préfixe dark: dans les composants applicatifs', () => {
+    const violations: string[] = [];
 
-      for (const file of targetFiles) {
-        const content = fs.readFileSync(file, 'utf-8');
-        const relPath = path.relative(root, file);
+    for (const file of targetFiles) {
+      const content = fs.readFileSync(file, 'utf-8');
+      const relPath = path.relative(root, file);
 
-        const tailwindMatch = content.match(rawTailwindColorPattern);
-        if (tailwindMatch) {
-          violations.push(
-            `Fichier "${relPath}" contient une classe de couleur Tailwind brute : "${tailwindMatch[0]}"`,
-          );
-        }
-
-        const hexMatch = content.match(rawHexPattern);
-        if (hexMatch) {
-          violations.push(
-            `Fichier "${relPath}" contient un code hexadécimal brut : "${hexMatch[0]}"`,
-          );
-        }
-
-        const darkMatch = content.match(darkPrefixPattern);
-        if (darkMatch) {
-          violations.push(
-            `Fichier "${relPath}" contient le préfixe "dark:" interdit (utilisez les jetons sémantiques) : "${darkMatch[0]}"`,
-          );
-        }
+      const tailwindMatch = content.match(rawTailwindColorPattern);
+      if (tailwindMatch) {
+        violations.push(
+          `Fichier "${relPath}" contient une classe de couleur Tailwind brute : "${tailwindMatch[0]}"`,
+        );
       }
 
-      expect(
-        violations,
-        `Des couleurs brutes ou préfixes dark: ont été détectés :\n${violations.join('\n')}`,
-      ).toEqual([]);
-    },
-  );
+      const hexMatch = content.match(rawHexPattern);
+      if (hexMatch) {
+        violations.push(
+          `Fichier "${relPath}" contient un code hexadécimal brut : "${hexMatch[0]}"`,
+        );
+      }
+
+      const darkMatch = content.match(darkPrefixPattern);
+      if (darkMatch) {
+        violations.push(
+          `Fichier "${relPath}" contient le préfixe "dark:" interdit (utilisez les jetons sémantiques) : "${darkMatch[0]}"`,
+        );
+      }
+    }
+
+    expect(
+      violations,
+      `Des couleurs brutes ou préfixes dark: ont été détectés :\n${violations.join('\n')}`,
+    ).toEqual([]);
+  });
 });
