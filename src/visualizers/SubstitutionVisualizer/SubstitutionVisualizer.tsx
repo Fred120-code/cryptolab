@@ -90,7 +90,7 @@ export function SubstitutionVisualizer({
           {t('visualizer.substitution.title')}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-6">
+      <CardContent className="flex flex-col items-center gap-6 px-3 sm:px-6">
         {/* Légende descriptive des deux rangées alphabétiques */}
         <div className="flex w-full flex-wrap items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ export function SubstitutionVisualizer({
             {[0, 1].map((bandIndex) => (
               <div
                 key={bandIndex}
-                className="grid gap-1"
+                className="grid gap-0.5 sm:gap-1"
                 style={{ gridTemplateColumns: 'repeat(13, minmax(0, 1fr))' }}
               >
                 {Array.from({ length: BAND_SIZE }, (_, colIndex) => {
@@ -131,7 +131,7 @@ export function SubstitutionVisualizer({
                       {/* Case de l'alphabet normal (haut) */}
                       <div
                         className={cn(
-                          'relative flex aspect-square w-full select-none items-center justify-center rounded font-mono text-sm font-medium',
+                          'relative flex aspect-square w-full select-none items-center justify-center rounded font-mono text-xs sm:text-sm font-medium',
                           isNormalInput
                             ? 'border border-primary bg-primary text-primary-foreground'
                             : 'border border-border bg-card text-foreground',
@@ -140,7 +140,7 @@ export function SubstitutionVisualizer({
                         {normalChar}
                         {isNormalOutput && (
                           <motion.div
-                            className="absolute inset-0 flex items-center justify-center rounded bg-card font-mono text-sm font-medium text-foreground ring-2 ring-primary"
+                            className="absolute inset-0 flex items-center justify-center rounded bg-card font-mono text-xs sm:text-sm font-medium text-foreground ring-2 ring-primary"
                             style={{ opacity: outputOpacity }}
                           >
                             {normalChar}
@@ -164,7 +164,7 @@ export function SubstitutionVisualizer({
                       {/* Case de l'alphabet de substitution (bas) */}
                       <div
                         className={cn(
-                          'relative flex aspect-square w-full select-none items-center justify-center rounded font-mono text-sm font-medium',
+                          'relative flex aspect-square w-full select-none items-center justify-center rounded font-mono text-xs sm:text-sm font-medium',
                           isSubInput
                             ? 'border border-primary bg-primary text-primary-foreground'
                             : 'border border-transparent bg-muted text-foreground',
@@ -173,7 +173,7 @@ export function SubstitutionVisualizer({
                         {subChar}
                         {isSubOutput && (
                           <motion.div
-                            className="absolute inset-0 flex items-center justify-center rounded bg-card font-mono text-sm font-medium text-foreground ring-2 ring-primary"
+                            className="absolute inset-0 flex items-center justify-center rounded bg-card font-mono text-xs sm:text-sm font-medium text-foreground ring-2 ring-primary"
                             style={{ opacity: outputOpacity }}
                           >
                             {subChar}

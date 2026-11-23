@@ -32,7 +32,7 @@
       "normalAlphabet": "Standard alphabet",
       "substitutionAlphabet": "Substitution alphabet",
       "letter": "Letter",
-      "position": "Position",
+      "position": "Position in the standard alphabet",
       "result": "Result",
       "fixedPoint": "This letter is a fixed point: it stays unchanged.",
       "ariaLabel": "Substitution alphabets: letter {{from}} becomes {{to}}.",
