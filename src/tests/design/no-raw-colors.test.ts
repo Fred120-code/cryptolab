@@ -28,6 +28,7 @@ describe('Règle d interdiction des couleurs brutes et préfixes dark:', () => {
   const targetFiles: string[] = [
     ...findTsxFiles(path.join(root, 'src', 'components')),
     ...findTsxFiles(path.join(root, 'src', 'pages')),
+    ...findTsxFiles(path.join(root, 'src', 'visualizers')),
   ];
 
   const appFile = path.join(root, 'src', 'App.tsx');
