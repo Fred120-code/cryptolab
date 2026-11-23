@@ -1,8 +1,7 @@
 import { useMemo, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { caesarAlgorithm, type CaesarStepData } from '@/algorithms/caesar';
-import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
-import { Button } from '@/components/ui/button';
+import { OperationToggle } from '@/components/common/OperationToggle';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ExplanationPanel } from '@/components/visualizer/ExplanationPanel';
@@ -53,18 +52,7 @@ export function CaesarPlayground(): JSX.Element {
     : undefined;
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-8">
-      {/* En-tête avec titre de l'application et sélecteur de langue */}
-      <header className="flex flex-col gap-2">
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            CryptoLab
-          </h1>
-          <LanguageSwitcher />
-        </div>
-        <p className="text-sm text-muted-foreground">{t('playground.notice')}</p>
-      </header>
-
+    <div className="flex flex-col gap-8">
       {/* Formulaire de configuration (sans balise <form>) */}
       <section className="flex flex-col gap-6 rounded-xl border border-border bg-card p-4 sm:p-6">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -97,26 +85,13 @@ export function CaesarPlayground(): JSX.Element {
         {/* Sélection de l'opération Chiffrer / Déchiffrer */}
         <div className="flex flex-col gap-2">
           <Label id="caesar-operation-label">{t('playground.operation')}</Label>
-          <div role="group" aria-labelledby="caesar-operation-label" className="flex gap-2">
-            <Button
-              type="button"
-              variant={mode === 'encrypt' ? 'default' : 'outline'}
-              aria-pressed={mode === 'encrypt'}
-              onClick={() => setMode('encrypt')}
-              className="min-h-11 flex-1"
-            >
-              {t('playground.encrypt')}
-            </Button>
-            <Button
-              type="button"
-              variant={mode === 'decrypt' ? 'default' : 'outline'}
-              aria-pressed={mode === 'decrypt'}
-              onClick={() => setMode('decrypt')}
-              className="min-h-11 flex-1"
-            >
-              {t('playground.decrypt')}
-            </Button>
-          </div>
+          <OperationToggle
+            mode={mode}
+            onChange={setMode}
+            groupLabel={t('playground.operation')}
+            encryptLabel={t('playground.encrypt')}
+            decryptLabel={t('playground.decrypt')}
+          />
         </div>
 
         {/* Messages d'erreur de validation des paramètres */}
@@ -151,6 +126,6 @@ export function CaesarPlayground(): JSX.Element {
 
       {/* Panneau explicatif de l'étape active */}
       <ExplanationPanel step={player.currentStep} isPlaying={player.isPlaying} />
-    </main>
+    </div>
   );
 }

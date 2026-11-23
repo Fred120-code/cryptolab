@@ -40,9 +40,17 @@
     }
   },
   "playground": {
-    "notice": "Aperçu temporaire du visualiseur de César. Le laboratoire complet viendra plus tard.",
+    "notice": "Aperçu temporaire des visualiseurs. Le laboratoire complet viendra plus tard.",
+    "algorithm": "Algorithme",
+    "caesar": "César",
+    "substitution": "Substitution",
     "text": "Message",
     "shift": "Clé de décalage",
+    "alphabetSource": "Source de l'alphabet",
+    "sourceKeyword": "Mot-clé",
+    "sourceCustom": "Alphabet personnalisé",
+    "keyword": "Mot-clé",
+    "customAlphabet": "Alphabet de substitution (26 lettres)",
     "operation": "Opération",
     "encrypt": "Chiffrer",
     "decrypt": "Déchiffrer"

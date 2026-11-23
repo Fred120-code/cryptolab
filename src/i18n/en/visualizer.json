@@ -40,9 +40,17 @@
     }
   },
   "playground": {
-    "notice": "Temporary preview of the Caesar visualizer. The full laboratory will come later.",
+    "notice": "Temporary preview of the visualizers. The full laboratory will come later.",
+    "algorithm": "Algorithm",
+    "caesar": "Caesar",
+    "substitution": "Substitution",
     "text": "Message",
     "shift": "Shift key",
+    "alphabetSource": "Alphabet source",
+    "sourceKeyword": "Keyword",
+    "sourceCustom": "Custom alphabet",
+    "keyword": "Keyword",
+    "customAlphabet": "Substitution alphabet (26 letters)",
     "operation": "Operation",
     "encrypt": "Encrypt",
     "decrypt": "Decrypt"
