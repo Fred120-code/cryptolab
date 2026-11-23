@@ -1,0 +1,11 @@
+{
+  "visualizer": {
+    "explanation": {
+      "title": "Explication",
+      "empty": "Aucune étape à afficher. Saisissez un texte contenant au moins une lettre.",
+      "calculation": "Calcul",
+      "input": "Entrée",
+      "output": "Sortie"
+    }
+  }
+}
