@@ -37,6 +37,20 @@
       "fixedPoint": "This letter is a fixed point: it stays unchanged.",
       "ariaLabel": "Substitution alphabets: letter {{from}} becomes {{to}}.",
       "ariaLabelEmpty": "Standard alphabet and substitution alphabet."
+    },
+    "permutation": {
+      "title": "Block permutation",
+      "empty": "No block to display. Enter a text containing at least one letter.",
+      "inputBlock": "Input block",
+      "outputBlock": "Output block",
+      "block": "Block",
+      "blockSize": "Block size",
+      "padding": "Padding",
+      "appliedEncrypt": "Applied permutation: ({{permutation}})",
+      "appliedDecrypt": "Inverse permutation applied: ({{permutation}})",
+      "paddingLegendEncrypt": "Padding character added",
+      "paddingLegendDecrypt": "Padding character, removed from the final text",
+      "ariaLabel": "Block permutation: {{from}} becomes {{to}} with permutation ({{permutation}})."
     }
   },
   "playground": {
@@ -44,6 +58,11 @@
     "algorithm": "Algorithm",
     "caesar": "Caesar",
     "substitution": "Substitution",
+    "permutation": "Permutation",
+    "permutationOrder": "Permutation (positions 1 to n, comma-separated)",
+    "paddingToRemove": "Padding characters to remove (optional)",
+    "paddingAdded": "Padding characters “X” added: {{padding}}. Enter this number to decrypt.",
+    "normalizedNotice": "The text is normalized for the permutation: letters A to Z only, uppercase, no accents or spaces.",
     "text": "Message",
     "shift": "Shift key",
     "alphabetSource": "Alphabet source",
