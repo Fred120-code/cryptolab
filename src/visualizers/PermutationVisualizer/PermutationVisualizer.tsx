@@ -176,7 +176,7 @@ export function PermutationVisualizer({
                 x={200}
                 y={LABEL_TOP_Y}
                 textAnchor="middle"
-                className="fill-muted-foreground text-xs select-none"
+                className="fill-muted-foreground text-sm select-none"
               >
                 {t('visualizer.permutation.inputBlock')}
               </text>
@@ -186,7 +186,7 @@ export function PermutationVisualizer({
                 x={200}
                 y={LABEL_BOTTOM_Y}
                 textAnchor="middle"
-                className="fill-muted-foreground text-xs select-none"
+                className="fill-muted-foreground text-sm select-none"
               >
                 {t('visualizer.permutation.outputBlock')}
               </text>
@@ -198,7 +198,7 @@ export function PermutationVisualizer({
                   x={cellCenterX(i, n)}
                   y={NUMBERS_TOP_Y}
                   textAnchor="middle"
-                  className="fill-muted-foreground text-xs select-none"
+                  className="fill-muted-foreground text-sm select-none"
                 >
                   {i + 1}
                 </text>
@@ -230,6 +230,41 @@ export function PermutationVisualizer({
                   </g>
                 );
               })}
+
+              {/* Rangée de n cases de sortie */}
+              {Array.from({ length: n }, (_, k) => {
+                const cx = cellCenterX(k, n);
+                const isPaddingCell = data.moves.some((m) => m.to === k && m.isPadding);
+                return (
+                  <rect
+                    key={`out-cell-${k}`}
+                    x={cx - size / 2}
+                    y={BOTTOM_Y - size / 2}
+                    width={size}
+                    height={size}
+                    rx={4}
+                    className={cn(
+                      'fill-card',
+                      isPaddingCell ? 'stroke-muted-foreground' : 'stroke-border',
+                    )}
+                    strokeWidth={1}
+                    strokeDasharray={isPaddingCell ? '3 2' : undefined}
+                  />
+                );
+              })}
+
+              {/* Numéros de position de sortie (1 à n) */}
+              {Array.from({ length: n }, (_, k) => (
+                <text
+                  key={`out-num-${k}`}
+                  x={cellCenterX(k, n)}
+                  y={NUMBERS_BOTTOM_Y}
+                  textAnchor="middle"
+                  className="fill-muted-foreground text-sm select-none"
+                >
+                  {k + 1}
+                </text>
+              ))}
 
               {/* Lignes de liaison faibles et jetons animés remontés à chaque nouvelle étape */}
               <g key={`${step.index}:${step.input}:${data.permutation.join(',')}:${mode}`}>
@@ -267,41 +302,6 @@ export function PermutationVisualizer({
                   );
                 })}
               </g>
-
-              {/* Rangée de n cases de sortie */}
-              {Array.from({ length: n }, (_, k) => {
-                const cx = cellCenterX(k, n);
-                const isPaddingCell = data.moves.some((m) => m.to === k && m.isPadding);
-                return (
-                  <rect
-                    key={`out-cell-${k}`}
-                    x={cx - size / 2}
-                    y={BOTTOM_Y - size / 2}
-                    width={size}
-                    height={size}
-                    rx={4}
-                    className={cn(
-                      'fill-card',
-                      isPaddingCell ? 'stroke-muted-foreground' : 'stroke-border',
-                    )}
-                    strokeWidth={1}
-                    strokeDasharray={isPaddingCell ? '3 2' : undefined}
-                  />
-                );
-              })}
-
-              {/* Numéros de position de sortie (1 à n) */}
-              {Array.from({ length: n }, (_, k) => (
-                <text
-                  key={`out-num-${k}`}
-                  x={cellCenterX(k, n)}
-                  y={NUMBERS_BOTTOM_Y}
-                  textAnchor="middle"
-                  className="fill-muted-foreground text-xs select-none"
-                >
-                  {k + 1}
-                </text>
-              ))}
             </svg>
 
             {/* Informations textuelles et récapitulatif descriptif sous le SVG */}
@@ -310,7 +310,6 @@ export function PermutationVisualizer({
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <span
                     className="size-3.5 rounded border border-muted-foreground bg-muted border-dashed"
-                    style={{ strokeDasharray: '3 2' }}
                     aria-hidden="true"
                   />
                   <span>
