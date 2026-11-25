@@ -4,7 +4,8 @@
       "title": "Home"
     },
     "algorithms": {
-      "title": "Algorithms"
+      "title": "Algorithms",
+      "intro": "Four classical ciphers, each with its own laboratory, documentation and cryptanalysis tools."
     },
     "lab": {
       "title": "Laboratory: {{algorithm}}"
