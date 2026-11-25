@@ -7,6 +7,7 @@ import type { AlgorithmId } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 /**
  * Indicateur visuel de difficulté : trois petits points dont le nombre de remplis
@@ -20,7 +21,10 @@ function DifficultyDots({ level }: { level: number }): JSX.Element {
         <span
           key={i}
           aria-hidden="true"
-          className={`size-1.5 rounded-full ${i < level ? 'bg-primary' : 'bg-muted-foreground/30'}`}
+          className={cn(
+            'size-1.5 rounded-full',
+            i < level ? 'bg-primary' : 'bg-muted-foreground/30',
+          )}
         />
       ))}
     </>
@@ -32,23 +36,27 @@ function DifficultyDots({ level }: { level: number }): JSX.Element {
  *
  * @param id Identifiant de l'algorithme.
  * @param variant Variante d'affichage : `'compact'` (résumé) ou `'full'` (détails complets).
+ * @param headingLevel Niveau de titre HTML pour le nom de l'algorithme (`2` ou `3`, défaut `3`).
  */
 export function AlgorithmCard({
   id,
   variant = 'full',
+  headingLevel = 3,
 }: {
   id: AlgorithmId;
   variant?: 'compact' | 'full';
+  headingLevel?: 2 | 3;
 }): JSX.Element {
   const { t } = useTranslation();
   const meta = ALGORITHM_META[id];
   const difficultyLevel = DIFFICULTIES.indexOf(meta.difficulty) + 1;
+  const Heading = headingLevel === 2 ? 'h2' : 'h3';
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>
-          <h3 className="text-lg font-semibold">{t(`algorithms.${id}.name`)}</h3>
+          <Heading className="text-lg font-semibold">{t(`algorithms.${id}.name`)}</Heading>
         </CardTitle>
         <Badge variant="secondary" className="inline-flex w-fit items-center gap-1">
           <DifficultyDots level={difficultyLevel} />

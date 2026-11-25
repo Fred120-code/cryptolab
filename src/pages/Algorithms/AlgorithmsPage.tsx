@@ -21,7 +21,7 @@ export function AlgorithmsPage(): JSX.Element {
       <ul className="mt-8 grid gap-4 sm:grid-cols-2">
         {ALGORITHM_IDS.map((id) => (
           <li key={id}>
-            <AlgorithmCard id={id} variant="full" />
+            <AlgorithmCard id={id} variant="full" headingLevel={2} />
           </li>
         ))}
       </ul>

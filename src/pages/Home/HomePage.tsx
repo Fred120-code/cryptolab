@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react';
+import { useRef, useState, type JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AlgorithmCard } from '@/components/algorithms/AlgorithmCard';
@@ -36,10 +36,12 @@ export function HomePage(): JSX.Element {
   const recent = latestUnique(entries, 5);
   const [now] = useState(() => Date.now());
   const [cleared, setCleared] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   const handleClear = (): void => {
     clear();
     setCleared(true);
+    headingRef.current?.focus();
   };
 
   return (
@@ -83,7 +85,9 @@ export function HomePage(): JSX.Element {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold">{t('home.activity.title')}</h2>
+        <h2 ref={headingRef} tabIndex={-1} className="text-xl font-semibold outline-none">
+          {t('home.activity.title')}
+        </h2>
 
         {recent.length === 0 ? (
           <p className="max-w-prose text-sm text-muted-foreground">{t('home.activity.empty')}</p>
