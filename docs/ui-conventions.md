@@ -12,6 +12,7 @@ Ce document synthétise les règles d'architecture et d'implémentation de l'int
   ```
 - Le code source généré dans `src/components/ui/` ne doit **jamais être modifié manuellement**, à une exception stricte près :
   - **Internationalisation** : si un composant contient du texte visible ou accessible codé en dur (ex. `<span className="sr-only">Close</span>` dans `Dialog` ou `Sheet`), ce texte doit impérativement devenir une prop configurable ou être traduit via `useTranslation()`. Toute modification de ce type doit être explicitement signalée.
+  - `sheet.tsx` : le libellé du bouton de fermeture passe par `t('nav.close')`.
 
 ---
 
