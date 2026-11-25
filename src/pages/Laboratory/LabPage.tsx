@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { AlgorithmNav } from '@/components/navigation/AlgorithmNav';
 import { isAlgorithmId } from '@/config/algorithms';
 import { labPath } from '@/config/routes';
+import { useRecordVisit } from '@/hooks/useActivity';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage';
 import { LABS } from './labs';
@@ -21,6 +22,7 @@ export function LabPage(): JSX.Element {
     ? t('pages.lab.title', { algorithm: algorithmName })
     : t('pages.notFound.title');
   useDocumentTitle(pageTitle);
+  useRecordVisit('lab', valid ? algorithm : undefined);
 
   if (!valid) {
     return <NotFoundPage />;

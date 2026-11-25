@@ -1,0 +1,27 @@
+{
+  "home": {
+    "hero": {
+      "title": "Apprenez la cryptographie classique en la voyant fonctionner",
+      "subtitle": "CryptoLab vous permet de chiffrer, déchiffrer et attaquer les chiffrements du cours, puis de suivre chaque calcul étape par étape, avec une animation qui correspond à l'opération réelle.",
+      "ctaLab": "Ouvrir le laboratoire",
+      "ctaAlgorithms": "Voir les algorithmes",
+      "caption": "Exemple : {{from}} chiffré avec la clé {{shift}} donne {{to}}."
+    },
+    "algorithms": {
+      "title": "Les quatre algorithmes",
+      "all": "Voir le catalogue complet"
+    },
+    "activity": {
+      "title": "Vos dernières activités",
+      "empty": "Vos activités récentes apparaîtront ici dès que vous aurez ouvert un laboratoire.",
+      "privacy": "Seuls l'algorithme, le type d'activité et la date sont enregistrés, dans votre navigateur. Jamais vos textes, vos clés ni vos résultats.",
+      "clear": "Effacer l'historique",
+      "cleared": "Historique effacé."
+    },
+    "exercises": {
+      "title": "Mettez-vous à l'épreuve",
+      "body": "Une banque d'exercices inspirée des travaux dirigés, avec correction détaillée, est en préparation.",
+      "cta": "Voir les exercices"
+    }
+  }
+}

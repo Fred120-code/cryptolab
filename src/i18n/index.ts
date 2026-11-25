@@ -13,6 +13,8 @@ import substitutionFr from './fr/substitution.json';
 import permutationFr from './fr/permutation.json';
 import vigenereFr from './fr/vigenere.json';
 import visualizerFr from './fr/visualizer.json';
+import activityFr from './fr/activity.json';
+import homeFr from './fr/home.json';
 
 import commonEn from './en/common.json';
 import playerEn from './en/player.json';
@@ -25,6 +27,8 @@ import substitutionEn from './en/substitution.json';
 import permutationEn from './en/permutation.json';
 import vigenereEn from './en/vigenere.json';
 import visualizerEn from './en/visualizer.json';
+import activityEn from './en/activity.json';
+import homeEn from './en/home.json';
 
 const frResources = {
   ...commonFr,
@@ -38,6 +42,8 @@ const frResources = {
   ...permutationFr,
   ...vigenereFr,
   ...visualizerFr,
+  ...activityFr,
+  ...homeFr,
 };
 
 const enResources = {
@@ -52,6 +58,8 @@ const enResources = {
   ...permutationEn,
   ...vigenereEn,
   ...visualizerEn,
+  ...activityEn,
+  ...homeEn,
 };
 
 const initialLang = detectLanguage();

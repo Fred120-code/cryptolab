@@ -1,16 +1,44 @@
 {
   "algorithms": {
     "caesar": {
-      "name": "César"
+      "name": "César",
+      "description": "Décale chaque lettre d'un nombre fixe de positions dans l'alphabet.",
+      "principle": "Chaque lettre est remplacée par celle située k positions plus loin, en bouclant de Z à A : C = (P + k) mod 26."
     },
     "substitution": {
-      "name": "Substitution"
+      "name": "Substitution",
+      "description": "Remplace chaque lettre par une autre selon un alphabet mélangé.",
+      "principle": "Un alphabet de substitution de 26 lettres, souvent construit à partir d'un mot-clé, associe à chaque lettre claire une lettre chiffrée unique."
     },
     "permutation": {
-      "name": "Permutation"
+      "name": "Permutation",
+      "description": "Réorganise les lettres à l'intérieur de blocs de taille fixe.",
+      "principle": "Le texte est découpé en blocs, complétés par des X si besoin. Dans chaque bloc, les positions sont mélangées selon une permutation : les lettres ne changent pas, seule leur place change."
     },
     "vigenere": {
-      "name": "Vigenère"
+      "name": "Vigenère",
+      "description": "Applique un décalage de César différent à chaque lettre, selon une clé répétée.",
+      "principle": "La clé est répétée sur toute la longueur du message et chaque lettre est décalée de la valeur de la lettre de clé correspondante : Ci = (Pi + Ki) mod 26."
+    },
+    "difficulty": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Avancé"
+    },
+    "difficultyLabel": "Niveau",
+    "operationsLabel": "Opérations disponibles",
+    "principleLabel": "Principe",
+    "openLab": "Ouvrir le laboratoire",
+    "readDocs": "Lire la documentation",
+    "operations": {
+      "encrypt": "Chiffrer",
+      "decrypt": "Déchiffrer",
+      "bruteForce": "Attaque par force brute",
+      "buildAlphabet": "Construction d'alphabet",
+      "frequencyAnalysis": "Analyse des fréquences",
+      "inversePermutation": "Permutation inverse",
+      "permutationSearch": "Recherche de permutation",
+      "assistedCryptanalysis": "Cryptanalyse assistée"
     }
   }
 }

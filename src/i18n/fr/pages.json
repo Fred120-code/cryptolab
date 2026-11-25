@@ -4,7 +4,8 @@
       "title": "Accueil"
     },
     "algorithms": {
-      "title": "Algorithmes"
+      "title": "Algorithmes",
+      "intro": "Quatre chiffrements classiques, chacun avec son laboratoire, sa documentation et ses outils de cryptanalyse."
     },
     "lab": {
       "title": "Laboratoire\u00A0: {{algorithm}}"

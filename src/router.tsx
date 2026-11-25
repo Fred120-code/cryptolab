@@ -1,11 +1,13 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
+import { PageLoading } from '@/components/layout/PageLoading';
 import { cryptanalysisPath, docsPath, labPath, ROUTES } from '@/config/routes';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
+    HydrateFallback: PageLoading,
     children: [
       {
         index: true,
