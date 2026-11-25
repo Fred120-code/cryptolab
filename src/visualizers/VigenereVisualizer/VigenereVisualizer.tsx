@@ -188,7 +188,7 @@ export function VigenereVisualizer({
             step={toDialStep(step)}
             mode={mode}
             stepDurationMs={stepDurationMs}
-            className="mx-auto max-h-[28svh] max-w-[14rem]"
+            className="mx-auto max-h-[36svh] max-w-[18rem]"
           />
         </div>
       </CardContent>

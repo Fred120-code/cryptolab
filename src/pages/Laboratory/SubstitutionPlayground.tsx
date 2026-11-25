@@ -82,59 +82,61 @@ export function SubstitutionPlayground(): JSX.Element {
             />
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            {/* Choix de la source de l'alphabet (Mot-clé ou Personnalisé) */}
-            <div className="flex flex-col gap-2">
-              <Label id="substitution-source-label">{t('playground.alphabetSource')}</Label>
-              <div role="group" aria-labelledby="substitution-source-label" className="flex gap-2">
-                <Button
-                  type="button"
-                  variant={source === 'keyword' ? 'default' : 'outline'}
-                  aria-pressed={source === 'keyword'}
-                  onClick={() => setSource('keyword')}
-                  className="min-h-11 flex-1"
-                >
-                  {t('playground.sourceKeyword')}
-                </Button>
-                <Button
-                  type="button"
-                  variant={source === 'custom' ? 'default' : 'outline'}
-                  aria-pressed={source === 'custom'}
-                  onClick={() => setSource('custom')}
-                  className="min-h-11 flex-1"
-                >
-                  {t('playground.sourceCustom')}
-                </Button>
-              </div>
+          {/* Choix de la source de l'alphabet (Mot-clé ou Personnalisé) */}
+          <div className="flex flex-col gap-2">
+            <Label id="substitution-source-label">{t('playground.alphabetSource')}</Label>
+            <div
+              role="group"
+              aria-labelledby="substitution-source-label"
+              className="flex flex-wrap gap-2"
+            >
+              <Button
+                type="button"
+                variant={source === 'keyword' ? 'default' : 'outline'}
+                aria-pressed={source === 'keyword'}
+                onClick={() => setSource('keyword')}
+                className="min-h-11 flex-1"
+              >
+                {t('playground.sourceKeyword')}
+              </Button>
+              <Button
+                type="button"
+                variant={source === 'custom' ? 'default' : 'outline'}
+                aria-pressed={source === 'custom'}
+                onClick={() => setSource('custom')}
+                className="min-h-11 flex-1"
+              >
+                {t('playground.sourceCustom')}
+              </Button>
             </div>
-
-            {/* Saisie du mot-clé ou de l'alphabet personnalisé */}
-            {source === 'keyword' ? (
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="substitution-keyword-input">{t('playground.keyword')}</Label>
-                <Input
-                  id="substitution-keyword-input"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  placeholder="Ex: SECURITE"
-                  className="h-11 font-mono uppercase text-base md:text-sm"
-                />
-              </div>
-            ) : (
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="substitution-custom-input">{t('playground.customAlphabet')}</Label>
-                <Input
-                  id="substitution-custom-input"
-                  value={customAlphabet}
-                  onChange={(e) => setCustomAlphabet(e.target.value)}
-                  autoComplete="off"
-                  spellCheck={false}
-                  placeholder="Ex: ZYXWVUTSRQPONMLKJIHGFEDCBA"
-                  className="h-11 font-mono uppercase text-base md:text-sm"
-                />
-              </div>
-            )}
           </div>
+
+          {/* Saisie du mot-clé ou de l'alphabet personnalisé */}
+          {source === 'keyword' ? (
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="substitution-keyword-input">{t('playground.keyword')}</Label>
+              <Input
+                id="substitution-keyword-input"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                placeholder="Ex: SECURITE"
+                className="h-11 font-mono uppercase text-base md:text-sm"
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="substitution-custom-input">{t('playground.customAlphabet')}</Label>
+              <Input
+                id="substitution-custom-input"
+                value={customAlphabet}
+                onChange={(e) => setCustomAlphabet(e.target.value)}
+                autoComplete="off"
+                spellCheck={false}
+                placeholder="Ex: ZYXWVUTSRQPONMLKJIHGFEDCBA"
+                className="h-11 font-mono uppercase text-base md:text-sm"
+              />
+            </div>
+          )}
 
           {/* Sélection de l'opération Chiffrer / Déchiffrer */}
           <div className="flex flex-col gap-2">

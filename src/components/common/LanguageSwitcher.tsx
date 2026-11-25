@@ -29,7 +29,7 @@ export function LanguageSwitcher(): JSX.Element {
         aria-pressed={currentLang === 'fr'}
         onClick={() => handleLanguageChange('fr')}
         variant={currentLang === 'fr' ? 'default' : 'ghost'}
-        className="min-h-11 min-w-11"
+        className="min-h-5 min-w-5"
       >
         FR
       </Button>
@@ -40,7 +40,7 @@ export function LanguageSwitcher(): JSX.Element {
         aria-pressed={currentLang === 'en'}
         onClick={() => handleLanguageChange('en')}
         variant={currentLang === 'en' ? 'default' : 'ghost'}
-        className="min-h-11 min-w-11"
+        className="min-h-5 min-w-5"
       >
         EN
       </Button>
