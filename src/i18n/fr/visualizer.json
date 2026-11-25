@@ -51,6 +51,17 @@
       "paddingLegendEncrypt": "Caractère de remplissage ajouté",
       "paddingLegendDecrypt": "Caractère de remplissage, retiré du texte final",
       "ariaLabel": "Permutation d'un bloc\u00A0: {{from}} devient {{to}} avec la permutation ({{permutation}})."
+    },
+    "vigenere": {
+      "title": "Alignement du texte et de la clé",
+      "empty": "Aucune lettre à afficher. Saisissez un texte contenant au moins une lettre.",
+      "stripLabel": "Lettres du message et lettre de clé correspondante. Sélectionnez une colonne pour voir son calcul.",
+      "rowInput": "Entrée",
+      "rowKey": "Clé",
+      "rowOutput": "Sortie",
+      "columnLabel": "Lettre {{number}} : {{input}}, clé {{key}}, résultat {{output}}",
+      "wrappedEncrypt": "La somme dépasse 25 : on retranche 26 pour revenir au début de l'alphabet.",
+      "wrappedDecrypt": "La différence est négative : on ajoute 26 pour revenir à la fin de l'alphabet."
     }
   },
   "playground": {
