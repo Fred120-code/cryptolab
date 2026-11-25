@@ -68,11 +68,13 @@ export function VigenereVisualizer({
 
   if (steps.length === 0 || !step) {
     return (
-      <Card role="region" aria-labelledby="vigenere-visualizer-title">
-        <CardHeader>
-          <CardTitle id="vigenere-visualizer-title">{t('visualizer.vigenere.title')}</CardTitle>
+      <Card role="region" aria-labelledby="vigenere-visualizer-title" className="gap-3 py-4">
+        <CardHeader className="px-4">
+          <CardTitle id="vigenere-visualizer-title" className="text-base">
+            {t('visualizer.vigenere.title')}
+          </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4">
           <p className="text-sm text-muted-foreground">{t('visualizer.vigenere.empty')}</p>
         </CardContent>
       </Card>
@@ -82,11 +84,13 @@ export function VigenereVisualizer({
   const { line1, line2 } = formatFormula(step, mode);
 
   return (
-    <Card role="region" aria-labelledby="vigenere-visualizer-title">
-      <CardHeader>
-        <CardTitle id="vigenere-visualizer-title">{t('visualizer.vigenere.title')}</CardTitle>
+    <Card role="region" aria-labelledby="vigenere-visualizer-title" className="gap-3 py-4">
+      <CardHeader className="px-4">
+        <CardTitle id="vigenere-visualizer-title" className="text-base">
+          {t('visualizer.vigenere.title')}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6">
+      <CardContent className="flex flex-col gap-4 px-4">
         {/* Ruban horizontal d'alignement avec défilement */}
         <div
           role="group"
@@ -165,26 +169,28 @@ export function VigenereVisualizer({
           </div>
         </div>
 
-        {/* Détail de la formule arithmétique */}
-        <div className="flex flex-col items-center gap-1 text-center">
-          <p className="font-mono text-lg font-medium tabular-nums text-foreground">{line1}</p>
-          <p className="font-mono text-sm tabular-nums text-muted-foreground">{line2}</p>
-          {step.data.wrapped && (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {mode === 'encrypt'
-                ? t('visualizer.vigenere.wrappedEncrypt')
-                : t('visualizer.vigenere.wrappedDecrypt')}
+        <div className="grid items-center gap-4 sm:grid-cols-2">
+          {/* Détail de la formule arithmétique */}
+          <div className="flex flex-col items-center gap-1 text-center">
+            <p className="font-mono text-lg font-medium tabular-nums text-foreground">{line1}</p>
+            <p className="font-mono text-sm tabular-nums text-muted-foreground">{line2}</p>
+            <p className="mt-1 min-h-4 text-xs text-muted-foreground">
+              {step.data.wrapped
+                ? mode === 'encrypt'
+                  ? t('visualizer.vigenere.wrappedEncrypt')
+                  : t('visualizer.vigenere.wrappedDecrypt')
+                : ''}
             </p>
-          )}
-        </div>
+          </div>
 
-        {/* Cadran circulaire de César avec décalage de la lettre courante */}
-        <CaesarDial
-          step={toDialStep(step)}
-          mode={mode}
-          stepDurationMs={stepDurationMs}
-          className="mx-auto max-w-xs"
-        />
+          {/* Cadran circulaire de César avec décalage de la lettre courante */}
+          <CaesarDial
+            step={toDialStep(step)}
+            mode={mode}
+            stepDurationMs={stepDurationMs}
+            className="mx-auto max-h-[28svh] max-w-[14rem]"
+          />
+        </div>
       </CardContent>
     </Card>
   );

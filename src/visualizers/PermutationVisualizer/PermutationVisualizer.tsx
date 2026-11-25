@@ -155,11 +155,13 @@ export function PermutationVisualizer({
       : '';
 
   return (
-    <Card role="region" aria-labelledby="permutation-visualizer-title">
-      <CardHeader>
-        <CardTitle id="permutation-visualizer-title">{t('visualizer.permutation.title')}</CardTitle>
+    <Card role="region" aria-labelledby="permutation-visualizer-title" className="gap-3 py-4">
+      <CardHeader className="px-4">
+        <CardTitle id="permutation-visualizer-title" className="text-base">
+          {t('visualizer.permutation.title')}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-6">
+      <CardContent className="flex flex-col items-center gap-4 px-4">
         {!step || !data ? (
           <p className="text-sm text-muted-foreground">{t('visualizer.permutation.empty')}</p>
         ) : (
@@ -169,7 +171,7 @@ export function PermutationVisualizer({
               role="img"
               aria-label={ariaLabel}
               viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
-              className="aspect-[4/3] w-full max-w-lg select-none"
+              className="aspect-[4/3] max-h-[40svh] w-full max-w-lg select-none"
             >
               {/* Libellé du bloc d'entrée */}
               <text
@@ -305,57 +307,55 @@ export function PermutationVisualizer({
             </svg>
 
             {/* Informations textuelles et récapitulatif descriptif sous le SVG */}
-            <div className="flex w-full flex-col items-center gap-4 border-t border-border pt-4">
-              {data.hasPadding && (
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span
-                    className="size-3.5 rounded border border-muted-foreground bg-muted border-dashed"
-                    aria-hidden="true"
-                  />
-                  <span>
-                    {mode === 'encrypt'
-                      ? t('visualizer.permutation.paddingLegendEncrypt')
-                      : t('visualizer.permutation.paddingLegendDecrypt')}
-                  </span>
-                </div>
-              )}
+            <div className="flex w-full flex-col items-center gap-2 border-t border-border pt-3">
+              <div className="min-h-5">
+                {data.hasPadding && (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span
+                      className="size-3.5 rounded border border-muted-foreground bg-muted border-dashed"
+                      aria-hidden="true"
+                    />
+                    <span>
+                      {mode === 'encrypt'
+                        ? t('visualizer.permutation.paddingLegendEncrypt')
+                        : t('visualizer.permutation.paddingLegendDecrypt')}
+                    </span>
+                  </div>
+                )}
+              </div>
 
-              <p className="font-mono text-sm text-foreground text-center">
-                {mode === 'encrypt'
-                  ? t('visualizer.permutation.appliedEncrypt', {
-                      permutation: data.permutation.join(', '),
-                    })
-                  : t('visualizer.permutation.appliedDecrypt', {
-                      permutation: data.permutation.join(', '),
-                    })}
-              </p>
+              <div className="flex flex-wrap items-baseline justify-center gap-x-6 gap-y-1 text-sm">
+                <p className="font-mono text-foreground">
+                  {mode === 'encrypt'
+                    ? t('visualizer.permutation.appliedEncrypt', {
+                        permutation: data.permutation.join(', '),
+                      })
+                    : t('visualizer.permutation.appliedDecrypt', {
+                        permutation: data.permutation.join(', '),
+                      })}
+                </p>
 
-              <dl className="grid w-full grid-cols-3 gap-4 text-center">
-                <div className="flex flex-col gap-1">
-                  <dt className="text-xs text-muted-foreground">
-                    {t('visualizer.permutation.block')}
-                  </dt>
-                  <dd className="text-lg font-semibold tabular-nums text-foreground">
-                    {data.blockIndex + 1}
-                  </dd>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <dt className="text-xs text-muted-foreground">
-                    {t('visualizer.permutation.blockSize')}
-                  </dt>
-                  <dd className="text-lg font-semibold tabular-nums text-foreground">
-                    {data.blockSize}
-                  </dd>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <dt className="text-xs text-muted-foreground">
-                    {t('visualizer.permutation.padding')}
-                  </dt>
-                  <dd className="text-lg font-semibold tabular-nums text-foreground">
-                    {data.paddingCount}
-                  </dd>
-                </div>
-              </dl>
+                <dl className="flex flex-wrap items-baseline justify-center gap-x-6 gap-y-1">
+                  <div className="flex items-baseline gap-1.5">
+                    <dt className="text-muted-foreground">{t('visualizer.permutation.block')}</dt>
+                    <dd className="font-semibold tabular-nums text-foreground">
+                      {data.blockIndex + 1}
+                    </dd>
+                  </div>
+                  <div className="flex items-baseline gap-1.5">
+                    <dt className="text-muted-foreground">
+                      {t('visualizer.permutation.blockSize')}
+                    </dt>
+                    <dd className="font-semibold tabular-nums text-foreground">{data.blockSize}</dd>
+                  </div>
+                  <div className="flex items-baseline gap-1.5">
+                    <dt className="text-muted-foreground">{t('visualizer.permutation.padding')}</dt>
+                    <dd className="font-semibold tabular-nums text-foreground">
+                      {data.paddingCount}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </div>
           </>
         )}

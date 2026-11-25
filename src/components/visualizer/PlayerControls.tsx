@@ -72,28 +72,9 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
   const stepText = labels.stepOf(currentStepNumber, totalSteps);
 
   return (
-    <Card>
-      <CardContent className="flex flex-col gap-4">
-        {/* Barre de progression / curseur direct */}
-        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center">
-          <input
-            type="range"
-            min={0}
-            max={Math.max(0, totalSteps - 1)}
-            value={currentIndex}
-            onChange={(e) => goTo(Number(e.target.value))}
-            disabled={isZeroSteps}
-            aria-label={labels.progress}
-            aria-valuetext={stepText}
-            className="h-2 w-full cursor-pointer accent-primary disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          />
-          <span className="shrink-0 text-center text-sm font-medium tabular-nums text-muted-foreground sm:min-w-[5rem] sm:text-right">
-            {stepText}
-          </span>
-        </div>
-
-        {/* Barre de boutons et sélecteur de vitesse */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+    <Card className="gap-3 py-4">
+      <CardContent className="px-4">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           {/* Contrôles de transport */}
           <div className="flex items-center gap-1.5">
             <Button
@@ -148,22 +129,38 @@ export function PlayerControls({ player, labels }: PlayerControlsProps) {
             </Button>
           </div>
 
-          {/* Sélecteur de vitesse */}
-          <div className="flex items-center gap-2">
-            <select
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
+          {/* Barre de progression / curseur direct */}
+          <div className="flex min-w-[9rem] flex-1 items-center gap-3">
+            <input
+              type="range"
+              min={0}
+              max={Math.max(0, totalSteps - 1)}
+              value={currentIndex}
+              onChange={(e) => goTo(Number(e.target.value))}
               disabled={isZeroSteps}
-              aria-label={labels.speed}
-              className="h-11 min-h-[44px] rounded-lg border border-input bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              {SPEEDS.map((s) => (
-                <option key={s} value={s}>
-                  {labels.speedOption(s)}
-                </option>
-              ))}
-            </select>
+              aria-label={labels.progress}
+              aria-valuetext={stepText}
+              className="h-2 flex-1 cursor-pointer accent-primary disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            />
+            <span className="shrink-0 whitespace-nowrap text-sm font-medium tabular-nums text-muted-foreground">
+              {stepText}
+            </span>
           </div>
+
+          {/* Sélecteur de vitesse */}
+          <select
+            value={speed}
+            onChange={(e) => setSpeed(Number(e.target.value))}
+            disabled={isZeroSteps}
+            aria-label={labels.speed}
+            className="h-11 min-h-[44px] rounded-lg border border-input bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {SPEEDS.map((s) => (
+              <option key={s} value={s}>
+                {labels.speedOption(s)}
+              </option>
+            ))}
+          </select>
         </div>
       </CardContent>
     </Card>

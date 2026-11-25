@@ -33,50 +33,52 @@ export function CaesarVisualizer({
   const { t } = useTranslation();
 
   return (
-    <Card role="region" aria-labelledby="caesar-visualizer-title">
-      <CardHeader>
-        <CardTitle id="caesar-visualizer-title">{t('visualizer.caesar.title')}</CardTitle>
+    <Card role="region" aria-labelledby="caesar-visualizer-title" className="gap-3 py-4">
+      <CardHeader className="px-4">
+        <CardTitle id="caesar-visualizer-title" className="text-base">
+          {t('visualizer.caesar.title')}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-6">
+      <CardContent className="flex flex-col items-center gap-4 px-4">
         {/* Cadran SVG circulaire */}
         <CaesarDial step={step} mode={mode} stepDurationMs={stepDurationMs} />
 
         {/* Tableau récapitulatif descriptif */}
-        <div className="flex w-full flex-col gap-3 border-t border-border pt-4">
-          <dl className="grid grid-cols-2 gap-4 text-center sm:grid-cols-4">
-            <div className="flex flex-col gap-1">
-              <dt className="text-xs text-muted-foreground">{t('visualizer.caesar.letter')}</dt>
-              <dd className="text-lg font-semibold tabular-nums text-foreground">
+        <div className="flex w-full flex-col gap-2 border-t border-border pt-3">
+          <dl className="flex flex-wrap items-baseline justify-center gap-x-6 gap-y-1 text-sm">
+            <div className="flex items-baseline gap-1.5">
+              <dt className="text-muted-foreground">{t('visualizer.caesar.letter')}</dt>
+              <dd className="font-semibold tabular-nums text-foreground">
                 {step ? step.input : '—'}
               </dd>
             </div>
-            <div className="flex flex-col gap-1">
-              <dt className="text-xs text-muted-foreground">{t('visualizer.caesar.position')}</dt>
-              <dd className="text-lg font-semibold tabular-nums text-foreground">
+            <div className="flex items-baseline gap-1.5">
+              <dt className="text-muted-foreground">{t('visualizer.caesar.position')}</dt>
+              <dd className="font-semibold tabular-nums text-foreground">
                 {step ? step.data.inputIndex : '—'}
               </dd>
             </div>
-            <div className="flex flex-col gap-1">
-              <dt className="text-xs text-muted-foreground">{t('visualizer.caesar.key')}</dt>
-              <dd className="text-lg font-semibold tabular-nums text-foreground">
+            <div className="flex items-baseline gap-1.5">
+              <dt className="text-muted-foreground">{t('visualizer.caesar.key')}</dt>
+              <dd className="font-semibold tabular-nums text-foreground">
                 {step ? step.data.shift : '—'}
               </dd>
             </div>
-            <div className="flex flex-col gap-1">
-              <dt className="text-xs text-muted-foreground">{t('visualizer.caesar.result')}</dt>
-              <dd className="text-lg font-semibold tabular-nums text-foreground">
+            <div className="flex items-baseline gap-1.5">
+              <dt className="text-muted-foreground">{t('visualizer.caesar.result')}</dt>
+              <dd className="font-semibold tabular-nums text-foreground">
                 {step ? `${step.output} (${step.data.outputIndex})` : '—'}
               </dd>
             </div>
           </dl>
 
-          {step?.data.wrapped && (
-            <p className="text-center text-xs text-muted-foreground">
-              {mode === 'encrypt'
+          <p className="min-h-4 text-center text-xs text-muted-foreground">
+            {step?.data.wrapped
+              ? mode === 'encrypt'
                 ? t('visualizer.caesar.wrappedEncrypt')
-                : t('visualizer.caesar.wrappedDecrypt')}
-            </p>
-          )}
+                : t('visualizer.caesar.wrappedDecrypt')
+              : ''}
+          </p>
         </div>
       </CardContent>
     </Card>

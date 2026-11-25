@@ -104,7 +104,7 @@ export function CaesarDial({
       role="img"
       aria-label={ariaLabel}
       viewBox="0 0 400 400"
-      className={cn('aspect-square w-full max-w-md select-none', className)}
+      className={cn('aspect-square max-h-[44svh] w-full max-w-md select-none', className)}
     >
       {/* Cercle principal des lettres (R=150) */}
       <circle cx="200" cy="200" r="150" fill="none" className="stroke-border" strokeWidth="1" />
