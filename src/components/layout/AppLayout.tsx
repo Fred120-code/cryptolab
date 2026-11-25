@@ -43,7 +43,7 @@ export function AppLayout(): JSX.Element {
         id="main-content"
         tabIndex={-1}
         ref={mainRef}
-        className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 outline-none sm:px-6"
+        className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 outline-none sm:px-6"
       >
         <Suspense fallback={<PageLoading />}>
           <Outlet />

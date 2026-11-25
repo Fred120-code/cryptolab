@@ -31,13 +31,11 @@ export function LabPage(): JSX.Element {
   const LabComponent = LABS[algorithm];
 
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">{pageTitle}</h1>
-        <p className="text-sm text-muted-foreground">{t('playground.notice')}</p>
-      </header>
-
-      <AlgorithmNav buildPath={labPath} ariaLabel={t('nav.algorithmTabs')} />
+    <div>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-xl font-semibold tracking-tight">{pageTitle}</h1>
+        <AlgorithmNav buildPath={labPath} ariaLabel={t('nav.algorithmTabs')} />
+      </div>
 
       <Suspense
         fallback={
