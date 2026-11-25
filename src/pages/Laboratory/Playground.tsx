@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { CaesarPlayground } from './CaesarPlayground';
 import { PermutationPlayground } from './PermutationPlayground';
 import { SubstitutionPlayground } from './SubstitutionPlayground';
+import { VigenerePlayground } from './VigenerePlayground';
 
 /**
  * Définition d'un algorithme accessible dans le laboratoire d'expérimentation.
@@ -30,6 +31,7 @@ const ALGORITHMS: AlgorithmDefinition[] = [
   DEFAULT_ALGORITHM,
   { id: 'substitution', labelKey: 'playground.substitution', component: SubstitutionPlayground },
   { id: 'permutation', labelKey: 'playground.permutation', component: PermutationPlayground },
+  { id: 'vigenere', labelKey: 'playground.vigenere', component: VigenerePlayground },
 ];
 
 /**
@@ -61,7 +63,11 @@ export function Playground(): JSX.Element {
       {/* Sélecteur d'algorithme */}
       <div className="flex flex-col gap-2">
         <Label id="playground-algorithm-label">{t('playground.algorithm')}</Label>
-        <div role="group" aria-labelledby="playground-algorithm-label" className="flex gap-2">
+        <div
+          role="group"
+          aria-labelledby="playground-algorithm-label"
+          className="flex flex-wrap gap-2"
+        >
           {ALGORITHMS.map(({ id, labelKey }) => (
             <Button
               key={id}

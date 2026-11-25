@@ -70,6 +70,8 @@
     "caesar": "César",
     "substitution": "Substitution",
     "permutation": "Permutation",
+    "vigenere": "Vigenère",
+    "keyWord": "Clé (lettres A à Z uniquement)",
     "permutationOrder": "Permutation (positions de 1 à n, séparées par des virgules)",
     "paddingToRemove": "Caractères de remplissage à retirer (facultatif)",
     "paddingAdded": "Caractères de remplissage « X » ajoutés\u00A0: {{padding}}. Indiquez ce nombre pour déchiffrer.",
