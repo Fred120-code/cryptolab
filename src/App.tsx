@@ -1,7 +1,8 @@
-import { Playground } from '@/pages/Laboratory/Playground';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router';
 
 function App() {
-  return <Playground />;
+  return <RouterProvider router={router} />;
 }
 
 export default App;

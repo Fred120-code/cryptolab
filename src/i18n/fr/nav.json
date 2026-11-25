@@ -1,5 +1,6 @@
 {
   "nav": {
-    "close": "Fermer"
+    "close": "Fermer",
+    "algorithmTabs": "Choix de l'algorithme"
   }
 }
