@@ -2,6 +2,9 @@ import { useMemo, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { caesarAlgorithm, type CaesarStepData } from '@/algorithms/caesar';
 import { OperationToggle } from '@/components/common/OperationToggle';
+import { LabParamsCard } from '@/components/lab/LabParamsCard';
+import { LabShell } from '@/components/lab/LabShell';
+import { StagePlaceholder } from '@/components/lab/StagePlaceholder';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ExplanationPanel } from '@/components/visualizer/ExplanationPanel';
@@ -52,10 +55,9 @@ export function CaesarPlayground(): JSX.Element {
     : undefined;
 
   return (
-    <div className="flex flex-col gap-8">
-      {/* Formulaire de configuration (sans balise <form>) */}
-      <section className="flex flex-col gap-6 rounded-xl border border-border bg-card p-4 sm:p-6">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <LabShell
+      form={
+        <LabParamsCard>
           {/* Saisie du message */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="caesar-text-input">{t('playground.text')}</Label>
@@ -68,64 +70,74 @@ export function CaesarPlayground(): JSX.Element {
             />
           </div>
 
-          {/* Saisie de la clé de décalage */}
+          <div className="grid gap-3 sm:grid-cols-2">
+            {/* Saisie de la clé de décalage */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="caesar-shift-input">{t('playground.shift')}</Label>
+              <Input
+                id="caesar-shift-input"
+                type="number"
+                step={1}
+                value={shiftStr}
+                onChange={(e) => setShiftStr(e.target.value)}
+                className="h-11 tabular-nums text-base md:text-sm"
+              />
+            </div>
+          </div>
+
+          {/* Sélection de l'opération Chiffrer / Déchiffrer */}
           <div className="flex flex-col gap-2">
-            <Label htmlFor="caesar-shift-input">{t('playground.shift')}</Label>
-            <Input
-              id="caesar-shift-input"
-              type="number"
-              step={1}
-              value={shiftStr}
-              onChange={(e) => setShiftStr(e.target.value)}
-              className="h-11 tabular-nums text-base md:text-sm"
+            <Label id="caesar-operation-label">{t('playground.operation')}</Label>
+            <OperationToggle
+              mode={mode}
+              onChange={setMode}
+              groupLabel={t('playground.operation')}
+              encryptLabel={t('playground.encrypt')}
+              decryptLabel={t('playground.decrypt')}
             />
           </div>
-        </div>
 
-        {/* Sélection de l'opération Chiffrer / Déchiffrer */}
-        <div className="flex flex-col gap-2">
-          <Label id="caesar-operation-label">{t('playground.operation')}</Label>
-          <OperationToggle
-            mode={mode}
-            onChange={setMode}
-            groupLabel={t('playground.operation')}
-            encryptLabel={t('playground.encrypt')}
-            decryptLabel={t('playground.decrypt')}
-          />
-        </div>
-
-        {/* Messages d'erreur de validation des paramètres */}
-        {!validation.valid && (
-          <div
-            role="alert"
-            className="flex flex-col gap-1 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive"
-          >
-            {validation.errors.map((err, i) => (
-              <p key={i}>{tt(err)}</p>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Panneau de résultat complet avec copie et surbrillance synchronisée */}
-      {validation.valid && result && (
-        <ResultPanel
-          input={text}
-          output={result.output}
-          mode={mode}
-          inputRange={currentRange}
-          outputRange={currentRange}
-        />
-      )}
-
-      {/* Visualiseur circulaire animé */}
-      <CaesarVisualizer step={player.currentStep} mode={mode} stepDurationMs={stepDurationMs} />
-
-      {/* Barre de commandes de transport */}
-      <PlayerControls player={player} labels={labels} />
-
-      {/* Panneau explicatif de l'étape active */}
-      <ExplanationPanel step={player.currentStep} isPlaying={player.isPlaying} />
-    </div>
+          {/* Messages d'erreur de validation des paramètres */}
+          {!validation.valid && (
+            <div
+              role="alert"
+              className="flex flex-col gap-1 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive"
+            >
+              {validation.errors.map((err, i) => (
+                <p key={i}>{tt(err)}</p>
+              ))}
+            </div>
+          )}
+        </LabParamsCard>
+      }
+      stage={
+        validation.valid && result ? (
+          <>
+            <CaesarVisualizer
+              step={player.currentStep}
+              mode={mode}
+              stepDurationMs={stepDurationMs}
+            />
+            <PlayerControls player={player} labels={labels} />
+          </>
+        ) : (
+          <StagePlaceholder />
+        )
+      }
+      details={
+        validation.valid && result ? (
+          <>
+            <ResultPanel
+              input={text}
+              output={result.output}
+              mode={mode}
+              inputRange={currentRange}
+              outputRange={currentRange}
+            />
+            <ExplanationPanel step={player.currentStep} isPlaying={player.isPlaying} />
+          </>
+        ) : null
+      }
+    />
   );
 }

@@ -9,6 +9,9 @@ import {
   type PermutationStepData,
 } from '@/algorithms/permutation';
 import { OperationToggle } from '@/components/common/OperationToggle';
+import { LabParamsCard } from '@/components/lab/LabParamsCard';
+import { LabShell } from '@/components/lab/LabShell';
+import { StagePlaceholder } from '@/components/lab/StagePlaceholder';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ExplanationPanel } from '@/components/visualizer/ExplanationPanel';
@@ -97,19 +100,67 @@ export function PermutationPlayground(): JSX.Element {
       : 0;
 
   return (
-    <div className="flex flex-col gap-8">
-      {/* Formulaire de configuration */}
-      <section className="flex flex-col gap-6 rounded-xl border border-border bg-card p-4 sm:p-6">
-        {/* Saisie du message source */}
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="permutation-text-input">{t('playground.text')}</Label>
-          <Input
-            id="permutation-text-input"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Ex: INFORMATIQUE"
-            className="h-11 text-base md:text-sm"
-          />
+    <LabShell
+      form={
+        <LabParamsCard>
+          {/* Saisie du message source */}
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="permutation-text-input">{t('playground.text')}</Label>
+            <Input
+              id="permutation-text-input"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Ex: INFORMATIQUE"
+              className="h-11 text-base md:text-sm"
+            />
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {/* Saisie de l'ordre de permutation */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="permutation-order-input">{t('playground.permutationOrder')}</Label>
+              <Input
+                id="permutation-order-input"
+                value={permutationStr}
+                onChange={(e) => setPermutationStr(e.target.value)}
+                autoComplete="off"
+                spellCheck={false}
+                inputMode="numeric"
+                placeholder="Ex: 2,4,1,3"
+                className="h-11 font-mono text-base md:text-sm"
+              />
+            </div>
+
+            {/* Saisie facultative du padding à retirer en déchiffrement */}
+            {mode === 'decrypt' && (
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="permutation-padding-input">{t('playground.paddingToRemove')}</Label>
+                <Input
+                  id="permutation-padding-input"
+                  type="number"
+                  min={0}
+                  step={1}
+                  value={paddingLengthStr}
+                  onChange={(e) => setPaddingLengthStr(e.target.value)}
+                  placeholder="0"
+                  className="h-11 tabular-nums text-base md:text-sm"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Sélection de l'opération Chiffrer / Déchiffrer */}
+          <div className="flex flex-col gap-2">
+            <Label id="permutation-operation-label">{t('playground.operation')}</Label>
+            <OperationToggle
+              mode={mode}
+              onChange={setMode}
+              groupLabel={t('playground.operation')}
+              encryptLabel={t('playground.encrypt')}
+              decryptLabel={t('playground.decrypt')}
+            />
+          </div>
+
           {text.length > 0 && normalizedText !== text && (
             <p className="text-xs text-muted-foreground">{t('playground.normalizedNotice')}</p>
           )}
@@ -118,87 +169,48 @@ export function PermutationPlayground(): JSX.Element {
               {t('playground.paddingAdded', { padding: paddingAdded })}
             </p>
           )}
-        </div>
 
-        {/* Saisie de l'ordre de permutation */}
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="permutation-order-input">{t('playground.permutationOrder')}</Label>
-          <Input
-            id="permutation-order-input"
-            value={permutationStr}
-            onChange={(e) => setPermutationStr(e.target.value)}
-            autoComplete="off"
-            spellCheck={false}
-            inputMode="numeric"
-            placeholder="Ex: 2,4,1,3"
-            className="h-11 font-mono text-base md:text-sm"
-          />
-        </div>
-
-        {/* Sélection de l'opération Chiffrer / Déchiffrer */}
-        <div className="flex flex-col gap-2">
-          <Label id="permutation-operation-label">{t('playground.operation')}</Label>
-          <OperationToggle
-            mode={mode}
-            onChange={setMode}
-            groupLabel={t('playground.operation')}
-            encryptLabel={t('playground.encrypt')}
-            decryptLabel={t('playground.decrypt')}
-          />
-        </div>
-
-        {/* Saisie facultative du padding à retirer en déchiffrement */}
-        {mode === 'decrypt' && (
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="permutation-padding-input">{t('playground.paddingToRemove')}</Label>
-            <Input
-              id="permutation-padding-input"
-              type="number"
-              min={0}
-              step={1}
-              value={paddingLengthStr}
-              onChange={(e) => setPaddingLengthStr(e.target.value)}
-              placeholder="0"
-              className="h-11 tabular-nums text-base md:text-sm"
+          {/* Messages d'erreur de validation des paramètres */}
+          {!validation.valid && (
+            <div
+              role="alert"
+              className="flex flex-col gap-1 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive"
+            >
+              {validation.errors.map((err, i) => (
+                <p key={i}>{tt(err)}</p>
+              ))}
+            </div>
+          )}
+        </LabParamsCard>
+      }
+      stage={
+        validation.valid && result ? (
+          <>
+            <PermutationVisualizer
+              step={player.currentStep}
+              mode={mode}
+              stepDurationMs={stepDurationMs}
             />
-          </div>
-        )}
-
-        {/* Messages d'erreur de validation des paramètres */}
-        {!validation.valid && (
-          <div
-            role="alert"
-            className="flex flex-col gap-1 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive"
-          >
-            {validation.errors.map((err, i) => (
-              <p key={i}>{tt(err)}</p>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Rendu ordonné : ResultPanel, PermutationVisualizer, PlayerControls, ExplanationPanel */}
-      {validation.valid && result && (
-        <>
-          <ResultPanel
-            input={normalizedText}
-            output={result.output}
-            mode={mode}
-            inputRange={currentRange}
-            outputRange={currentRange}
-          />
-
-          <PermutationVisualizer
-            step={player.currentStep}
-            mode={mode}
-            stepDurationMs={stepDurationMs}
-          />
-
-          <PlayerControls player={player} labels={labels} />
-
-          <ExplanationPanel step={player.currentStep} isPlaying={player.isPlaying} />
-        </>
-      )}
-    </div>
+            <PlayerControls player={player} labels={labels} />
+          </>
+        ) : (
+          <StagePlaceholder />
+        )
+      }
+      details={
+        validation.valid && result ? (
+          <>
+            <ResultPanel
+              input={normalizedText}
+              output={result.output}
+              mode={mode}
+              inputRange={currentRange}
+              outputRange={currentRange}
+            />
+            <ExplanationPanel step={player.currentStep} isPlaying={player.isPlaying} />
+          </>
+        ) : null
+      }
+    />
   );
 }

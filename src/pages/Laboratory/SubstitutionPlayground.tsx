@@ -6,6 +6,9 @@ import {
   type SubstitutionStepData,
 } from '@/algorithms/substitution';
 import { OperationToggle } from '@/components/common/OperationToggle';
+import { LabParamsCard } from '@/components/lab/LabParamsCard';
+import { LabShell } from '@/components/lab/LabShell';
+import { StagePlaceholder } from '@/components/lab/StagePlaceholder';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -64,121 +67,129 @@ export function SubstitutionPlayground(): JSX.Element {
     : undefined;
 
   return (
-    <div className="flex flex-col gap-8">
-      {/* Formulaire de configuration */}
-      <section className="flex flex-col gap-6 rounded-xl border border-border bg-card p-4 sm:p-6">
-        {/* Saisie du message */}
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="substitution-text-input">{t('playground.text')}</Label>
-          <Input
-            id="substitution-text-input"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Ex: CRYPTOGRAPHIE"
-            className="h-11 text-base md:text-sm"
-          />
-        </div>
-
-        {/* Choix de la source de l'alphabet (Mot-clé ou Personnalisé) */}
-        <div className="flex flex-col gap-2">
-          <Label id="substitution-source-label">{t('playground.alphabetSource')}</Label>
-          <div role="group" aria-labelledby="substitution-source-label" className="flex gap-2">
-            <Button
-              type="button"
-              variant={source === 'keyword' ? 'default' : 'outline'}
-              aria-pressed={source === 'keyword'}
-              onClick={() => setSource('keyword')}
-              className="min-h-11 flex-1"
-            >
-              {t('playground.sourceKeyword')}
-            </Button>
-            <Button
-              type="button"
-              variant={source === 'custom' ? 'default' : 'outline'}
-              aria-pressed={source === 'custom'}
-              onClick={() => setSource('custom')}
-              className="min-h-11 flex-1"
-            >
-              {t('playground.sourceCustom')}
-            </Button>
-          </div>
-        </div>
-
-        {/* Saisie du mot-clé ou de l'alphabet personnalisé */}
-        {source === 'keyword' ? (
+    <LabShell
+      form={
+        <LabParamsCard>
+          {/* Saisie du message */}
           <div className="flex flex-col gap-2">
-            <Label htmlFor="substitution-keyword-input">{t('playground.keyword')}</Label>
+            <Label htmlFor="substitution-text-input">{t('playground.text')}</Label>
             <Input
-              id="substitution-keyword-input"
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              placeholder="Ex: SECURITE"
-              className="h-11 font-mono uppercase text-base md:text-sm"
+              id="substitution-text-input"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Ex: CRYPTOGRAPHIE"
+              className="h-11 text-base md:text-sm"
             />
           </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {/* Choix de la source de l'alphabet (Mot-clé ou Personnalisé) */}
+            <div className="flex flex-col gap-2">
+              <Label id="substitution-source-label">{t('playground.alphabetSource')}</Label>
+              <div role="group" aria-labelledby="substitution-source-label" className="flex gap-2">
+                <Button
+                  type="button"
+                  variant={source === 'keyword' ? 'default' : 'outline'}
+                  aria-pressed={source === 'keyword'}
+                  onClick={() => setSource('keyword')}
+                  className="min-h-11 flex-1"
+                >
+                  {t('playground.sourceKeyword')}
+                </Button>
+                <Button
+                  type="button"
+                  variant={source === 'custom' ? 'default' : 'outline'}
+                  aria-pressed={source === 'custom'}
+                  onClick={() => setSource('custom')}
+                  className="min-h-11 flex-1"
+                >
+                  {t('playground.sourceCustom')}
+                </Button>
+              </div>
+            </div>
+
+            {/* Saisie du mot-clé ou de l'alphabet personnalisé */}
+            {source === 'keyword' ? (
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="substitution-keyword-input">{t('playground.keyword')}</Label>
+                <Input
+                  id="substitution-keyword-input"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder="Ex: SECURITE"
+                  className="h-11 font-mono uppercase text-base md:text-sm"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="substitution-custom-input">{t('playground.customAlphabet')}</Label>
+                <Input
+                  id="substitution-custom-input"
+                  value={customAlphabet}
+                  onChange={(e) => setCustomAlphabet(e.target.value)}
+                  autoComplete="off"
+                  spellCheck={false}
+                  placeholder="Ex: ZYXWVUTSRQPONMLKJIHGFEDCBA"
+                  className="h-11 font-mono uppercase text-base md:text-sm"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Sélection de l'opération Chiffrer / Déchiffrer */}
+          <div className="flex flex-col gap-2">
+            <Label id="substitution-operation-label">{t('playground.operation')}</Label>
+            <OperationToggle
+              mode={mode}
+              onChange={setMode}
+              groupLabel={t('playground.operation')}
+              encryptLabel={t('playground.encrypt')}
+              decryptLabel={t('playground.decrypt')}
+            />
+          </div>
+
+          {/* Messages d'erreur de validation des paramètres */}
+          {!validation.valid && (
+            <div
+              role="alert"
+              className="flex flex-col gap-1 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive"
+            >
+              {validation.errors.map((err, i) => (
+                <p key={i}>{tt(err)}</p>
+              ))}
+            </div>
+          )}
+        </LabParamsCard>
+      }
+      stage={
+        validation.valid && result ? (
+          <>
+            <SubstitutionVisualizer
+              step={player.currentStep}
+              alphabet={alphabet}
+              mode={mode}
+              stepDurationMs={stepDurationMs}
+            />
+            <PlayerControls player={player} labels={labels} />
+          </>
         ) : (
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="substitution-custom-input">{t('playground.customAlphabet')}</Label>
-            <Input
-              id="substitution-custom-input"
-              value={customAlphabet}
-              onChange={(e) => setCustomAlphabet(e.target.value)}
-              autoComplete="off"
-              spellCheck={false}
-              placeholder="Ex: ZYXWVUTSRQPONMLKJIHGFEDCBA"
-              className="h-11 font-mono uppercase text-base md:text-sm"
+          <StagePlaceholder />
+        )
+      }
+      details={
+        validation.valid && result ? (
+          <>
+            <ResultPanel
+              input={text}
+              output={result.output}
+              mode={mode}
+              inputRange={currentRange}
+              outputRange={currentRange}
             />
-          </div>
-        )}
-
-        {/* Sélection de l'opération Chiffrer / Déchiffrer */}
-        <div className="flex flex-col gap-2">
-          <Label id="substitution-operation-label">{t('playground.operation')}</Label>
-          <OperationToggle
-            mode={mode}
-            onChange={setMode}
-            groupLabel={t('playground.operation')}
-            encryptLabel={t('playground.encrypt')}
-            decryptLabel={t('playground.decrypt')}
-          />
-        </div>
-
-        {/* Messages d'erreur de validation des paramètres */}
-        {!validation.valid && (
-          <div
-            role="alert"
-            className="flex flex-col gap-1 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive"
-          >
-            {validation.errors.map((err, i) => (
-              <p key={i}>{tt(err)}</p>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Rendu ordonné : ResultPanel, SubstitutionVisualizer, PlayerControls, ExplanationPanel */}
-      {validation.valid && result && (
-        <>
-          <ResultPanel
-            input={text}
-            output={result.output}
-            mode={mode}
-            inputRange={currentRange}
-            outputRange={currentRange}
-          />
-
-          <SubstitutionVisualizer
-            step={player.currentStep}
-            alphabet={alphabet}
-            mode={mode}
-            stepDurationMs={stepDurationMs}
-          />
-
-          <PlayerControls player={player} labels={labels} />
-
-          <ExplanationPanel step={player.currentStep} isPlaying={player.isPlaying} />
-        </>
-      )}
-    </div>
+            <ExplanationPanel step={player.currentStep} isPlaying={player.isPlaying} />
+          </>
+        ) : null
+      }
+    />
   );
 }

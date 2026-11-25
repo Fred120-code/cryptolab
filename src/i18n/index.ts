@@ -15,6 +15,7 @@ import vigenereFr from './fr/vigenere.json';
 import visualizerFr from './fr/visualizer.json';
 import activityFr from './fr/activity.json';
 import homeFr from './fr/home.json';
+import labFr from './fr/lab.json';
 
 import commonEn from './en/common.json';
 import playerEn from './en/player.json';
@@ -29,6 +30,7 @@ import vigenereEn from './en/vigenere.json';
 import visualizerEn from './en/visualizer.json';
 import activityEn from './en/activity.json';
 import homeEn from './en/home.json';
+import labEn from './en/lab.json';
 
 const frResources = {
   ...commonFr,
@@ -44,6 +46,7 @@ const frResources = {
   ...visualizerFr,
   ...activityFr,
   ...homeFr,
+  ...labFr,
 };
 
 const enResources = {
@@ -60,6 +63,7 @@ const enResources = {
   ...visualizerEn,
   ...activityEn,
   ...homeEn,
+  ...labEn,
 };
 
 const initialLang = detectLanguage();
