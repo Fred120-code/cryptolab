@@ -1,6 +1,18 @@
 {
   "nav": {
     "close": "Fermer",
-    "algorithmTabs": "Choix de l'algorithme"
+    "algorithmTabs": "Choix de l'algorithme",
+    "main": "Navigation principale",
+    "openMenu": "Ouvrir le menu",
+    "menuTitle": "Menu",
+    "skipToContent": "Aller au contenu principal",
+    "homeLink": "CryptoLab, retour à l'accueil",
+    "home": "Accueil",
+    "algorithms": "Algorithmes",
+    "laboratory": "Laboratoire",
+    "cryptanalysis": "Cryptanalyse",
+    "documentation": "Documentation",
+    "exercises": "Exercices",
+    "compare": "Comparaison"
   }
 }

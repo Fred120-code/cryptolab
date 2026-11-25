@@ -1,0 +1,8 @@
+{
+  "layout": {
+    "footer": {
+      "educational": "Les algorithmes classiques présentés ici sont destinés à l'apprentissage. Ils ne doivent pas servir à protéger des communications sensibles.",
+      "privacy": "Tous les calculs sont effectués dans votre navigateur\u00A0: vos textes ne sont ni envoyés ni enregistrés."
+    }
+  }
+}

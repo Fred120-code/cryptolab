@@ -1,0 +1,8 @@
+{
+  "layout": {
+    "footer": {
+      "educational": "The classical ciphers shown here are for learning purposes. They must not be used to protect sensitive communications.",
+      "privacy": "All computations run in your browser: your texts are neither sent nor stored."
+    }
+  }
+}

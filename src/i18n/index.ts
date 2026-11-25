@@ -7,6 +7,7 @@ import playerFr from './fr/player.json';
 import navFr from './fr/nav.json';
 import algorithmsFr from './fr/algorithms.json';
 import pagesFr from './fr/pages.json';
+import layoutFr from './fr/layout.json';
 import caesarFr from './fr/caesar.json';
 import substitutionFr from './fr/substitution.json';
 import permutationFr from './fr/permutation.json';
@@ -18,6 +19,7 @@ import playerEn from './en/player.json';
 import navEn from './en/nav.json';
 import algorithmsEn from './en/algorithms.json';
 import pagesEn from './en/pages.json';
+import layoutEn from './en/layout.json';
 import caesarEn from './en/caesar.json';
 import substitutionEn from './en/substitution.json';
 import permutationEn from './en/permutation.json';
@@ -30,6 +32,7 @@ const frResources = {
   ...navFr,
   ...algorithmsFr,
   ...pagesFr,
+  ...layoutFr,
   ...caesarFr,
   ...substitutionFr,
   ...permutationFr,
@@ -43,6 +46,7 @@ const enResources = {
   ...navEn,
   ...algorithmsEn,
   ...pagesEn,
+  ...layoutEn,
   ...caesarEn,
   ...substitutionEn,
   ...permutationEn,

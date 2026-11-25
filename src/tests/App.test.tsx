@@ -7,8 +7,8 @@ afterEach(() => {
 });
 
 describe('App', () => {
-  it('affiche le titre CryptoLab', () => {
+  it('affiche le titre CryptoLab', async () => {
     render(<App />);
-    expect(screen.getByText('CryptoLab')).toBeInTheDocument();
+    expect(await screen.findByText('CryptoLab')).toBeInTheDocument();
   });
 });

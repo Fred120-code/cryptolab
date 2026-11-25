@@ -1,10 +1,11 @@
-import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { AppLayout } from '@/components/layout/AppLayout';
 import { cryptanalysisPath, docsPath, labPath, ROUTES } from '@/config/routes';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Outlet />,
+    element: <AppLayout />,
     children: [
       {
         index: true,
