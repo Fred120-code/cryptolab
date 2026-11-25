@@ -50,8 +50,15 @@ export function VigenereVisualizer({
     const container = containerRef.current;
     const el = columnRefs.current[currentIndex];
     if (container && el && typeof container.scrollTo === 'function') {
+      const containerRect = container.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const left =
+        container.scrollLeft +
+        (elRect.left - containerRect.left) -
+        container.clientWidth / 2 +
+        elRect.width / 2;
       container.scrollTo({
-        left: el.offsetLeft - container.clientWidth / 2 + el.clientWidth / 2,
+        left: Math.max(0, left),
         behavior: shouldReduceMotion ? 'auto' : 'smooth',
       });
     }
@@ -85,9 +92,9 @@ export function VigenereVisualizer({
           role="group"
           aria-label={t('visualizer.vigenere.stripLabel')}
           ref={containerRef}
-          className="overflow-x-auto"
+          className="overflow-x-auto py-2"
         >
-          <div className="flex w-max min-w-full">
+          <div className="flex w-max min-w-full pr-2">
             {/* Colonne fixe d'en-têtes de lignes */}
             <div
               aria-hidden="true"
@@ -126,8 +133,8 @@ export function VigenereVisualizer({
                       output: s.output,
                     })}
                     className={cn(
-                      'flex min-w-11 flex-col items-center rounded-md p-0 transition-colors',
-                      'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                      'relative flex min-w-11 flex-col items-center rounded-md p-0 transition-colors',
+                      'focus-visible:z-20 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
                       isCurrent
                         ? 'bg-primary text-primary-foreground'
                         : 'text-foreground hover:bg-muted',
