@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { KeyRound } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
+import { ThemeSwitcher } from '@/components/common/ThemeSwitcher';
 import { MobileNav } from '@/components/navigation/MobileNav';
 import { NAV_ITEMS } from '@/config/navigation';
 import { ROUTES } from '@/config/routes';
@@ -52,8 +53,9 @@ export function SiteHeader(): JSX.Element {
           ))}
         </nav>
 
-        {/* Outils secondaires : sélecteur de langue et menu mobile */}
+        {/* Outils secondaires : sélecteur de thème, sélecteur de langue et menu mobile */}
         <div className="flex items-center gap-2">
+          <ThemeSwitcher />
           <LanguageSwitcher />
           <div className="lg:hidden">
             <MobileNav />

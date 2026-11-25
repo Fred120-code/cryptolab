@@ -13,6 +13,8 @@
     "cryptanalysis": "Cryptanalysis",
     "documentation": "Documentation",
     "exercises": "Exercises",
-    "compare": "Comparison"
+    "compare": "Comparison",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
   }
 }
