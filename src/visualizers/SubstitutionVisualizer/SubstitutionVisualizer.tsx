@@ -84,13 +84,13 @@ export function SubstitutionVisualizer({
     : t('visualizer.substitution.ariaLabelEmpty');
 
   return (
-    <Card role="region" aria-labelledby="substitution-visualizer-title">
-      <CardHeader>
-        <CardTitle id="substitution-visualizer-title">
+    <Card role="region" aria-labelledby="substitution-visualizer-title" className="gap-3 py-4">
+      <CardHeader className="px-4">
+        <CardTitle id="substitution-visualizer-title" className="text-base">
           {t('visualizer.substitution.title')}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-6 px-3 sm:px-6">
+      <CardContent className="flex flex-col items-center gap-4 px-4">
         {/* Légende descriptive des deux rangées alphabétiques */}
         <div className="flex w-full flex-wrap items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
@@ -108,7 +108,7 @@ export function SubstitutionVisualizer({
 
         {/* Grille principale des deux bandes de 13 colonnes */}
         <div role="img" aria-label={ariaLabel} className="w-full">
-          <div className="flex w-full flex-col gap-6" aria-hidden="true">
+          <div className="flex w-full flex-col gap-3" aria-hidden="true">
             {[0, 1].map((bandIndex) => (
               <div
                 key={bandIndex}
@@ -189,39 +189,31 @@ export function SubstitutionVisualizer({
         </div>
 
         {/* Tableau récapitulatif descriptif de l'étape courante */}
-        <div className="flex w-full flex-col gap-3 border-t border-border pt-4">
-          <dl className="grid grid-cols-3 gap-4 text-center">
-            <div className="flex flex-col gap-1">
-              <dt className="text-xs text-muted-foreground">
-                {t('visualizer.substitution.letter')}
-              </dt>
-              <dd className="text-lg font-semibold tabular-nums text-foreground">
+        <div className="flex w-full flex-col gap-2 border-t border-border pt-3">
+          <dl className="flex flex-wrap items-baseline justify-center gap-x-6 gap-y-1 text-sm">
+            <div className="flex items-baseline gap-1.5">
+              <dt className="text-muted-foreground">{t('visualizer.substitution.letter')}</dt>
+              <dd className="font-semibold tabular-nums text-foreground">
                 {step ? step.input : '—'}
               </dd>
             </div>
-            <div className="flex flex-col gap-1">
-              <dt className="text-xs text-muted-foreground">
-                {t('visualizer.substitution.position')}
-              </dt>
-              <dd className="text-lg font-semibold tabular-nums text-foreground">
+            <div className="flex items-baseline gap-1.5">
+              <dt className="text-muted-foreground">{t('visualizer.substitution.position')}</dt>
+              <dd className="font-semibold tabular-nums text-foreground">
                 {step ? step.data.plainIndex : '—'}
               </dd>
             </div>
-            <div className="flex flex-col gap-1">
-              <dt className="text-xs text-muted-foreground">
-                {t('visualizer.substitution.result')}
-              </dt>
-              <dd className="text-lg font-semibold tabular-nums text-foreground">
+            <div className="flex items-baseline gap-1.5">
+              <dt className="text-muted-foreground">{t('visualizer.substitution.result')}</dt>
+              <dd className="font-semibold tabular-nums text-foreground">
                 {step ? step.output : '—'}
               </dd>
             </div>
           </dl>
 
-          {step?.data.isFixedPoint && (
-            <p className="text-center text-xs text-muted-foreground">
-              {t('visualizer.substitution.fixedPoint')}
-            </p>
-          )}
+          <p className="min-h-4 text-center text-xs text-muted-foreground">
+            {step?.data.isFixedPoint ? t('visualizer.substitution.fixedPoint') : ''}
+          </p>
         </div>
       </CardContent>
     </Card>

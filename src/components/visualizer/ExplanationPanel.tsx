@@ -26,18 +26,20 @@ export function ExplanationPanel({ step, isPlaying }: ExplanationPanelProps): JS
   const tt = useTranslatableText();
 
   return (
-    <Card role="region" aria-labelledby="explanation-panel-title">
-      <CardHeader>
-        <CardTitle id="explanation-panel-title">{t('visualizer.explanation.title')}</CardTitle>
+    <Card role="region" aria-labelledby="explanation-panel-title" className="gap-3 py-4">
+      <CardHeader className="px-4">
+        <CardTitle id="explanation-panel-title" className="text-base">
+          {t('visualizer.explanation.title')}
+        </CardTitle>
       </CardHeader>
       <CardContent
         aria-atomic="true"
         aria-live={isPlaying ? 'off' : 'polite'}
-        className="flex flex-col gap-3"
+        className="flex flex-col gap-3 px-4"
       >
         {step ? (
           <>
-            <p className="max-w-prose text-sm leading-relaxed text-foreground">
+            <p className="min-h-[5rem] max-w-prose text-sm leading-relaxed text-foreground">
               {tt(step.explanation)}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">

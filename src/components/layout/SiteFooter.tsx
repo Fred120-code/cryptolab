@@ -9,7 +9,7 @@ export function SiteFooter(): JSX.Element {
 
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-5xl flex-col gap-2 px-4 py-6 text-sm text-muted-foreground sm:px-6">
+      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-sm text-muted-foreground sm:px-6">
         <p>{t('layout.footer.educational')}</p>
         <p>{t('layout.footer.privacy')}</p>
       </div>

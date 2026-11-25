@@ -65,7 +65,6 @@
     }
   },
   "playground": {
-    "notice": "Aperçu temporaire des visualiseurs. Le laboratoire complet viendra plus tard.",
     "keyWord": "Clé (lettres A à Z uniquement)",
     "permutationOrder": "Permutation (positions de 1 à n, séparées par des virgules)",
     "paddingToRemove": "Caractères de remplissage à retirer (facultatif)",

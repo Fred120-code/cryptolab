@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type JSX } from 'react';
+import { useEffect, useId, useRef, useState, type JSX } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -48,7 +48,7 @@ function renderHighlightedText(text: string, range?: TextRange): JSX.Element {
   const chars = Array.from(text);
 
   return (
-    <p className="font-mono text-lg tracking-wide whitespace-pre-wrap break-words">
+    <p className="font-mono text-base tracking-wide whitespace-pre-wrap break-words">
       {chars.map((char, index) => {
         const charLength = char.length;
         const startOffset = utf16Offset;
@@ -92,6 +92,8 @@ export function ResultPanel({
   outputRange,
 }: ResultPanelProps): JSX.Element {
   const { t } = useTranslation();
+  const inputLabelId = useId();
+  const outputLabelId = useId();
   const [copiedOutput, setCopiedOutput] = useState<string | null>(null);
   const [failedOutput, setFailedOutput] = useState<string | null>(null);
   const copied = copiedOutput === output;
@@ -134,9 +136,11 @@ export function ResultPanel({
   };
 
   return (
-    <Card role="region" aria-labelledby="result-panel-title">
-      <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-4">
-        <CardTitle id="result-panel-title">{t('visualizer.result.title')}</CardTitle>
+    <Card role="region" aria-labelledby="result-panel-title" className="gap-3 py-4">
+      <CardHeader className="flex flex-row items-center justify-between gap-4 px-4">
+        <CardTitle id="result-panel-title" className="text-base">
+          {t('visualizer.result.title')}
+        </CardTitle>
         <div className="flex flex-col items-end gap-1">
           <Button
             type="button"
@@ -157,7 +161,7 @@ export function ResultPanel({
           </p>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4">
+      <CardContent className="flex flex-col gap-3 px-4">
         {copyError && (
           <p role="alert" className="text-sm text-destructive">
             {t('visualizer.result.copyFailed')}
@@ -165,21 +169,35 @@ export function ResultPanel({
         )}
 
         {/* Bloc texte original */}
-        <div className="flex flex-col gap-1.5 rounded-lg border border-border bg-muted/30 p-3">
-          <span className="text-xs font-medium text-muted-foreground">
+        <div className="flex flex-col gap-1.5 rounded-lg border border-border bg-muted/30 p-2.5">
+          <span id={inputLabelId} className="text-xs font-medium text-muted-foreground">
             {t('visualizer.result.original')}
           </span>
-          {renderHighlightedText(input, inputRange)}
+          <div
+            tabIndex={0}
+            role="group"
+            aria-labelledby={inputLabelId}
+            className="max-h-28 overflow-y-auto rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {renderHighlightedText(input, inputRange)}
+          </div>
         </div>
 
         {/* Bloc texte obtenu (chiffré ou déchiffré) */}
-        <div className="flex flex-col gap-1.5 rounded-lg border border-border bg-muted/30 p-3">
-          <span className="text-xs font-medium text-muted-foreground">
+        <div className="flex flex-col gap-1.5 rounded-lg border border-border bg-muted/30 p-2.5">
+          <span id={outputLabelId} className="text-xs font-medium text-muted-foreground">
             {mode === 'encrypt'
               ? t('visualizer.result.encrypted')
               : t('visualizer.result.decrypted')}
           </span>
-          {renderHighlightedText(output, outputRange)}
+          <div
+            tabIndex={0}
+            role="group"
+            aria-labelledby={outputLabelId}
+            className="max-h-28 overflow-y-auto rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {renderHighlightedText(output, outputRange)}
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -65,7 +65,6 @@
     }
   },
   "playground": {
-    "notice": "Temporary preview of the visualizers. The full laboratory will come later.",
     "keyWord": "Key (letters A to Z only)",
     "permutationOrder": "Permutation (positions 1 to n, comma-separated)",
     "paddingToRemove": "Padding characters to remove (optional)",
