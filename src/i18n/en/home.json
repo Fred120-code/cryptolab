@@ -1,0 +1,27 @@
+{
+  "home": {
+    "hero": {
+      "title": "Learn classical cryptography by watching it work",
+      "subtitle": "CryptoLab lets you encrypt, decrypt, and attack the course ciphers, then follow every calculation step by step with an animation that matches the real operation.",
+      "ctaLab": "Open the laboratory",
+      "ctaAlgorithms": "View algorithms",
+      "caption": "Example: {{from}} encrypted with key {{shift}} gives {{to}}."
+    },
+    "algorithms": {
+      "title": "The four algorithms",
+      "all": "View full catalog"
+    },
+    "activity": {
+      "title": "Your recent activity",
+      "empty": "Your recent activity will appear here as soon as you open a laboratory.",
+      "privacy": "Only the algorithm, activity type, and date are stored in your browser. Never your texts, keys, or results.",
+      "clear": "Clear history",
+      "cleared": "History cleared."
+    },
+    "exercises": {
+      "title": "Test your skills",
+      "body": "An exercise bank inspired by coursework, with detailed solutions, is in preparation.",
+      "cta": "View exercises"
+    }
+  }
+}

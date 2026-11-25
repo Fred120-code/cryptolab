@@ -36,6 +36,21 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+@theme {
+  --animate-letter-in: letter-in 0.5s ease-out both;
+
+  @keyframes letter-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
 :root {
   --radius: 0.625rem;
   color-scheme: light dark;
