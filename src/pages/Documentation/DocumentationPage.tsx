@@ -2,6 +2,7 @@ import type { JSX } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { isAlgorithmId } from '@/config/algorithms';
+import { useRecordVisit } from '@/hooks/useActivity';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage';
 
@@ -18,6 +19,7 @@ export function DocumentationPage(): JSX.Element {
     ? t('pages.docs.title', { algorithm: algorithmName })
     : t('pages.notFound.title');
   useDocumentTitle(pageTitle);
+  useRecordVisit('docs', valid ? algorithm : undefined);
 
   if (!valid) {
     return <NotFoundPage />;

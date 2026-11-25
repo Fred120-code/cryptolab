@@ -1,0 +1,10 @@
+{
+  "activity": {
+    "kind": {
+      "lab": "Laboratoire",
+      "docs": "Documentation",
+      "cryptanalysis": "Cryptanalyse",
+      "exercise": "Exercice"
+    }
+  }
+}
