@@ -51,6 +51,17 @@
       "paddingLegendEncrypt": "Padding character added",
       "paddingLegendDecrypt": "Padding character, removed from the final text",
       "ariaLabel": "Block permutation: {{from}} becomes {{to}} with permutation ({{permutation}})."
+    },
+    "vigenere": {
+      "title": "Text and key alignment",
+      "empty": "No letter to display. Enter a text containing at least one letter.",
+      "stripLabel": "Message letters and matching key letter. Select a column to see its calculation.",
+      "rowInput": "Input",
+      "rowKey": "Key",
+      "rowOutput": "Output",
+      "columnLabel": "Letter {{number}}: {{input}}, key {{key}}, result {{output}}",
+      "wrappedEncrypt": "The sum goes past 25: 26 is subtracted to wrap around the alphabet.",
+      "wrappedDecrypt": "The difference is negative: 26 is added to wrap around the alphabet."
     }
   },
   "playground": {
@@ -59,6 +70,8 @@
     "caesar": "Caesar",
     "substitution": "Substitution",
     "permutation": "Permutation",
+    "vigenere": "Vigenère",
+    "keyWord": "Key (letters A to Z only)",
     "permutationOrder": "Permutation (positions 1 to n, comma-separated)",
     "paddingToRemove": "Padding characters to remove (optional)",
     "paddingAdded": "Padding characters “X” added: {{padding}}. Enter this number to decrypt.",
