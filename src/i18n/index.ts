@@ -4,6 +4,10 @@ import { detectLanguage, isSupportedLanguage, persistLanguage } from './language
 
 import commonFr from './fr/common.json';
 import playerFr from './fr/player.json';
+import navFr from './fr/nav.json';
+import algorithmsFr from './fr/algorithms.json';
+import pagesFr from './fr/pages.json';
+import layoutFr from './fr/layout.json';
 import caesarFr from './fr/caesar.json';
 import substitutionFr from './fr/substitution.json';
 import permutationFr from './fr/permutation.json';
@@ -12,6 +16,10 @@ import visualizerFr from './fr/visualizer.json';
 
 import commonEn from './en/common.json';
 import playerEn from './en/player.json';
+import navEn from './en/nav.json';
+import algorithmsEn from './en/algorithms.json';
+import pagesEn from './en/pages.json';
+import layoutEn from './en/layout.json';
 import caesarEn from './en/caesar.json';
 import substitutionEn from './en/substitution.json';
 import permutationEn from './en/permutation.json';
@@ -21,6 +29,10 @@ import visualizerEn from './en/visualizer.json';
 const frResources = {
   ...commonFr,
   ...playerFr,
+  ...navFr,
+  ...algorithmsFr,
+  ...pagesFr,
+  ...layoutFr,
   ...caesarFr,
   ...substitutionFr,
   ...permutationFr,
@@ -31,6 +43,10 @@ const frResources = {
 const enResources = {
   ...commonEn,
   ...playerEn,
+  ...navEn,
+  ...algorithmsEn,
+  ...pagesEn,
+  ...layoutEn,
   ...caesarEn,
   ...substitutionEn,
   ...permutationEn,

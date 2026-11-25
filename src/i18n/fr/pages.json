@@ -1,0 +1,33 @@
+{
+  "pages": {
+    "home": {
+      "title": "Accueil"
+    },
+    "algorithms": {
+      "title": "Algorithmes"
+    },
+    "lab": {
+      "title": "Laboratoire\u00A0: {{algorithm}}"
+    },
+    "cryptanalysis": {
+      "title": "Cryptanalyse\u00A0: {{algorithm}}"
+    },
+    "docs": {
+      "title": "Documentation\u00A0: {{algorithm}}"
+    },
+    "exercises": {
+      "title": "Exercices"
+    },
+    "compare": {
+      "title": "Comparaison des algorithmes"
+    },
+    "placeholder": {
+      "body": "Cette page sera disponible prochainement."
+    },
+    "notFound": {
+      "title": "Page introuvable",
+      "body": "La page demandée n'existe pas.",
+      "home": "Retour à l'accueil"
+    }
+  }
+}

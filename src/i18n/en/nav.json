@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "close": "Close",
+    "algorithmTabs": "Choose an algorithm",
+    "main": "Main navigation",
+    "openMenu": "Open menu",
+    "menuTitle": "Menu",
+    "skipToContent": "Skip to main content",
+    "homeLink": "CryptoLab, back to home",
+    "home": "Home",
+    "algorithms": "Algorithms",
+    "laboratory": "Laboratory",
+    "cryptanalysis": "Cryptanalysis",
+    "documentation": "Documentation",
+    "exercises": "Exercises",
+    "compare": "Comparison"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "algorithms": {
+    "caesar": {
+      "name": "César"
+    },
+    "substitution": {
+      "name": "Substitution"
+    },
+    "permutation": {
+      "name": "Permutation"
+    },
+    "vigenere": {
+      "name": "Vigenère"
+    }
+  }
+}
