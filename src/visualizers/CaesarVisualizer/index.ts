@@ -1,3 +1,3 @@
-export { CaesarVisualizer } from './CaesarVisualizer';
-export type { CaesarVisualizerProps } from './CaesarVisualizer';
+export { CaesarVisualizer, type CaesarVisualizerProps } from './CaesarVisualizer';
+export { CaesarDial, type CaesarDialProps } from './CaesarDial';
 export * from './geometry';
