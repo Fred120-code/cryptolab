@@ -1,16 +1,44 @@
 {
   "algorithms": {
     "caesar": {
-      "name": "Caesar"
+      "name": "Caesar",
+      "description": "Shifts each letter by a fixed number of positions in the alphabet.",
+      "principle": "Each letter is replaced by the one located k positions further, wrapping from Z back to A: C = (P + k) mod 26."
     },
     "substitution": {
-      "name": "Substitution"
+      "name": "Substitution",
+      "description": "Replaces each letter with another according to a shuffled alphabet.",
+      "principle": "A 26-letter substitution alphabet, often built from a keyword, maps each plaintext letter to a unique ciphertext letter."
     },
     "permutation": {
-      "name": "Permutation"
+      "name": "Permutation",
+      "description": "Rearranges letters within fixed-size blocks.",
+      "principle": "The text is split into blocks, padded with X if needed. Within each block, positions are shuffled according to a permutation: the letters stay the same, only their positions change."
     },
     "vigenere": {
-      "name": "Vigenère"
+      "name": "Vigenère",
+      "description": "Applies a different Caesar shift to each letter, based on a repeating key.",
+      "principle": "The key is repeated over the entire length of the message and each letter is shifted by the value of the corresponding key letter: Ci = (Pi + Ki) mod 26."
+    },
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "difficultyLabel": "Level",
+    "operationsLabel": "Available operations",
+    "principleLabel": "Principle",
+    "openLab": "Open the laboratory",
+    "readDocs": "Read the documentation",
+    "operations": {
+      "encrypt": "Encrypt",
+      "decrypt": "Decrypt",
+      "bruteForce": "Brute-force attack",
+      "buildAlphabet": "Alphabet construction",
+      "frequencyAnalysis": "Frequency analysis",
+      "inversePermutation": "Inverse permutation",
+      "permutationSearch": "Permutation search",
+      "assistedCryptanalysis": "Assisted cryptanalysis"
     }
   }
 }
