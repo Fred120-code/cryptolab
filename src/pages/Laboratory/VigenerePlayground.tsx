@@ -3,6 +3,7 @@ import { Eraser } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { vigenereAlgorithm, type VigenereStepData } from '@/algorithms/vigenere';
 import { OperationToggle } from '@/components/common/OperationToggle';
+import { LabLinks } from '@/components/lab/LabLinks';
 import { LabParamsCard } from '@/components/lab/LabParamsCard';
 import { LabShell } from '@/components/lab/LabShell';
 import { ModeSwitch, type InputMode } from '@/components/lab/ModeSwitch';
@@ -183,20 +184,23 @@ export function VigenerePlayground(): JSX.Element {
         </LabParamsCard>
       }
       stage={
-        result !== null ? (
-          <>
-            <VigenereVisualizer
-              steps={steps}
-              currentIndex={player.currentIndex}
-              onSelect={player.goTo}
-              mode={mode}
-              stepDurationMs={stepDurationMs}
-            />
-            <PlayerControls player={player} labels={labels} />
-          </>
-        ) : (
-          <StagePlaceholder />
-        )
+        <>
+          {result !== null ? (
+            <>
+              <VigenereVisualizer
+                steps={steps}
+                currentIndex={player.currentIndex}
+                onSelect={player.goTo}
+                mode={mode}
+                stepDurationMs={stepDurationMs}
+              />
+              <PlayerControls player={player} labels={labels} />
+            </>
+          ) : (
+            <StagePlaceholder />
+          )}
+          <LabLinks algorithm="vigenere" />
+        </>
       }
       details={
         result !== null ? (

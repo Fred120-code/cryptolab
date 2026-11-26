@@ -11,6 +11,7 @@ import {
   type PermutationStepData,
 } from '@/algorithms/permutation';
 import { OperationToggle } from '@/components/common/OperationToggle';
+import { LabLinks } from '@/components/lab/LabLinks';
 import { LabParamsCard } from '@/components/lab/LabParamsCard';
 import { LabShell } from '@/components/lab/LabShell';
 import { ModeSwitch, type InputMode } from '@/components/lab/ModeSwitch';
@@ -271,18 +272,21 @@ export function PermutationPlayground(): JSX.Element {
         </LabParamsCard>
       }
       stage={
-        validation.valid && result ? (
-          <>
-            <PermutationVisualizer
-              step={player.currentStep}
-              mode={mode}
-              stepDurationMs={stepDurationMs}
-            />
-            <PlayerControls player={player} labels={labels} />
-          </>
-        ) : (
-          <StagePlaceholder />
-        )
+        <>
+          {validation.valid && result ? (
+            <>
+              <PermutationVisualizer
+                step={player.currentStep}
+                mode={mode}
+                stepDurationMs={stepDurationMs}
+              />
+              <PlayerControls player={player} labels={labels} />
+            </>
+          ) : (
+            <StagePlaceholder />
+          )}
+          <LabLinks algorithm="permutation" />
+        </>
       }
       details={
         validation.valid && result ? (

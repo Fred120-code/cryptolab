@@ -8,6 +8,7 @@ import {
 } from '@/algorithms/substitution';
 import { OperationToggle } from '@/components/common/OperationToggle';
 import { SegmentedToggle } from '@/components/common/SegmentedToggle';
+import { LabLinks } from '@/components/lab/LabLinks';
 import { LabParamsCard } from '@/components/lab/LabParamsCard';
 import { LabShell } from '@/components/lab/LabShell';
 import { ModeSwitch, type InputMode } from '@/components/lab/ModeSwitch';
@@ -236,19 +237,22 @@ export function SubstitutionPlayground(): JSX.Element {
         </LabParamsCard>
       }
       stage={
-        validation.valid && result ? (
-          <>
-            <SubstitutionVisualizer
-              step={player.currentStep}
-              alphabet={alphabet}
-              mode={mode}
-              stepDurationMs={stepDurationMs}
-            />
-            <PlayerControls player={player} labels={labels} />
-          </>
-        ) : (
-          <StagePlaceholder />
-        )
+        <>
+          {validation.valid && result ? (
+            <>
+              <SubstitutionVisualizer
+                step={player.currentStep}
+                alphabet={alphabet}
+                mode={mode}
+                stepDurationMs={stepDurationMs}
+              />
+              <PlayerControls player={player} labels={labels} />
+            </>
+          ) : (
+            <StagePlaceholder />
+          )}
+          <LabLinks algorithm="substitution" />
+        </>
       }
       details={
         validation.valid && result ? (

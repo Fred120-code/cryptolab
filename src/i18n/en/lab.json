@@ -11,6 +11,11 @@
     "guidedHint": "Parameters are locked. Switch to free input to edit them.",
     "clear": "Clear message",
     "inversePermutation": "Inverse permutation: ({{value}})",
+    "links": {
+      "label": "Learn more",
+      "docs": "Documentation",
+      "cryptanalysis": "Cryptanalysis"
+    },
     "presets": {
       "caesar": {
         "bonjour3": "BONJOUR · key 3 · encrypt",

@@ -11,6 +11,11 @@
     "guidedHint": "Paramètres verrouillés. Passez en saisie libre pour les modifier.",
     "clear": "Effacer le message",
     "inversePermutation": "Permutation inverse\u00A0: ({{value}})",
+    "links": {
+      "label": "Pour aller plus loin",
+      "docs": "Documentation",
+      "cryptanalysis": "Cryptanalyse"
+    },
     "presets": {
       "caesar": {
         "bonjour3": "BONJOUR · clé 3 · chiffrer",
