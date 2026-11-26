@@ -1,6 +1,40 @@
 {
   "lab": {
     "paramsTitle": "Paramètres",
-    "stagePlaceholder": "Corrigez les paramètres pour afficher la visualisation."
+    "stagePlaceholder": "Corrigez les paramètres pour afficher la visualisation.",
+    "mode": {
+      "label": "Mode de saisie",
+      "guided": "Exemples du TD",
+      "custom": "Saisie libre"
+    },
+    "presetLabel": "Exemple",
+    "guidedHint": "Paramètres verrouillés. Passez en saisie libre pour les modifier.",
+    "clear": "Effacer le message",
+    "inversePermutation": "Permutation inverse\u00A0: ({{value}})",
+    "presets": {
+      "caesar": {
+        "bonjour3": "BONJOUR · clé 3 · chiffrer",
+        "examen7": "EXAMEN · clé 7 · chiffrer",
+        "erqmrxu3": "ERQMRXU · clé 3 · déchiffrer",
+        "lehtlu7": "LEHTLU · clé 7 · déchiffrer"
+      },
+      "substitution": {
+        "securiteEncrypt": "CRYPTOGRAPHIE · mot-clé SECURITE · chiffrer",
+        "securiteDecrypt": "CNYLPKTNSLABR · mot-clé SECURITE · déchiffrer",
+        "atbash": "BONJOUR · alphabet inversé · chiffrer"
+      },
+      "permutation": {
+        "informatique4": "INFORMATIQUE · blocs de 4 (2,4,1,3) · chiffrer",
+        "securite5": "SECURITE · blocs de 5 (3,5,1,4,2) · chiffrer",
+        "informatique4Decrypt": "NOIFMTRAQEIU · blocs de 4 (2,4,1,3) · déchiffrer",
+        "securite5Decrypt": "CRSUEEXIXT · blocs de 5 (3,5,1,4,2) · déchiffrer (2 X retirés)"
+      },
+      "vigenere": {
+        "bonjourCle": "BONJOUR · clé CLE · chiffrer",
+        "securiteInfo": "SECURITE · clé INFO · chiffrer",
+        "bonjourCleDecrypt": "DZRLZYT · clé CLE · déchiffrer",
+        "securiteInfoDecrypt": "ARHIZVYS · clé INFO · déchiffrer"
+      }
+    }
   }
 }
