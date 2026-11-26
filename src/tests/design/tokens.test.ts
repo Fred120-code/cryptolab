@@ -67,6 +67,7 @@ describe('Design tokens (tokens.css)', () => {
       'card-foreground',
       'destructive',
       'foreground',
+      'highlight',
       'input',
       'muted',
       'muted-foreground',
@@ -120,10 +121,14 @@ describe('Design tokens (tokens.css)', () => {
         testContrast('foreground', 'muted', 4.5);
       });
 
-      it('respecte le contraste (>= 4.5) pour primary utilisé comme texte', () => {
-        testContrast('primary', 'background', 4.5);
-        testContrast('primary', 'card', 4.5);
-        testContrast('primary', 'muted', 4.5);
+      it('respecte le contraste (>= 4.5) pour highlight utilisé comme texte', () => {
+        testContrast('highlight', 'background', 4.5);
+        testContrast('highlight', 'card', 4.5);
+        testContrast('highlight', 'muted', 4.5);
+      });
+
+      it('respecte le contraste (>= 3.0) pour highlight sur card', () => {
+        testContrast('highlight', 'card', 3.0);
       });
 
       it('respecte le contraste (>= 4.5) pour destructive utilisé comme texte', () => {
