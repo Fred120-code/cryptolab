@@ -6,10 +6,10 @@ import {
   type SubstitutionStepData,
 } from '@/algorithms/substitution';
 import { OperationToggle } from '@/components/common/OperationToggle';
+import { SegmentedToggle } from '@/components/common/SegmentedToggle';
 import { LabParamsCard } from '@/components/lab/LabParamsCard';
 import { LabShell } from '@/components/lab/LabShell';
 import { StagePlaceholder } from '@/components/lab/StagePlaceholder';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ExplanationPanel } from '@/components/visualizer/ExplanationPanel';
@@ -85,30 +85,16 @@ export function SubstitutionPlayground(): JSX.Element {
           {/* Choix de la source de l'alphabet (Mot-clé ou Personnalisé) */}
           <div className="flex flex-col gap-2">
             <Label id="substitution-source-label">{t('playground.alphabetSource')}</Label>
-            <div
-              role="group"
-              aria-labelledby="substitution-source-label"
-              className="flex flex-wrap gap-2"
-            >
-              <Button
-                type="button"
-                variant={source === 'keyword' ? 'default' : 'outline'}
-                aria-pressed={source === 'keyword'}
-                onClick={() => setSource('keyword')}
-                className="min-h-11 flex-1"
-              >
-                {t('playground.sourceKeyword')}
-              </Button>
-              <Button
-                type="button"
-                variant={source === 'custom' ? 'default' : 'outline'}
-                aria-pressed={source === 'custom'}
-                onClick={() => setSource('custom')}
-                className="min-h-11 flex-1"
-              >
-                {t('playground.sourceCustom')}
-              </Button>
-            </div>
+            <SegmentedToggle<AlphabetSource>
+              value={source}
+              onChange={setSource}
+              groupLabel={t('playground.alphabetSource')}
+              className="flex-wrap"
+              options={[
+                { value: 'keyword', label: t('playground.sourceKeyword') },
+                { value: 'custom', label: t('playground.sourceCustom') },
+              ]}
+            />
           </div>
 
           {/* Saisie du mot-clé ou de l'alphabet personnalisé */}
