@@ -1,0 +1,51 @@
+{
+  "cryptanalysis": {
+    "paramsTitle": "Ciphertext",
+    "ciphertextLabel": "Ciphertext to analyse",
+    "ciphertextPlaceholder": "Paste the ciphertext here",
+    "letterCount_one": "{{count}} letter analysed",
+    "letterCount_other": "{{count}} letters analysed",
+    "examplesLabel": "Examples",
+    "language": {
+      "label": "Message language",
+      "auto": "Automatic",
+      "fr": "French",
+      "en": "English"
+    },
+    "sort": {
+      "label": "Sort results",
+      "byShift": "By shift",
+      "byReadability": "By readability"
+    },
+    "rank": "Guess #{{rank}}",
+    "readability": "Readability",
+    "best": {
+      "heading": "Most likely guess",
+      "language": "Detected language: {{language}}"
+    },
+    "confidence": {
+      "enough": "This guess clearly stands out from the others.",
+      "limited": "Short message or close scores: statistics cannot conclude with certainty. Read the top guesses and judge for yourself."
+    },
+    "links": {
+      "backToLab": "Back to laboratory"
+    },
+    "caesar": {
+      "examples": {
+        "td1": "Course example: ERQMRXU",
+        "td2": "Course example: LEHTLU",
+        "long": "Longer sentence"
+      },
+      "empty": "Enter a ciphertext containing at least one letter to test the 26 shifts.",
+      "table": {
+        "caption": "The 26 shifts tested, with the resulting text",
+        "shift": "Shift",
+        "text": "Resulting text"
+      },
+      "best": {
+        "value": "Shift {{shift}}"
+      },
+      "explain": "With only 26 possible keys, the Caesar cipher is broken by brute force: we try every shift and look for the one that produces readable text. Readability is estimated from letter frequencies and the presence of common words."
+    }
+  }
+}

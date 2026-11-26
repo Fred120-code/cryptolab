@@ -1,0 +1,51 @@
+{
+  "cryptanalysis": {
+    "paramsTitle": "Cryptogramme",
+    "ciphertextLabel": "Message chiffré à analyser",
+    "ciphertextPlaceholder": "Collez ici le message chiffré",
+    "letterCount_one": "{{count}} lettre analysée",
+    "letterCount_other": "{{count}} lettres analysées",
+    "examplesLabel": "Exemples",
+    "language": {
+      "label": "Langue du message",
+      "auto": "Automatique",
+      "fr": "Français",
+      "en": "Anglais"
+    },
+    "sort": {
+      "label": "Tri des résultats",
+      "byShift": "Par décalage",
+      "byReadability": "Par lisibilité"
+    },
+    "rank": "Hypothèse n°{{rank}}",
+    "readability": "Lisibilité",
+    "best": {
+      "heading": "Hypothèse la plus probable",
+      "language": "Langue reconnue\u00A0: {{language}}"
+    },
+    "confidence": {
+      "enough": "Cette hypothèse se détache nettement des autres.",
+      "limited": "Message court ou résultats proches : la statistique ne permet pas de conclure avec certitude. Lisez les premières hypothèses et jugez par vous-même."
+    },
+    "links": {
+      "backToLab": "Revenir au laboratoire"
+    },
+    "caesar": {
+      "examples": {
+        "td1": "Exemple du TD\u00A0: ERQMRXU",
+        "td2": "Exemple du TD\u00A0: LEHTLU",
+        "long": "Phrase plus longue"
+      },
+      "empty": "Saisissez un cryptogramme contenant au moins une lettre pour tester les 26 décalages.",
+      "table": {
+        "caption": "Les 26 décalages testés, avec le texte obtenu",
+        "shift": "Décalage",
+        "text": "Texte obtenu"
+      },
+      "best": {
+        "value": "Décalage {{shift}}"
+      },
+      "explain": "Avec seulement 26 clés possibles, le chiffre de César se casse par force brute\u00A0: on essaie tous les décalages et on cherche celui qui donne un texte lisible. La lisibilité est estimée à partir de la fréquence des lettres et de la présence de mots courants."
+    }
+  }
+}

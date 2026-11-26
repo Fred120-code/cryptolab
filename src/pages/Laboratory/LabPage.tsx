@@ -1,7 +1,7 @@
 import { Suspense, type JSX } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AlgorithmNav } from '@/components/navigation/AlgorithmNav';
+import { AlgorithmPageHeader } from '@/components/layout/AlgorithmPageHeader';
 import { isAlgorithmId } from '@/config/algorithms';
 import { labPath } from '@/config/routes';
 import { useRecordVisit } from '@/hooks/useActivity';
@@ -32,10 +32,11 @@ export function LabPage(): JSX.Element {
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-xl font-semibold tracking-tight">{pageTitle}</h1>
-        <AlgorithmNav buildPath={labPath} ariaLabel={t('nav.algorithmTabs')} />
-      </div>
+      <AlgorithmPageHeader
+        title={pageTitle}
+        buildPath={labPath}
+        navLabel={t('nav.algorithmTabs')}
+      />
 
       <Suspense
         fallback={
