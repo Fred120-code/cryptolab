@@ -1,10 +1,15 @@
-import { useMemo, useState, type JSX } from 'react';
+import { useMemo, useRef, useState, type JSX } from 'react';
+import { Eraser } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { vigenereAlgorithm, type VigenereStepData } from '@/algorithms/vigenere';
 import { OperationToggle } from '@/components/common/OperationToggle';
+import { LabLinks } from '@/components/lab/LabLinks';
 import { LabParamsCard } from '@/components/lab/LabParamsCard';
 import { LabShell } from '@/components/lab/LabShell';
+import { ModeSwitch, type InputMode } from '@/components/lab/ModeSwitch';
+import { PresetSelect } from '@/components/lab/PresetSelect';
 import { StagePlaceholder } from '@/components/lab/StagePlaceholder';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ExplanationPanel } from '@/components/visualizer/ExplanationPanel';
@@ -13,26 +18,69 @@ import { ResultPanel, type TextRange } from '@/components/visualizer/ResultPanel
 import { usePlayer } from '@/hooks/usePlayer';
 import { usePlayerLabels } from '@/hooks/usePlayerLabels';
 import { useTranslatableText } from '@/hooks/useTranslatableText';
+import { cn } from '@/lib/utils';
 import type { ExecutionStep, OperationMode } from '@/types';
 import { VigenereVisualizer } from '@/visualizers/VigenereVisualizer';
+import { VIGENERE_PRESETS } from './presets';
 
 /** Tableau vide constant pour éviter les réinitialisations intempestives du hook `usePlayer` */
 const EMPTY_STEPS: ExecutionStep<VigenereStepData>[] = [];
 
+const DEFAULT_PRESET = VIGENERE_PRESETS[0]!;
+
 /**
- * Page de démonstration interactive temporaire du visualiseur de l'algorithme de Vigenère.
+ * Page de laboratoire interactif de l'algorithme de Vigenère.
  *
- * Permet de saisir un message et une clé textuelle, de choisir le mode opératoire (chiffrement / déchiffrement),
- * et de piloter l'animation pas à pas.
+ * Permet de choisir un exemple du TD en mode guidé ou de saisir librement
+ * un message et une clé textuelle, et de piloter l'animation pas à pas.
  */
 export function VigenerePlayground(): JSX.Element {
   const { t } = useTranslation();
   const tt = useTranslatableText();
   const labels = usePlayerLabels();
+  const textInputRef = useRef<HTMLInputElement>(null);
 
-  const [text, setText] = useState('BONJOUR');
-  const [key, setKey] = useState('CLE');
-  const [mode, setMode] = useState<OperationMode>('encrypt');
+  const [inputMode, setInputMode] = useState<InputMode>('guided');
+  const [presetId, setPresetId] = useState(DEFAULT_PRESET.id);
+  const [text, setText] = useState(() => DEFAULT_PRESET.text);
+  const [key, setKey] = useState(() => DEFAULT_PRESET.key);
+  const [mode, setMode] = useState<OperationMode>(() => DEFAULT_PRESET.mode);
+
+  const isGuided = inputMode === 'guided';
+
+  const presetOptions = useMemo(
+    () =>
+      VIGENERE_PRESETS.map((p) => ({
+        id: p.id,
+        label: t(`lab.presets.vigenere.${p.id}`),
+      })),
+    [t],
+  );
+
+  const applyPreset = (id: string): void => {
+    const preset = VIGENERE_PRESETS.find((p) => p.id === id);
+    if (!preset) return;
+    setText(preset.text);
+    setKey(preset.key);
+    setMode(preset.mode);
+  };
+
+  const handlePresetChange = (id: string): void => {
+    setPresetId(id);
+    applyPreset(id);
+  };
+
+  const handleModeChange = (next: InputMode): void => {
+    if (next === 'guided') {
+      applyPreset(presetId);
+    }
+    setInputMode(next);
+  };
+
+  const handleClear = (): void => {
+    setText('');
+    textInputRef.current?.focus();
+  };
 
   const validation = vigenereAlgorithm.validate({ key });
 
@@ -55,17 +103,37 @@ export function VigenerePlayground(): JSX.Element {
   return (
     <LabShell
       form={
-        <LabParamsCard>
+        <LabParamsCard action={<ModeSwitch value={inputMode} onChange={handleModeChange} />}>
+          {isGuided && (
+            <PresetSelect presets={presetOptions} value={presetId} onChange={handlePresetChange} />
+          )}
+
           {/* Saisie du message */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="vigenere-text-input">{t('playground.text')}</Label>
-            <Input
-              id="vigenere-text-input"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Ex: BONJOUR"
-              className="h-11 text-base md:text-sm"
-            />
+            <div className="flex gap-2">
+              <Input
+                ref={textInputRef}
+                id="vigenere-text-input"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder={t('lab.placeholders.text')}
+                readOnly={isGuided}
+                aria-readonly={isGuided}
+                className={cn('h-11 flex-1 text-base md:text-sm', isGuided && 'bg-muted/50')}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="size-11"
+                disabled={isGuided || text.length === 0}
+                onClick={handleClear}
+                aria-label={t('lab.clear')}
+              >
+                <Eraser className="size-5" aria-hidden="true" />
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -78,8 +146,13 @@ export function VigenerePlayground(): JSX.Element {
                 onChange={(e) => setKey(e.target.value)}
                 autoComplete="off"
                 spellCheck={false}
-                placeholder="Ex: CLE"
-                className="h-11 font-mono text-base tracking-wider uppercase md:text-sm"
+                placeholder={t('lab.placeholders.key')}
+                readOnly={isGuided}
+                aria-readonly={isGuided}
+                className={cn(
+                  'h-11 font-mono text-base tracking-wider uppercase md:text-sm',
+                  isGuided && 'bg-muted/50',
+                )}
               />
             </div>
           </div>
@@ -90,6 +163,7 @@ export function VigenerePlayground(): JSX.Element {
             <OperationToggle
               mode={mode}
               onChange={setMode}
+              disabled={isGuided}
               groupLabel={t('playground.operation')}
               encryptLabel={t('playground.encrypt')}
               decryptLabel={t('playground.decrypt')}
@@ -110,20 +184,23 @@ export function VigenerePlayground(): JSX.Element {
         </LabParamsCard>
       }
       stage={
-        result !== null ? (
-          <>
-            <VigenereVisualizer
-              steps={steps}
-              currentIndex={player.currentIndex}
-              onSelect={player.goTo}
-              mode={mode}
-              stepDurationMs={stepDurationMs}
-            />
-            <PlayerControls player={player} labels={labels} />
-          </>
-        ) : (
-          <StagePlaceholder />
-        )
+        <>
+          {result !== null ? (
+            <>
+              <VigenereVisualizer
+                steps={steps}
+                currentIndex={player.currentIndex}
+                onSelect={player.goTo}
+                mode={mode}
+                stepDurationMs={stepDurationMs}
+              />
+              <PlayerControls player={player} labels={labels} />
+            </>
+          ) : (
+            <StagePlaceholder />
+          )}
+          <LabLinks algorithm="vigenere" />
+        </>
       }
       details={
         result !== null ? (

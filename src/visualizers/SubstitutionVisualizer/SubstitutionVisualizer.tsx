@@ -140,7 +140,7 @@ export function SubstitutionVisualizer({
                         {normalChar}
                         {isNormalOutput && (
                           <motion.div
-                            className="absolute inset-0 flex items-center justify-center rounded bg-card font-mono text-xs sm:text-sm font-medium text-foreground ring-2 ring-primary"
+                            className="absolute inset-0 flex items-center justify-center rounded bg-card font-mono text-xs sm:text-sm font-medium text-foreground ring-2 ring-highlight"
                             style={{ opacity: outputOpacity }}
                           >
                             {normalChar}
@@ -152,7 +152,7 @@ export function SubstitutionVisualizer({
                       <div className="relative flex h-5 w-full items-center justify-center">
                         {isActive && (
                           <motion.div
-                            className="mx-auto h-full w-0.5 rounded-full bg-primary"
+                            className="mx-auto h-full w-0.5 rounded-full bg-highlight"
                             style={{
                               scaleY: progress,
                               transformOrigin: mode === 'encrypt' ? 'top' : 'bottom',
@@ -173,7 +173,7 @@ export function SubstitutionVisualizer({
                         {subChar}
                         {isSubOutput && (
                           <motion.div
-                            className="absolute inset-0 flex items-center justify-center rounded bg-card font-mono text-xs sm:text-sm font-medium text-foreground ring-2 ring-primary"
+                            className="absolute inset-0 flex items-center justify-center rounded bg-card font-mono text-xs sm:text-sm font-medium text-foreground ring-2 ring-highlight"
                             style={{ opacity: outputOpacity }}
                           >
                             {subChar}

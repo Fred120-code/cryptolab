@@ -55,3 +55,4 @@ Ce document synthétise les règles d'architecture et d'implémentation de l'int
   - `bg-accent`, `text-accent-foreground`
   - `text-destructive`, `bg-destructive`
   - `border-border`, `border-input`, `ring-ring`
+- `primary` est identique en clair et en sombre : il sert aux surfaces pleines avec du texte (`bg-primary text-primary-foreground`). Pour les lignes fines, points, contours et texte accentué, utilisez `highlight` (`stroke-highlight`, `ring-highlight`, `bg-highlight`, `text-highlight`). `text-primary` est interdit.

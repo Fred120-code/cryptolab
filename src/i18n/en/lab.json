@@ -1,6 +1,54 @@
 {
   "lab": {
     "paramsTitle": "Parameters",
-    "stagePlaceholder": "Fix the parameters to display the visualization."
+    "stagePlaceholder": "Fix the parameters to display the visualization.",
+    "mode": {
+      "label": "Input mode",
+      "guided": "Course examples",
+      "custom": "Free input"
+    },
+    "presetLabel": "Example",
+    "guidedHint": "Parameters are locked. Switch to free input to edit them.",
+    "clear": "Clear message",
+    "inversePermutation": "Inverse permutation: ({{value}})",
+    "links": {
+      "label": "Learn more",
+      "docs": "Documentation",
+      "cryptanalysis": "Cryptanalysis"
+    },
+    "placeholders": {
+      "text": "Enter your message",
+      "shift": "A whole number, for example 3",
+      "keyword": "A word, for example SECURITE",
+      "alphabet": "26 letters, each used once",
+      "permutation": "For example 2,4,1,3",
+      "padding": "For example 2",
+      "key": "A key, for example CLE"
+    },
+    "presets": {
+      "caesar": {
+        "bonjour3": "BONJOUR · key 3 · encrypt",
+        "examen7": "EXAMEN · key 7 · encrypt",
+        "erqmrxu3": "ERQMRXU · key 3 · decrypt",
+        "lehtlu7": "LEHTLU · key 7 · decrypt"
+      },
+      "substitution": {
+        "securiteEncrypt": "CRYPTOGRAPHIE · keyword SECURITE · encrypt",
+        "securiteDecrypt": "CNYLPKTNSLABR · keyword SECURITE · decrypt",
+        "atbash": "BONJOUR · reversed alphabet · encrypt"
+      },
+      "permutation": {
+        "informatique4": "INFORMATIQUE · blocks of 4 (2,4,1,3) · encrypt",
+        "securite5": "SECURITE · blocks of 5 (3,5,1,4,2) · encrypt",
+        "informatique4Decrypt": "NOIFMTRAQEIU · blocks of 4 (2,4,1,3) · decrypt",
+        "securite5Decrypt": "CRSUEEXIXT · blocks of 5 (3,5,1,4,2) · decrypt (2 X removed)"
+      },
+      "vigenere": {
+        "bonjourCle": "BONJOUR · key CLE · encrypt",
+        "securiteInfo": "SECURITE · key INFO · encrypt",
+        "bonjourCleDecrypt": "DZRLZYT · key CLE · decrypt",
+        "securiteInfoDecrypt": "ARHIZVYS · key INFO · decrypt"
+      }
+    }
   }
 }

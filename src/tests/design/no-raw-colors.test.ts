@@ -47,6 +47,9 @@ describe('Règle d interdiction des couleurs brutes et préfixes dark:', () => {
   // 3. Préfixe dark: (le thème sombre est géré automatiquement via @media prefers-color-scheme)
   const darkPrefixPattern = /\bdark:/;
 
+  // 4. Classe text-primary seule (pas text-primary-foreground)
+  const textPrimaryPattern = /\btext-primary(?!-)\b/;
+
   it('ne contient aucune couleur brute ni préfixe dark: dans les composants applicatifs', () => {
     const violations: string[] = [];
 
@@ -72,6 +75,13 @@ describe('Règle d interdiction des couleurs brutes et préfixes dark:', () => {
       if (darkMatch) {
         violations.push(
           `Fichier "${relPath}" contient le préfixe "dark:" interdit (utilisez les jetons sémantiques) : "${darkMatch[0]}"`,
+        );
+      }
+
+      const textPrimaryMatch = content.match(textPrimaryPattern);
+      if (textPrimaryMatch) {
+        violations.push(
+          `Fichier "${relPath}" contient la classe interdite "${textPrimaryMatch[0]}" (utilisez text-highlight)`,
         );
       }
     }

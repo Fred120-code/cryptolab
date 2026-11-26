@@ -26,6 +26,7 @@
   --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #1e40af;
+  --highlight: #1e40af;
 }
 
 :root.dark {
@@ -47,12 +48,14 @@
   --destructive: #f87171;
   --border: #3f3f46;
   --input: #3f3f46;
-  --ring: #1e40af;
+  --ring: #60a5fa;
+  --highlight: #60a5fa;
 }
 
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: 'Geist Variable', sans-serif;
+  --color-highlight: var(--highlight);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);

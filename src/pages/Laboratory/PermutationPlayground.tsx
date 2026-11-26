@@ -1,7 +1,9 @@
-import { useMemo, useState, type JSX } from 'react';
+import { useMemo, useRef, useState, type JSX } from 'react';
+import { Eraser } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
   getPaddingLength,
+  invertPermutation,
   parsePermutation,
   permutationAlgorithm,
   validateCiphertext,
@@ -9,9 +11,13 @@ import {
   type PermutationStepData,
 } from '@/algorithms/permutation';
 import { OperationToggle } from '@/components/common/OperationToggle';
+import { LabLinks } from '@/components/lab/LabLinks';
 import { LabParamsCard } from '@/components/lab/LabParamsCard';
 import { LabShell } from '@/components/lab/LabShell';
+import { ModeSwitch, type InputMode } from '@/components/lab/ModeSwitch';
+import { PresetSelect } from '@/components/lab/PresetSelect';
 import { StagePlaceholder } from '@/components/lab/StagePlaceholder';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ExplanationPanel } from '@/components/visualizer/ExplanationPanel';
@@ -20,28 +26,72 @@ import { ResultPanel, type TextRange } from '@/components/visualizer/ResultPanel
 import { usePlayer } from '@/hooks/usePlayer';
 import { usePlayerLabels } from '@/hooks/usePlayerLabels';
 import { useTranslatableText } from '@/hooks/useTranslatableText';
+import { cn } from '@/lib/utils';
 import type { ExecutionStep, OperationMode, ValidationResult } from '@/types';
 import { normalizeLetters } from '@/utils/text';
 import { PermutationVisualizer } from '@/visualizers/PermutationVisualizer';
+import { PERMUTATION_PRESETS } from './presets';
 
 /** Tableau vide constant pour éviter les réinitialisations intempestives du hook `usePlayer` */
 const EMPTY_STEPS: ExecutionStep<PermutationStepData>[] = [];
 
+const DEFAULT_PRESET = PERMUTATION_PRESETS[0]!;
+
 /**
- * Page de démonstration interactive temporaire du visualiseur de l'algorithme de permutation de blocs.
+ * Page de laboratoire interactif de l'algorithme de permutation par blocs.
  *
- * Permet de saisir un message, une permutation en base 1 et les caractères de remplissage éventuels,
- * de choisir le mode opératoire, et de piloter l'animation des blocs pas à pas.
+ * Permet de choisir un exemple du TD en mode guidé ou de saisir librement
+ * un message, une permutation en base 1 et le remplissage éventuel.
  */
 export function PermutationPlayground(): JSX.Element {
   const { t } = useTranslation();
   const tt = useTranslatableText();
   const labels = usePlayerLabels();
+  const textInputRef = useRef<HTMLInputElement>(null);
 
-  const [text, setText] = useState('INFORMATIQUE');
-  const [permutationStr, setPermutationStr] = useState('2,4,1,3');
-  const [paddingLengthStr, setPaddingLengthStr] = useState('');
-  const [mode, setMode] = useState<OperationMode>('encrypt');
+  const [inputMode, setInputMode] = useState<InputMode>('guided');
+  const [presetId, setPresetId] = useState(DEFAULT_PRESET.id);
+  const [text, setText] = useState(() => DEFAULT_PRESET.text);
+  const [permutationStr, setPermutationStr] = useState(() => DEFAULT_PRESET.permutation);
+  const [paddingLengthStr, setPaddingLengthStr] = useState(() => DEFAULT_PRESET.paddingLength);
+  const [mode, setMode] = useState<OperationMode>(() => DEFAULT_PRESET.mode);
+
+  const isGuided = inputMode === 'guided';
+
+  const presetOptions = useMemo(
+    () =>
+      PERMUTATION_PRESETS.map((p) => ({
+        id: p.id,
+        label: t(`lab.presets.permutation.${p.id}`),
+      })),
+    [t],
+  );
+
+  const applyPreset = (id: string): void => {
+    const preset = PERMUTATION_PRESETS.find((p) => p.id === id);
+    if (!preset) return;
+    setText(preset.text);
+    setPermutationStr(preset.permutation);
+    setPaddingLengthStr(preset.paddingLength);
+    setMode(preset.mode);
+  };
+
+  const handlePresetChange = (id: string): void => {
+    setPresetId(id);
+    applyPreset(id);
+  };
+
+  const handleModeChange = (next: InputMode): void => {
+    if (next === 'guided') {
+      applyPreset(presetId);
+    }
+    setInputMode(next);
+  };
+
+  const handleClear = (): void => {
+    setText('');
+    textInputRef.current?.focus();
+  };
 
   const normalizedText = useMemo(() => normalizeLetters(text), [text]);
   const permutation = useMemo(() => parsePermutation(permutationStr), [permutationStr]);
@@ -75,6 +125,13 @@ export function PermutationPlayground(): JSX.Element {
     return { valid: true };
   }, [params, mode, normalizedText]);
 
+  const inverseText = useMemo(() => {
+    if (!validation.valid) {
+      return '';
+    }
+    return invertPermutation(permutation).join(', ');
+  }, [validation.valid, permutation]);
+
   const result = useMemo(() => {
     if (!validation.valid) {
       return null;
@@ -102,17 +159,37 @@ export function PermutationPlayground(): JSX.Element {
   return (
     <LabShell
       form={
-        <LabParamsCard>
+        <LabParamsCard action={<ModeSwitch value={inputMode} onChange={handleModeChange} />}>
+          {isGuided && (
+            <PresetSelect presets={presetOptions} value={presetId} onChange={handlePresetChange} />
+          )}
+
           {/* Saisie du message source */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="permutation-text-input">{t('playground.text')}</Label>
-            <Input
-              id="permutation-text-input"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Ex: INFORMATIQUE"
-              className="h-11 text-base md:text-sm"
-            />
+            <div className="flex gap-2">
+              <Input
+                ref={textInputRef}
+                id="permutation-text-input"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder={t('lab.placeholders.text')}
+                readOnly={isGuided}
+                aria-readonly={isGuided}
+                className={cn('h-11 flex-1 text-base md:text-sm', isGuided && 'bg-muted/50')}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="size-11"
+                disabled={isGuided || text.length === 0}
+                onClick={handleClear}
+                aria-label={t('lab.clear')}
+              >
+                <Eraser className="size-5" aria-hidden="true" />
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -126,9 +203,14 @@ export function PermutationPlayground(): JSX.Element {
                 autoComplete="off"
                 spellCheck={false}
                 inputMode="numeric"
-                placeholder="Ex: 2,4,1,3"
-                className="h-11 font-mono text-base md:text-sm"
+                placeholder={t('lab.placeholders.permutation')}
+                readOnly={isGuided}
+                aria-readonly={isGuided}
+                className={cn('h-11 font-mono text-base md:text-sm', isGuided && 'bg-muted/50')}
               />
+              <p className="min-h-4 text-xs text-muted-foreground">
+                {inverseText ? t('lab.inversePermutation', { value: inverseText }) : ''}
+              </p>
             </div>
 
             {/* Saisie facultative du padding à retirer en déchiffrement */}
@@ -142,8 +224,13 @@ export function PermutationPlayground(): JSX.Element {
                   step={1}
                   value={paddingLengthStr}
                   onChange={(e) => setPaddingLengthStr(e.target.value)}
-                  placeholder="0"
-                  className="h-11 tabular-nums text-base md:text-sm"
+                  placeholder={t('lab.placeholders.padding')}
+                  readOnly={isGuided}
+                  aria-readonly={isGuided}
+                  className={cn(
+                    'h-11 tabular-nums text-base md:text-sm',
+                    isGuided && 'bg-muted/50',
+                  )}
                 />
               </div>
             )}
@@ -155,6 +242,7 @@ export function PermutationPlayground(): JSX.Element {
             <OperationToggle
               mode={mode}
               onChange={setMode}
+              disabled={isGuided}
               groupLabel={t('playground.operation')}
               encryptLabel={t('playground.encrypt')}
               decryptLabel={t('playground.decrypt')}
@@ -184,18 +272,21 @@ export function PermutationPlayground(): JSX.Element {
         </LabParamsCard>
       }
       stage={
-        validation.valid && result ? (
-          <>
-            <PermutationVisualizer
-              step={player.currentStep}
-              mode={mode}
-              stepDurationMs={stepDurationMs}
-            />
-            <PlayerControls player={player} labels={labels} />
-          </>
-        ) : (
-          <StagePlaceholder />
-        )
+        <>
+          {validation.valid && result ? (
+            <>
+              <PermutationVisualizer
+                step={player.currentStep}
+                mode={mode}
+                stepDurationMs={stepDurationMs}
+              />
+              <PlayerControls player={player} labels={labels} />
+            </>
+          ) : (
+            <StagePlaceholder />
+          )}
+          <LabLinks algorithm="permutation" />
+        </>
       }
       details={
         validation.valid && result ? (

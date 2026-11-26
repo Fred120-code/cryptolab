@@ -126,7 +126,7 @@ export function CaesarDial({
           <motion.path
             d={arcD}
             fill="none"
-            className="stroke-primary"
+            className="stroke-highlight"
             strokeWidth={3}
             strokeLinecap="round"
           />
@@ -134,7 +134,7 @@ export function CaesarDial({
             cx={pointX}
             cy={pointY}
             r={7}
-            className="fill-primary stroke-card"
+            className="fill-highlight stroke-card"
             strokeWidth={2}
           />
         </>
@@ -163,7 +163,7 @@ export function CaesarDial({
                 cy={center.y}
                 r={14}
                 fill="none"
-                className="stroke-primary"
+                className="stroke-highlight"
                 strokeWidth={3}
                 style={{ opacity: outputOpacity }}
               />

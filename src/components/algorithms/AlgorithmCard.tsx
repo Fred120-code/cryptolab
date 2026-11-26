@@ -23,7 +23,7 @@ function DifficultyDots({ level }: { level: number }): JSX.Element {
           aria-hidden="true"
           className={cn(
             'size-1.5 rounded-full',
-            i < level ? 'bg-primary' : 'bg-muted-foreground/30',
+            i < level ? 'bg-highlight' : 'bg-muted-foreground/30',
           )}
         />
       ))}
