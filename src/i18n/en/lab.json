@@ -16,6 +16,15 @@
       "docs": "Documentation",
       "cryptanalysis": "Cryptanalysis"
     },
+    "placeholders": {
+      "text": "Enter your message",
+      "shift": "A whole number, for example 3",
+      "keyword": "A word, for example SECURITE",
+      "alphabet": "26 letters, each used once",
+      "permutation": "For example 2,4,1,3",
+      "padding": "For example 2",
+      "key": "A key, for example CLE"
+    },
     "presets": {
       "caesar": {
         "bonjour3": "BONJOUR · key 3 · encrypt",

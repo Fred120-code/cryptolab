@@ -118,7 +118,7 @@ export function CaesarPlayground(): JSX.Element {
                 id="caesar-text-input"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="Ex: BONJOUR"
+                placeholder={t('lab.placeholders.text')}
                 readOnly={isGuided}
                 aria-readonly={isGuided}
                 className={cn('h-11 flex-1 text-base md:text-sm', isGuided && 'bg-muted/50')}
@@ -147,6 +147,7 @@ export function CaesarPlayground(): JSX.Element {
                 step={1}
                 value={shiftStr}
                 onChange={(e) => setShiftStr(e.target.value)}
+                placeholder={t('lab.placeholders.shift')}
                 readOnly={isGuided}
                 aria-readonly={isGuided}
                 className={cn('h-11 tabular-nums text-base md:text-sm', isGuided && 'bg-muted/50')}

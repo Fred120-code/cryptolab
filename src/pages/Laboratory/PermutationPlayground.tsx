@@ -173,7 +173,7 @@ export function PermutationPlayground(): JSX.Element {
                 id="permutation-text-input"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="Ex: INFORMATIQUE"
+                placeholder={t('lab.placeholders.text')}
                 readOnly={isGuided}
                 aria-readonly={isGuided}
                 className={cn('h-11 flex-1 text-base md:text-sm', isGuided && 'bg-muted/50')}
@@ -203,7 +203,7 @@ export function PermutationPlayground(): JSX.Element {
                 autoComplete="off"
                 spellCheck={false}
                 inputMode="numeric"
-                placeholder="Ex: 2,4,1,3"
+                placeholder={t('lab.placeholders.permutation')}
                 readOnly={isGuided}
                 aria-readonly={isGuided}
                 className={cn('h-11 font-mono text-base md:text-sm', isGuided && 'bg-muted/50')}
@@ -224,7 +224,7 @@ export function PermutationPlayground(): JSX.Element {
                   step={1}
                   value={paddingLengthStr}
                   onChange={(e) => setPaddingLengthStr(e.target.value)}
-                  placeholder="0"
+                  placeholder={t('lab.placeholders.padding')}
                   readOnly={isGuided}
                   aria-readonly={isGuided}
                   className={cn(

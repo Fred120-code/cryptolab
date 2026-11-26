@@ -138,7 +138,7 @@ export function SubstitutionPlayground(): JSX.Element {
                 id="substitution-text-input"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="Ex: CRYPTOGRAPHIE"
+                placeholder={t('lab.placeholders.text')}
                 readOnly={isGuided}
                 aria-readonly={isGuided}
                 className={cn('h-11 flex-1 text-base md:text-sm', isGuided && 'bg-muted/50')}
@@ -181,7 +181,7 @@ export function SubstitutionPlayground(): JSX.Element {
                 id="substitution-keyword-input"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
-                placeholder="Ex: SECURITE"
+                placeholder={t('lab.placeholders.keyword')}
                 readOnly={isGuided}
                 aria-readonly={isGuided}
                 className={cn(
@@ -199,7 +199,7 @@ export function SubstitutionPlayground(): JSX.Element {
                 onChange={(e) => setCustomAlphabet(e.target.value)}
                 autoComplete="off"
                 spellCheck={false}
-                placeholder="Ex: ZYXWVUTSRQPONMLKJIHGFEDCBA"
+                placeholder={t('lab.placeholders.alphabet')}
                 readOnly={isGuided}
                 aria-readonly={isGuided}
                 className={cn(

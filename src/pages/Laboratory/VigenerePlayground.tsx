@@ -117,7 +117,7 @@ export function VigenerePlayground(): JSX.Element {
                 id="vigenere-text-input"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="Ex: BONJOUR"
+                placeholder={t('lab.placeholders.text')}
                 readOnly={isGuided}
                 aria-readonly={isGuided}
                 className={cn('h-11 flex-1 text-base md:text-sm', isGuided && 'bg-muted/50')}
@@ -146,7 +146,7 @@ export function VigenerePlayground(): JSX.Element {
                 onChange={(e) => setKey(e.target.value)}
                 autoComplete="off"
                 spellCheck={false}
-                placeholder="Ex: CLE"
+                placeholder={t('lab.placeholders.key')}
                 readOnly={isGuided}
                 aria-readonly={isGuided}
                 className={cn(
