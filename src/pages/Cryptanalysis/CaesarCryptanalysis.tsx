@@ -1,4 +1,4 @@
-import { useId, useMemo, useState, type JSX } from 'react';
+import { useDeferredValue, useId, useMemo, useState, type JSX } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ import { bruteForceCaesar, type LanguageChoice } from '@/cryptanalysis';
 const LONG_PLAINTEXT =
   'LA CRYPTOGRAPHIE EST UNE DISCIPLINE FONDAMENTALE DE LA SECURITE INFORMATIQUE';
 const LONG_CIPHERTEXT = caesarAlgorithm.encrypt(LONG_PLAINTEXT, { shift: 5 });
+const MAX_CIPHERTEXT_LENGTH = 5000;
 
 type SortMode = 'shift' | 'readability';
 
@@ -31,12 +32,17 @@ type SortMode = 'shift' | 'readability';
 export function CaesarCryptanalysis(): JSX.Element {
   const { t } = useTranslation();
   const textareaId = useId();
+  const counterId = useId();
 
   const [ciphertext, setCiphertext] = useState('ERQMRXU');
   const [language, setLanguage] = useState<LanguageChoice>('auto');
   const [sort, setSort] = useState<SortMode>('shift');
+  const deferredCiphertext = useDeferredValue(ciphertext);
 
-  const analysis = useMemo(() => bruteForceCaesar(ciphertext, language), [ciphertext, language]);
+  const analysis = useMemo(
+    () => bruteForceCaesar(deferredCiphertext, language),
+    [deferredCiphertext, language],
+  );
 
   const rows: CandidateRow[] = useMemo(() => {
     const ordered =
@@ -66,13 +72,18 @@ export function CaesarCryptanalysis(): JSX.Element {
               value={ciphertext}
               onChange={(e) => setCiphertext(e.target.value)}
               rows={3}
+              maxLength={MAX_CIPHERTEXT_LENGTH}
+              aria-describedby={counterId}
               spellCheck={false}
               autoComplete="off"
               placeholder={t('cryptanalysis.ciphertextPlaceholder')}
               className="font-mono text-base md:text-sm"
             />
-            <p aria-live="polite" className="text-xs text-muted-foreground">
+            <p id={counterId} className="text-xs text-muted-foreground">
               {t('cryptanalysis.letterCount', { count: analysis.letterCount })}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {t('cryptanalysis.maxLength', { max: MAX_CIPHERTEXT_LENGTH })}
             </p>
           </div>
 
@@ -143,6 +154,7 @@ export function CaesarCryptanalysis(): JSX.Element {
               textHeader={t('cryptanalysis.caesar.table.text')}
               readabilityHeader={t('cryptanalysis.readability')}
               rankLabel={(rank) => t('cryptanalysis.rank', { rank })}
+              hint={t('cryptanalysis.readabilityHint')}
             />
           </>
         )

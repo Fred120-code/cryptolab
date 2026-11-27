@@ -5,6 +5,8 @@
     "ciphertextPlaceholder": "Paste the ciphertext here",
     "letterCount_one": "{{count}} letter analysed",
     "letterCount_other": "{{count}} letters analysed",
+    "maxLength": "Limited to {{max, number}} characters.",
+    "readabilityHint": "Readability is relative: 100 marks the best of the tested candidates, not a guarantee that the text makes sense.",
     "examplesLabel": "Examples",
     "language": {
       "label": "Message language",

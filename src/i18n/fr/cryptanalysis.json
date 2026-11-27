@@ -5,6 +5,8 @@
     "ciphertextPlaceholder": "Collez ici le message chiffré",
     "letterCount_one": "{{count}} lettre analysée",
     "letterCount_other": "{{count}} lettres analysées",
+    "maxLength": "Limité à {{max, number}} caractères.",
+    "readabilityHint": "La lisibilité est relative\u00A0: 100 désigne le meilleur des candidats testés, pas la garantie que le texte ait un sens.",
     "examplesLabel": "Exemples",
     "language": {
       "label": "Langue du message",
