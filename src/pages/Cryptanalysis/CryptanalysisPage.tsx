@@ -1,10 +1,14 @@
-import type { JSX } from 'react';
+import { Suspense, type JSX } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { AlgorithmPageHeader } from '@/components/layout/AlgorithmPageHeader';
+import { PageLoading } from '@/components/layout/PageLoading';
 import { isAlgorithmId } from '@/config/algorithms';
+import { cryptanalysisPath } from '@/config/routes';
 import { useRecordVisit } from '@/hooks/useActivity';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage';
+import { CRYPTANALYSIS_TOOLS } from './tools';
 
 /**
  * Page de cryptanalyse d'un algorithme donné.
@@ -25,10 +29,23 @@ export function CryptanalysisPage(): JSX.Element {
     return <NotFoundPage />;
   }
 
+  const ToolComponent = CRYPTANALYSIS_TOOLS[algorithm];
+
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold tracking-tight text-foreground">{pageTitle}</h1>
-      <p className="text-muted-foreground">{t('pages.placeholder.body')}</p>
+    <div>
+      <AlgorithmPageHeader
+        title={pageTitle}
+        buildPath={cryptanalysisPath}
+        navLabel={t('nav.algorithmTabs')}
+      />
+
+      {ToolComponent ? (
+        <Suspense fallback={<PageLoading />}>
+          <ToolComponent />
+        </Suspense>
+      ) : (
+        <p className="text-muted-foreground">{t('pages.placeholder.body')}</p>
+      )}
     </div>
   );
 }

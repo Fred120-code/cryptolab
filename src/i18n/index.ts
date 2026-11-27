@@ -16,6 +16,7 @@ import visualizerFr from './fr/visualizer.json';
 import activityFr from './fr/activity.json';
 import homeFr from './fr/home.json';
 import labFr from './fr/lab.json';
+import cryptanalysisFr from './fr/cryptanalysis.json';
 
 import commonEn from './en/common.json';
 import playerEn from './en/player.json';
@@ -31,6 +32,7 @@ import visualizerEn from './en/visualizer.json';
 import activityEn from './en/activity.json';
 import homeEn from './en/home.json';
 import labEn from './en/lab.json';
+import cryptanalysisEn from './en/cryptanalysis.json';
 
 const frResources = {
   ...commonFr,
@@ -47,6 +49,7 @@ const frResources = {
   ...activityFr,
   ...homeFr,
   ...labFr,
+  ...cryptanalysisFr,
 };
 
 const enResources = {
@@ -64,6 +67,7 @@ const enResources = {
   ...activityEn,
   ...homeEn,
   ...labEn,
+  ...cryptanalysisEn,
 };
 
 const initialLang = detectLanguage();
